@@ -93,7 +93,6 @@ float_part.Parent = repstor
 local bad_mans = {}
 
 local whitelist = {
-	['PlayerEater9'] = true,
 	['ColonThreeSpam'] = true,
 	['TheTerminalClone'] = true,
 	['SpawnYellow1'] = true,
