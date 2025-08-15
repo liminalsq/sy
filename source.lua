@@ -342,9 +342,9 @@ local function do_command(input)
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
 	local root = char:FindFirstChild("HumanoidRootPart")
 
-	local args = string.split(string.lower(input), " ")
-	local cmd = args[1]
-	table.remove(args, 1)
+	local args = string.split(input, " ")
+	local cmd = args[1]:lower() -- lowercase only the command
+	table.remove(args, 1) -- remove command from args
 
 	if cmd == "fps" then
 		print(fps)
@@ -352,7 +352,7 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-		local argsStr = cmd:sub(7)
+		local argsStr = table.concat(args, " ")
 		local addedPlayers = {}
 
 		for name in argsStr:gmatch("[^,%s]+") do
@@ -380,6 +380,7 @@ local function do_command(input)
 			rbxg:SendAsync("No new targets added.")
 			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
+
 	elseif cmd == "stoplkill" then
 		loopkilling = false
 		rbxg:SendAsync("stopped: lkill")
@@ -388,10 +389,10 @@ local function do_command(input)
 	elseif cmd == "cleartargets" then
 		bad_mans = {}
 		rbxg:SendAsync("cleared list of bad mans!!")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared: "..table.concat(bad_mans, ", ").." from the looplist.")
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared looplist.")
 
 	elseif cmd:sub(1,18) == "removefromtargets" then
-		local argsStr = cmd:sub(20)
+		local argsStr = table.concat(args, " ")
 		local removedPlayers = {}
 
 		for name in argsStr:gmatch("[^,%s]+") do
@@ -399,9 +400,12 @@ local function do_command(input)
 			if #matches == 0 then
 				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
 			else
-				for i = #matches, 1, -1 do
-					table.remove(bad_mans, matches[i].index)
-					table.insert(removedPlayers, matches[i].name)
+				for _, targetPlayer in ipairs(matches) do
+					local idx = table.find(bad_mans, targetPlayer.Name:lower())
+					if idx then
+						table.remove(bad_mans, idx)
+						table.insert(removedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+					end
 				end
 			end
 		end
@@ -462,7 +466,7 @@ local function do_command(input)
 		elseif root then
 			spawnPoint = root.CFrame
 			rbxg:SendAsync("set spawn to my location")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", didn't put any coordinates, set spawn to current location instead.")
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", set spawn to current location.")
 		else
 			rbxg:SendAsync("i cant find root")
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find root.")
@@ -487,32 +491,6 @@ local function do_command(input)
 		end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unhid SpawnYellow.")
 
-	elseif cmd:sub(1,10) == "gotoplayer" then
-		local targetName = table.concat(args, " "):lower()
-		local targetPlayer = findPlayerByName(targetName)
-
-		if not root then
-			rbxg:SendAsync("u dont have a root lol")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find commander's root.")
-			return
-		end
-
-		if targetPlayer and targetPlayer.Character then
-			local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-			if targetRoot then
-				root.CFrame = targetRoot.CFrame
-				root.Velocity = Vector3.new(0,0,0)
-				rbxg:SendAsync("successfully went to "..targetPlayer.DisplayName.." ("..targetPlayer.Name..")")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", successfully went to target.")
-			else
-				rbxg:SendAsync("player has no root part, strange")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", player has no rootpart.")
-			end
-		else
-			rbxg:SendAsync("couldnt find player :pensive:")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find player.")
-		end
-
 	elseif cmd == "float" then
 		rbxg:SendAsync("floating")
 		floating = true
@@ -522,16 +500,16 @@ local function do_command(input)
 		rbxg:SendAsync("unfloating")
 		floating = false
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
-		
-	elseif cmd == "gameId" then
+
+	elseif cmd == "gameid" then
 		rbxg:SendAsync("gameId: "..tostring(game.PlaceId))
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameId: "..tostring(game.PlaceId))
 
-	elseif cmd == "jobId" then
+	elseif cmd == "jobid" then
 		rbxg:SendAsync("jobId: "..tostring(game.JobId))
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", jobId: "..tostring(game.JobId))
 
-	elseif cmd == "gameCreator" then
+	elseif cmd == "gamecreator" then
 		local creator = players:GetPlayerByUserId(game.CreatorId)
 		if creator then
 			rbxg:SendAsync("gameCreator: "..creator.Name)
@@ -541,16 +519,16 @@ local function do_command(input)
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator not found")
 		end
 
-	elseif cmd == "creatorId" then
+	elseif cmd == "creatorid" then
 		rbxg:SendAsync("creatorId: "..tostring(game.CreatorId))
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", creatorId: "..tostring(game.CreatorId))
 
-	elseif cmd == "serverType" then
+	elseif cmd == "servertype" then
 		local typeStr = (game:GetService("RunService"):IsStudio() and "Studio" or "Game")
 		rbxg:SendAsync("serverType: "..typeStr)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverType: "..typeStr)
 
-	elseif cmd == "serverTime" then
+	elseif cmd == "servertime" then
 		local timeStr = tostring(tick())
 		rbxg:SendAsync("serverTime: "..timeStr)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverTime: "..timeStr)
@@ -562,15 +540,10 @@ local function do_command(input)
 
 		local function getAvailableServers(cursor)
 			local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
-			if cursor then
-				url = url .. "&cursor=" .. cursor
-			end
-			local success, res = pcall(function()
-				return HttpService:GetAsync(url)
-			end)
+			if cursor then url = url .. "&cursor=" .. cursor end
+			local success, res = pcall(function() return HttpService:GetAsync(url) end)
 			if success then
-				local data = HttpService:JSONDecode(res)
-				return data
+				return HttpService:JSONDecode(res)
 			else
 				warn("Failed to fetch server list")
 				return nil
@@ -589,13 +562,13 @@ local function do_command(input)
 			end
 
 			if targetServer then
-				local msg = "Hopping to server: " .. targetServer
+				local msg = "serverhopping: " .. targetServer
 				print(msg)
 				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
 				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hopping to server ID: "..targetServer)
 				TeleportService:TeleportToPlaceInstance(placeId, targetServer, game.Players.LocalPlayer)
 			else
-				local msg = "No available servers found to hop to."
+				local msg = "no available servers found"
 				print(msg)
 				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
 				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no available servers to hop.")
