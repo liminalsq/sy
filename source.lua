@@ -308,7 +308,7 @@ runs.RenderStepped:Connect(function()
 	end
 	if floating then
 		float_part.Parent = workspace
-		float_part.Position = root.Position - Vector3.new(0,3.95,0)
+		float_part.Position = root.Position + Vector3.new(0,-3.5,0)
 	else
 		float_part.Parent = repstor
 	end
