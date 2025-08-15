@@ -341,32 +341,32 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-	local argsStr = cmd:sub(7):lower()
-	local addedPlayers = {}
+		local argsStr = cmd:sub(7):lower()
+		local addedPlayers = {}
 
-	for name in argsStr:gmatch("[^,%s]+") do
-		local targetPlayer = findPlayerByName(name)
-		if targetPlayer then
-			local targetNameLower = targetPlayer.Name:lower()
-			if not table.find(bad_mans, targetNameLower) then
-				table.insert(bad_mans, targetNameLower)
-				table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+		for name in argsStr:gmatch("[^,%s]+") do
+			local targetPlayer = findPlayerByName(name)
+			if targetPlayer then
+				local targetNameLower = targetPlayer.Name:lower()
+				if not table.find(bad_mans, targetNameLower) then
+					table.insert(bad_mans, targetNameLower)
+					table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+				end
+			else
+				rbxg:SendAsync("couldnt find: " .. name)
+				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
 			end
-		else
-			rbxg:SendAsync("couldnt find: " .. name)
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
 		end
-	end
 
-	if #addedPlayers > 0 then
-		loopkilling = true
-		print("Loopkilling: " .. table.concat(bad_mans, ", "))
-		rbxg:SendAsync("ur cooked, " .. table.concat(addedPlayers, ", "))
-		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
-	else
-		rbxg:SendAsync("no new targetss")
-		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
-	end
+		if #addedPlayers > 0 then
+			loopkilling = true
+			print("Loopkilling: " .. table.concat(bad_mans, ", "))
+			rbxg:SendAsync("ur cooked, " .. table.concat(addedPlayers, ", "))
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+		else
+			rbxg:SendAsync("no new targetss")
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+		end
 
 	elseif cmd == "stoplkill" then
 		loopkilling = false
@@ -542,7 +542,9 @@ local function monitor(p)
 	local speedHistory = {}
 	local maxHistory = 5
 	local alertCooldown = 5
-
+	
+	local threshold = 10
+	
 	local function getSmoothedSpeed(newSpeed)
 		table.insert(speedHistory, newSpeed)
 		if #speedHistory > maxHistory then
@@ -686,38 +688,59 @@ local function monitor(p)
 		prevTime = now
 
 		for _, attacker in pairs(players:GetPlayers()) do
-			if attacker.Character and attacker.Character:FindFirstChild("HumanoidRootPart") then
+			if attacker ~= p and attacker.Character and attacker.Character:FindFirstChild("HumanoidRootPart") then
 				local attackerRoot = attacker.Character.HumanoidRootPart
 				for _, target in pairs(players:GetPlayers()) do
 					if target ~= attacker and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
-						for _, part in ipairs(attacker.Character:GetChildren()) do
-							if part:IsA("BasePart") then
-								for _, touched in ipairs(part:GetTouchingParts()) do
-									if touched:IsDescendantOf(target.Character) then
-										local d = (attackerRoot.Position - target.Character.HumanoidRootPart.Position).Magnitude
-										if d > 12 then
-											local key = attacker.Name..":"..target.Name
-											violationCount.reach[key] = violationCount.reach[key] or 0
-											if now - violationCount.reach[key] > 3 then
-												violationCount.reach[key] = now
-												local k = attacker.Name.."_reach"
-												if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-													lastAlert[k] = now
-													table.insert(bad_mans, attacker.Name)
-													loopkilling = loopkilling or true
-													pcall(function()
-														if rbxg then
-															rbxg:SendAsync(attacker.Name.." reached "..target.Name.." ("..string.format("%.2f", d)..")")
-														end
-														webhook_sendMsg(overall_LOGGER, attacker.DisplayName.." ("..attacker.Name..") used reach exploit on "..target.Name)
-														webhook_sendMsg(overall_LOGGER, "Added "..attacker.DisplayName.." ("..attacker.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-													end)
-												end
-											end
-										end
-									end
+						local targetRoot = target.Character.HumanoidRootPart
+						local tooFarHit = false
+						local closestDistance = math.huge
+
+						local limbNames
+						if attacker.Character:FindFirstChild("RightHand") then
+							limbNames = {"RightHand","RightLowerArm","RightUpperArm","LeftHand","LeftLowerArm","LeftUpperArm"}
+							threshold = 12
+						else
+							limbNames = {"RightArm","LeftArm"}
+							threshold = 10
+						end
+
+						for _, limbName in ipairs(limbNames) do
+							local limb = attacker.Character:FindFirstChild(limbName)
+							if limb and limb:IsA("BasePart") then
+								local d = (limb.Position - targetRoot.Position).Magnitude
+								if d > threshold then
+									tooFarHit = true
+								end
+								if d < closestDistance then
+									closestDistance = d
 								end
 							end
+						end
+
+						if tooFarHit then
+							local key = attacker.Name..":"..target.Name
+							violationCount.reach[key] = (violationCount.reach[key] or 0) + 1
+
+							if violationCount.reach[key] >= 2 then
+								local now = tick()
+								local k = attacker.Name.."_reach"
+								if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+									lastAlert[k] = now
+									table.insert(bad_mans, attacker.Name)
+									loopkilling = loopkilling or true
+									pcall(function()
+										if rbxg then
+											rbxg:SendAsync(attacker.Name.." reached "..target.Name.." ("..string.format("%.2f", closestDistance).." studs)")
+										end
+										webhook_sendMsg(overall_LOGGER, attacker.DisplayName.." ("..attacker.Name..") used reach exploit on "..target.Name)
+										webhook_sendMsg(overall_LOGGER, "Added "..attacker.DisplayName.." ("..attacker.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+									end)
+								end
+								violationCount.reach[key] = 0
+							end
+						else
+							violationCount.reach[attacker.Name..":"..target.Name] = 0
 						end
 					end
 				end
