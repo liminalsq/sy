@@ -98,7 +98,8 @@ local whitelist = {
 	['SpawnYellow1'] = true,
 	["s71pl"] = true,
 	["RealPerson_0010"] = true,
-	['skyjp'] = true,
+	['skyjp_ExyjNoFQKdJeZc'] = true,
+	['skyjp_aSfGe3Ew2qtu3'] = true,
 	['cool0205p'] = true,
 	['cashier9298'] = true,
 	['d1sc0rd0'] = true,
@@ -518,11 +519,13 @@ local function monitor(p)
 	local violationLimit = 3
 	local violationCount = {tp = 0, speed = 0, fly = 0, fling = 0, reach = {}}
 	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0}
+	local lastAlert = {}
 
 	local flingVelThreshold, flingSpinThreshold = 2000, 3000
 	local impossibleSpeed = 80
 	local speedHistory = {}
 	local maxHistory = 5
+	local alertCooldown = 5
 
 	local function getSmoothedSpeed(newSpeed)
 		table.insert(speedHistory, newSpeed)
@@ -560,13 +563,19 @@ local function monitor(p)
 			if violationCount.tp >= violationLimit then
 				debounce.tp = now
 				violationCount.tp = 0
-				if rbxg then
-					rbxg:SendAsync(p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)")
-					webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") teleported")
+				local k = p.Name.."_tp"
+				if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+					lastAlert[k] = now
+					table.insert(bad_mans, p.Name)
+					loopkilling = loopkilling or true
+					pcall(function()
+						if rbxg then
+							rbxg:SendAsync(p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)")
+						end
+						webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") teleported")
+						webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+					end)
 				end
-				table.insert(bad_mans, p.Name)
-				loopkilling = loopkilling or true
-				webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
 			end
 		else
 			violationCount.tp = 0
@@ -579,13 +588,19 @@ local function monitor(p)
 				if violationCount.speed >= violationLimit then
 					debounce.speed = now
 					violationCount.speed = 0
-					if rbxg then
-						rbxg:SendAsync(p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")")
-						webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") used speed exploits.")
+					local k = p.Name.."_speed"
+					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+						lastAlert[k] = now
+						table.insert(bad_mans, p.Name)
+						loopkilling = loopkilling or true
+						pcall(function()
+							if rbxg then
+								rbxg:SendAsync(p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")")
+							end
+							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") used speed exploits.")
+							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+						end)
 					end
-					table.insert(bad_mans, p.Name)
-					loopkilling = loopkilling or true
-					webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
 				end
 			else
 				violationCount.speed = 0
@@ -601,13 +616,19 @@ local function monitor(p)
 					if violationCount.fly >= violationLimit then
 						debounce.fly = now
 						violationCount.fly = 0
-						if rbxg then
-							rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
-							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
+						local k = p.Name.."_fly"
+						if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+							lastAlert[k] = now
+							table.insert(bad_mans, p.Name)
+							loopkilling = loopkilling or true
+							pcall(function()
+								if rbxg then
+									rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
+								end
+								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
+								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+							end)
 						end
-						table.insert(bad_mans, p.Name)
-						loopkilling = loopkilling or true
-						webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
 					end
 				end
 			else
@@ -626,13 +647,19 @@ local function monitor(p)
 				if violationCount.fling >= violationLimit then
 					debounce.fling = now
 					violationCount.fling = 0
-					if rbxg then
-						rbxg:SendAsync(p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")")
-						webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is using fling exploits.")
+					local k = p.Name.."_fling"
+					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+						lastAlert[k] = now
+						table.insert(bad_mans, p.Name)
+						loopkilling = loopkilling or true
+						pcall(function()
+							if rbxg then
+								rbxg:SendAsync(p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")")
+							end
+							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is using fling exploits.")
+							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+						end)
 					end
-					table.insert(bad_mans, p.Name)
-					loopkilling = loopkilling or true
-					webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
 				end
 			end
 		else
@@ -645,8 +672,6 @@ local function monitor(p)
 		for _, attacker in pairs(players:GetPlayers()) do
 			if attacker.Character and attacker.Character:FindFirstChild("HumanoidRootPart") then
 				local attackerRoot = attacker.Character.HumanoidRootPart
-				local attackerHumanoid = attacker.Character:FindFirstChildOfClass("Humanoid")
-
 				for _, target in pairs(players:GetPlayers()) do
 					if target ~= attacker and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
 						for _, part in ipairs(attacker.Character:GetChildren()) do
@@ -659,16 +684,19 @@ local function monitor(p)
 											violationCount.reach[key] = violationCount.reach[key] or 0
 											if now - violationCount.reach[key] > 3 then
 												violationCount.reach[key] = now
-												if attackerHumanoid and attackerHumanoid.Parent and attackerHumanoid.Parent:FindFirstChild("HumanoidRootPart") then
-													webhook_sendMsg(overall_LOGGER, attacker.Name.." reached "..target.Name.." at ("..string.format("%.2f", d)..")")
-													if now - monitortimer > 0.5 then
-														monitortimer = now
-														rbxg:SendAsync(attacker.Name.." reached "..target.Name.." ("..string.format("%.2f", d)..")")
-													end
+												local k = attacker.Name.."_reach"
+												if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+													lastAlert[k] = now
+													table.insert(bad_mans, attacker.Name)
+													loopkilling = loopkilling or true
+													pcall(function()
+														if rbxg then
+															rbxg:SendAsync(attacker.Name.." reached "..target.Name.." ("..string.format("%.2f", d)..")")
+														end
+														webhook_sendMsg(overall_LOGGER, attacker.DisplayName.." ("..attacker.Name..") used reach exploit on "..target.Name)
+														webhook_sendMsg(overall_LOGGER, "Added "..attacker.DisplayName.." ("..attacker.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+													end)
 												end
-												table.insert(bad_mans, attacker.Name)
-												loopkilling = loopkilling or true
-												webhook_sendMsg(overall_LOGGER, "Added "..attacker.DisplayName.." ("..attacker.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
 											end
 										end
 									end
