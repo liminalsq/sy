@@ -502,47 +502,55 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
 
 	elseif cmd == "gameid" then
-		rbxg:SendAsync("gameId: "..tostring(game.PlaceId))
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameId: "..tostring(game.PlaceId))
+		print("gameId: "..tostring(game.PlaceId))
+		if rbxg then pcall(function() rbxg:SendAsync("gameId: "..tostring(game.PlaceId)) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: ".."gameId: "..tostring(game.PlaceId)..", ".."gameId: "..tostring(game.PlaceId))
 
 	elseif cmd == "jobid" then
-		rbxg:SendAsync("jobId: "..tostring(game.JobId))
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", jobId: "..tostring(game.JobId))
+		print("jobId: "..tostring(game.JobId))
+		if rbxg then pcall(function() rbxg:SendAsync("jobId: "..tostring(game.JobId)) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."jobId: "..tostring(game.JobId))
 
 	elseif cmd == "gamecreator" then
+		local players = game:GetService("Players")
 		local creator = players:GetPlayerByUserId(game.CreatorId)
+		local msg
 		if creator then
-			rbxg:SendAsync("gameCreator: "..creator.Name)
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator: "..creator.Name)
+			msg = "gameCreator: "..creator.Name
 		else
-			rbxg:SendAsync("gameCreator not found")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator not found")
+			msg = "gameCreator not found"
 		end
+		print(msg)
+		if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
 	elseif cmd == "creatorid" then
-		rbxg:SendAsync("creatorId: "..tostring(game.CreatorId))
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", creatorId: "..tostring(game.CreatorId))
+		print("creatorId: "..tostring(game.CreatorId))
+		if rbxg then pcall(function() rbxg:SendAsync("creatorId: "..tostring(game.CreatorId)) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."creatorId: "..tostring(game.CreatorId))
 
 	elseif cmd == "servertype" then
 		local typeStr = (game:GetService("RunService"):IsStudio() and "Studio" or "Game")
-		rbxg:SendAsync("serverType: "..typeStr)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverType: "..typeStr)
+		print("serverType: "..typeStr)
+		if rbxg then pcall(function() rbxg:SendAsync("serverType: "..typeStr) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverType: "..typeStr)
 
 	elseif cmd == "servertime" then
-		local timeStr = tostring(tick())
-		rbxg:SendAsync("serverTime: "..timeStr)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverTime: "..timeStr)
+		print("serverTime: "..tostring(tick()))
+		if rbxg then pcall(function() rbxg:SendAsync("serverTime: "..tostring(tick())) end) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverTime: "..tostring(tick()))
 
 	elseif cmd == "serverhop" then
 		local TeleportService = game:GetService("TeleportService")
 		local HttpService = game:GetService("HttpService")
+		local LocalPlayer = game.Players.LocalPlayer
 		local placeId = game.PlaceId
 
 		local function getAvailableServers(cursor)
 			local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
 			if cursor then url = url .. "&cursor=" .. cursor end
 			local success, res = pcall(function() return HttpService:GetAsync(url) end)
-			if success then
+			if success and res then
 				return HttpService:JSONDecode(res)
 			else
 				warn("Failed to fetch server list")
@@ -562,16 +570,20 @@ local function do_command(input)
 			end
 
 			if targetServer then
-				local msg = "serverhopping: " .. targetServer
+				local msg = "serverhopping to server ID: "..targetServer
 				print(msg)
 				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hopping to server ID: "..targetServer)
-				TeleportService:TeleportToPlaceInstance(placeId, targetServer, game.Players.LocalPlayer)
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+				if LocalPlayer then
+					TeleportService:TeleportToPlaceInstance(placeId, targetServer, LocalPlayer)
+				else
+					warn("LocalPlayer not found, cannot teleport")
+				end
 			else
 				local msg = "no available servers found"
 				print(msg)
 				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no available servers to hop.")
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 			end
 		end
 
