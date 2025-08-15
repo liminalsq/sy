@@ -308,7 +308,7 @@ runs.RenderStepped:Connect(function()
 	end
 	if floating then
 		float_part.Parent = workspace
-		float_part.Position = root.Position + Vector3.new(0,-3.5,0)
+		float_part.Position = root.Position + Vector3.new(0,3.5,0)
 	else
 		float_part.Parent = repstor
 	end
@@ -425,13 +425,23 @@ local function do_command(input)
 		rbxg:SendAsync("alright you win")
 		hiding = false
 		if root then
-			rroot.Velocity = Vector3.new(0,0,0)
+			root.Velocity = Vector3.new(0,0,0)
 			root.CFrame = lpos
 		end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unhid SpawnYellow.")
 	elseif cmd:sub(1,10) == "gotoplayer" then
-		local targetName = table.concat(args, " ")
-		local targetPlayer = game.Players:FindFirstChild(targetName)
+		local targetName = table.concat(args, " "):lower()
+		local targetPlayer
+
+		for _, plr in ipairs(game.Players:GetPlayers()) do
+			if plr.Name:lower() == targetName or plr.DisplayName:lower() == targetName then
+				targetPlayer = plr
+				break
+			elseif plr.Name:lower():find(targetName, 1, true) or plr.DisplayName:lower():find(targetName, 1, true) then
+				targetPlayer = plr
+				break
+			end
+		end
 
 		if not root then
 			rbxg:SendAsync("u dont have a root lol")
