@@ -664,7 +664,7 @@ local function on_chatted(p)
 			--	webhook_sendMsg(overall_LOGGER, p.Name.." non-whitelist player tried to use a command.")
 			--end
 			if math.random(1,20) == 1 then
-				textCh:SendAsync(dummy[math.random(1,#dummy)])
+				rbxg:SendAsync(dummy[math.random(1,#dummy)])
 			end
 		end
 	end)
