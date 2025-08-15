@@ -329,8 +329,10 @@ end
 local function findPlayersByName(query)
 	local matches = {}
 	query = query:lower()
-	for _, p in pairs(players:GetPlayers()) do
-		if p.Name:lower():find(query) or p.DisplayName:lower():find(query) then
+	for _, p in pairs(game.Players:GetPlayers()) do
+		local nameLower = p.Name:lower()
+		local displayLower = p.DisplayName:lower()
+		if nameLower:find(query, 1, true) or displayLower:find(query, 1, true) then
 			table.insert(matches, p)
 		end
 	end
@@ -352,34 +354,33 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-		local argsStr = table.concat(args, " ")
-		local addedPlayers = {}
+	local addedPlayers = {}
 
-		for name in argsStr:gmatch("[^,%s]+") do
-			local matches = findPlayersByName(name)
-			if #matches == 0 then
-				rbxg:SendAsync("Could not find: " .. name)
-				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
-			else
-				for _, targetPlayer in ipairs(matches) do
-					local targetNameLower = targetPlayer.Name:lower()
-					if not table.find(bad_mans, targetNameLower) then
-						table.insert(bad_mans, targetNameLower)
-						table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
-					end
+	for _, name in ipairs(args) do
+		local matches = findPlayersByName(name)
+		if #matches == 0 then
+			rbxg:SendAsync("Could not find: " .. name)
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+		else
+			for _, targetPlayer in ipairs(matches) do
+				local targetLower = targetPlayer.Name:lower()
+				if not table.find(bad_mans, targetLower) then
+					table.insert(bad_mans, targetLower)
+					table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
 				end
 			end
 		end
+	end
 
-		if #addedPlayers > 0 then
-			loopkilling = true
-			print("Loopkilling: " .. table.concat(bad_mans, ", "))
-			rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
-		else
-			rbxg:SendAsync("No new targets added.")
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
-		end
+	if #addedPlayers > 0 then
+		loopkilling = true
+		print("Loopkilling: " .. table.concat(bad_mans, ", "))
+		rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
+		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+	else
+		rbxg:SendAsync("No new targets added.")
+		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+	end
 
 	elseif cmd == "stoplkill" then
 		loopkilling = false
@@ -392,27 +393,26 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared looplist.")
 
 	elseif cmd:sub(1,18) == "removefromtargets" then
-		local argsStr = table.concat(args, " ")
-		local removedPlayers = {}
+	local removedPlayers = {}
 
-		for name in argsStr:gmatch("[^,%s]+") do
-			local matches = findPlayersByName(name)
-			if #matches == 0 then
-				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
-			else
-				for _, targetPlayer in ipairs(matches) do
-					local idx = table.find(bad_mans, targetPlayer.Name:lower())
-					if idx then
-						table.remove(bad_mans, idx)
-						table.insert(removedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
-					end
+	for _, name in ipairs(args) do
+		local matches = findPlayersByName(name)
+		if #matches == 0 then
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
+		else
+			for _, targetPlayer in ipairs(matches) do
+				local idx = table.find(bad_mans, targetPlayer.Name:lower())
+				if idx then
+					table.remove(bad_mans, idx)
+					table.insert(removedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
 				end
 			end
 		end
+	end
 
-		if #removedPlayers > 0 then
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
-		end
+	if #removedPlayers > 0 then
+		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
+	end
 
 	elseif cmd == "die" or cmd == "reset" then
 		if humanoid then humanoid.Health = 0 end
