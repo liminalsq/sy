@@ -511,19 +511,6 @@ local function do_command(input)
 		if rbxg then pcall(function() rbxg:SendAsync("jobId: "..tostring(game.JobId)) end) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."jobId: "..tostring(game.JobId))
 
-	elseif cmd == "gamecreator" then
-		local players = game:GetService("Players")
-		local creator = players:GetPlayerByUserId(game.CreatorId)
-		local msg
-		if creator then
-			msg = "gameCreator: "..creator.Name
-		else
-			msg = "gameCreator not found"
-		end
-		print(msg)
-		if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
-
 	elseif cmd == "creatorid" then
 		print("creatorId: "..tostring(game.CreatorId))
 		if rbxg then pcall(function() rbxg:SendAsync("creatorId: "..tostring(game.CreatorId)) end) end
