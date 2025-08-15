@@ -314,6 +314,18 @@ runs.RenderStepped:Connect(function()
 	end
 end)
 
+local function findPlayerByName(nameLower)
+	for _, plr in ipairs(game.Players:GetPlayers()) do
+		local nameLowered = plr.Name:lower()
+		local displayLowered = plr.DisplayName:lower()
+		if nameLowered == nameLower or displayLowered == nameLower then
+			return plr
+		elseif nameLowered:find(nameLower, 1, true) or displayLowered:find(nameLower, 1, true) then
+			return plr
+		end
+	end
+end
+
 local function do_command(input)
 	local char = player.Character or player.CharacterAdded:Wait()
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
@@ -327,12 +339,13 @@ local function do_command(input)
 		print(fps)
 		rbxg:SendAsync("FPS: "..tostring(fps))
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
+
 	elseif cmd:sub(1,5) == "lkill" then
-		local argsStr = cmd:sub(7)
+		local argsStr = cmd:sub(7):lower()
 		for name in argsStr:gmatch("[^,%s]+") do
 			if not table.find(bad_mans, name) then
 				table.insert(bad_mans, name)
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", Added: ".."'"..name.."' to the looplist and set loopkilling to true.")
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", Added: '"..name.."' to the looplist and set loopkilling to true.")
 			end
 		end
 		loopkilling = true
@@ -343,23 +356,27 @@ local function do_command(input)
 		loopkilling = false
 		rbxg:SendAsync("stopped: lkill")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", stopped loopkill.")
+
 	elseif cmd == "cleartargets" then
 		bad_mans = {}
 		rbxg:SendAsync("cleared list of bad mans!!")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared: "..table.concat(bad_mans, ", ").." from the looplist.")
+
 	elseif cmd:sub(1,18) == "removefromtargets" then
-		local argsStr = cmd:sub(20)
+		local argsStr = cmd:sub(20):lower()
 		for name in argsStr:gmatch("[^,%s]+") do
 			local index = table.find(bad_mans, name)
 			if index then
 				table.remove(bad_mans, index)
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", Removed: ".."'"..name.."' from the looplist.")
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", Removed: '"..name.."' from the looplist.")
 			end
 		end
+
 	elseif cmd == "die" or cmd == "reset" then
 		if humanoid then humanoid.Health = 0 end
 		rbxg:SendAsync("resetting")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", resetted.")
+
 	elseif cmd == "goto" then
 		local x, y, z
 		if args[1] then
@@ -373,8 +390,9 @@ local function do_command(input)
 			x, y, z = tonumber(x), tonumber(y), tonumber(z)
 			if x and y and z and root then
 				floating = true
-				tween:Create(root, TweenInfo.new(3), {CFrame = CFrame.new(x, y, z)}):Play()
-				tween:Create(root, TweenInfo.new(3), {CFrame = CFrame.new(x, y, z)}).Completed:Wait()
+				local tw = tween:Create(root, TweenInfo.new(3), {CFrame = CFrame.new(x, y, z)})
+				tw:Play()
+				tw.Completed:Wait()
 				floating = false
 				root.Velocity = Vector3.new(0,0,0)
 				rbxg:SendAsync("went to "..x..", "..y..", "..z)
@@ -386,6 +404,7 @@ local function do_command(input)
 		else
 			rbxg:SendAsync("Usage: goto x,y,z  OR  goto x y z")
 		end
+
 	elseif cmd == "setspawn" then
 		local x, y, z
 		if args[1] then
@@ -413,14 +432,17 @@ local function do_command(input)
 			rbxg:SendAsync("i cant find root")
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find root.")
 		end
+
 	elseif cmd == "rejoin" then
 		rbxg:SendAsync("rejoining...")
-		teleportServ:Teleport(game.PlaceId, player)
+		teleportServ:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", MANUAL RE-EXECUTE REQUIRED.")
+
 	elseif cmd == "hide" then
 		rbxg:SendAsync("you cant find me now!!!")
 		hiding = true
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hid SpawnYellow.")
+
 	elseif cmd == "unhide" then
 		rbxg:SendAsync("alright you win")
 		hiding = false
@@ -429,23 +451,14 @@ local function do_command(input)
 			root.CFrame = lpos
 		end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unhid SpawnYellow.")
+
 	elseif cmd:sub(1,10) == "gotoplayer" then
 		local targetName = table.concat(args, " "):lower()
-		local targetPlayer
-
-		for _, plr in ipairs(game.Players:GetPlayers()) do
-			if plr.Name:lower() == targetName or plr.DisplayName:lower() == targetName then
-				targetPlayer = plr
-				break
-			elseif plr.Name:lower():find(targetName, 1, true) or plr.DisplayName:lower():find(targetName, 1, true) then
-				targetPlayer = plr
-				break
-			end
-		end
+		local targetPlayer = findPlayerByName(targetName)
 
 		if not root then
 			rbxg:SendAsync("u dont have a root lol")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find commander's root..")
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find commander's root.")
 			return
 		end
 
@@ -464,17 +477,19 @@ local function do_command(input)
 			rbxg:SendAsync("couldnt find player :pensive:")
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find player.")
 		end
+
 	elseif cmd == "float" then
 		rbxg:SendAsync("floating")
 		floating = true
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", floating.")
+
 	elseif cmd == "unfloat" then
 		rbxg:SendAsync("unfloating")
 		floating = false
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
+
 	else
 		print("command not found")
-		--webhook_sendMsg(overall_LOGGER, "Invalid/nonexistant command.")
 		if math.random(1,15) == 1 then
 			rbxg:SendAsync(confusion[math.random(1,#confusion)])
 		end
