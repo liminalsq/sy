@@ -341,16 +341,32 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-		local argsStr = cmd:sub(7):lower()
-		for name in argsStr:gmatch("[^,%s]+") do
-			if not table.find(bad_mans, name) then
-				table.insert(bad_mans, name)
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", Added: '"..name.."' to the looplist and set loopkilling to true.")
+	local argsStr = cmd:sub(7):lower()
+	local addedPlayers = {}
+
+	for name in argsStr:gmatch("[^,%s]+") do
+		local targetPlayer = findPlayerByName(name)
+		if targetPlayer then
+			local targetNameLower = targetPlayer.Name:lower()
+			if not table.find(bad_mans, targetNameLower) then
+				table.insert(bad_mans, targetNameLower)
+				table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
 			end
+		else
+			rbxg:SendAsync("couldnt find: " .. name)
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
 		end
+	end
+
+	if #addedPlayers > 0 then
 		loopkilling = true
-		print("killing " .. table.concat(bad_mans, ", "))
-		rbxg:SendAsync("ur cooked, " .. table.concat(bad_mans, ", "))
+		print("Loopkilling: " .. table.concat(bad_mans, ", "))
+		rbxg:SendAsync("ur cooked, " .. table.concat(addedPlayers, ", "))
+		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+	else
+		rbxg:SendAsync("no new targetss")
+		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+	end
 
 	elseif cmd == "stoplkill" then
 		loopkilling = false
