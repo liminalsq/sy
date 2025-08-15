@@ -407,12 +407,9 @@ local function do_command(input)
 
 	elseif cmd == "setspawn" then
 		local x, y, z
-		if args[1] then
-			local xyzString = args[1]
+		if #args > 0 then
+			local xyzString = table.concat(args, " ")
 			x, y, z = xyzString:match("(-?%d+%.?%d*),?%s*(-?%d+%.?%d*),?%s*(-?%d+%.?%d*)")
-		end
-		if not (x and y and z) and #args >= 3 then
-			x, y, z = args[1], args[2], args[3]
 		end
 		if x and y and z then
 			x, y, z = tonumber(x), tonumber(y), tonumber(z)
