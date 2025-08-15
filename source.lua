@@ -327,14 +327,14 @@ local function findPlayerByName(nameLower)
 end
 
 local function findPlayersByName(query)
-    local matches = {}
-    query = query:lower()
-    for _, p in pairs(players:GetPlayers()) do
-         if p.Name:lower():find(query) or p.DisplayName:lower():find(query) then
-              table.insert(matches, p)
-         end
-     end
-     return matches
+	local matches = {}
+	query = query:lower()
+	for _, p in pairs(players:GetPlayers()) do
+		if p.Name:lower():find(query) or p.DisplayName:lower():find(query) then
+			table.insert(matches, p)
+		end
+	end
+	return matches
 end
 
 local function do_command(input)
@@ -352,34 +352,34 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-    local argsStr = cmd:sub(7)
-    local addedPlayers = {}
+		local argsStr = cmd:sub(7)
+		local addedPlayers = {}
 
-    for name in argsStr:gmatch("[^,%s]+") do
-        local matches = findPlayersByName(name)
-        if #matches == 0 then
-            rbxg:SendAsync("Could not find: " .. name)
-            webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
-        else
-            for _, targetPlayer in ipairs(matches) do
-                local targetNameLower = targetPlayer.Name:lower()
-                if not table.find(bad_mans, targetNameLower) then
-                    table.insert(bad_mans, targetNameLower)
-                    table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
-                end
-            end
-        end
-    end
+		for name in argsStr:gmatch("[^,%s]+") do
+			local matches = findPlayersByName(name)
+			if #matches == 0 then
+				rbxg:SendAsync("Could not find: " .. name)
+				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+			else
+				for _, targetPlayer in ipairs(matches) do
+					local targetNameLower = targetPlayer.Name:lower()
+					if not table.find(bad_mans, targetNameLower) then
+						table.insert(bad_mans, targetNameLower)
+						table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+					end
+				end
+			end
+		end
 
-    if #addedPlayers > 0 then
-        loopkilling = true
-        print("Loopkilling: " .. table.concat(bad_mans, ", "))
-        rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
-        webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
-    else
-        rbxg:SendAsync("No new targets added.")
-        webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
-    end
+		if #addedPlayers > 0 then
+			loopkilling = true
+			print("Loopkilling: " .. table.concat(bad_mans, ", "))
+			rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+		else
+			rbxg:SendAsync("No new targets added.")
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+		end
 	elseif cmd == "stoplkill" then
 		loopkilling = false
 		rbxg:SendAsync("stopped: lkill")
@@ -522,7 +522,72 @@ local function do_command(input)
 		rbxg:SendAsync("unfloating")
 		floating = false
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
+		
+	elseif cmd == "gameId" then
+		rbxg:SendAsync("gameId: "..game.PlaceId)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameId: "..game.PlaceId)
+	elseif cmd == "jobId" then
+		rbxg:SendAsync("jobId: "..game.JobId)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", jobId: "..game.JobId)
+	elseif cmd == "gameCreator" then
+		local creator = players:GetPlayerByUserId(game.CreatorId)
+		rbxg:SendAsync("gameCreator: "..creator.Name)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator: "..creator.Name)
+	elseif cmd == "creatorId" then
+		rbxg:SendAsync("creatorId: "..game.CreatorId)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", creatorId: "..game.CreatorId)
+	elseif cmd == "serverType" then
+		rbxg:SendAsync("serverType: "..game:GetService("RunService"):IsStudio() and "Studio" or "Game")
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverType: "..game:GetService("RunService"):IsStudio() and "Studio" or "Game")
+	elseif cmd == "serverTime" then
+		rbxg:SendAsync("serverTime: "..tick())
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverTime: "..tick())
+	elseif cmd == "serverhop" then
+		local TeleportService = game:GetService("TeleportService")
+		local HttpService = game:GetService("HttpService")
+		local placeId = game.PlaceId
 
+		local function getAvailableServers(cursor)
+			local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
+			if cursor then
+				url = url .. "&cursor=" .. cursor
+			end
+			local success, res = pcall(function()
+				return HttpService:GetAsync(url)
+			end)
+			if success then
+				local data = HttpService:JSONDecode(res)
+				return data
+			else
+				warn("Failed to fetch server list")
+				return nil
+			end
+		end
+
+		local serversData = getAvailableServers()
+		if serversData and serversData.data then
+			local myJobId = game.JobId
+			local targetServer
+			for _, server in ipairs(serversData.data) do
+				if server.playing < server.maxPlayers and server.id ~= myJobId then
+					targetServer = server.id
+					break
+				end
+			end
+
+			if targetServer then
+				local msg = "Hopping to server: " .. targetServer
+				print(msg)
+				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hopping to server ID: "..targetServer)
+				TeleportService:TeleportToPlaceInstance(placeId, targetServer, game.Players.LocalPlayer)
+			else
+				local msg = "No available servers found to hop to."
+				print(msg)
+				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no available servers to hop.")
+			end
+		end
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
@@ -564,9 +629,9 @@ local function monitor(p)
 	local speedHistory = {}
 	local maxHistory = 5
 	local alertCooldown = 5
-	
+
 	local threshold = 10
-	
+
 	local function getSmoothedSpeed(newSpeed)
 		table.insert(speedHistory, newSpeed)
 		if #speedHistory > maxHistory then
