@@ -524,24 +524,37 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
 		
 	elseif cmd == "gameId" then
-		rbxg:SendAsync("gameId: "..game.PlaceId)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameId: "..game.PlaceId)
+		rbxg:SendAsync("gameId: "..tostring(game.PlaceId))
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameId: "..tostring(game.PlaceId))
+
 	elseif cmd == "jobId" then
-		rbxg:SendAsync("jobId: "..game.JobId)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", jobId: "..game.JobId)
+		rbxg:SendAsync("jobId: "..tostring(game.JobId))
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", jobId: "..tostring(game.JobId))
+
 	elseif cmd == "gameCreator" then
 		local creator = players:GetPlayerByUserId(game.CreatorId)
-		rbxg:SendAsync("gameCreator: "..creator.Name)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator: "..creator.Name)
+		if creator then
+			rbxg:SendAsync("gameCreator: "..creator.Name)
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator: "..creator.Name)
+		else
+			rbxg:SendAsync("gameCreator not found")
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", gameCreator not found")
+		end
+
 	elseif cmd == "creatorId" then
-		rbxg:SendAsync("creatorId: "..game.CreatorId)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", creatorId: "..game.CreatorId)
+		rbxg:SendAsync("creatorId: "..tostring(game.CreatorId))
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", creatorId: "..tostring(game.CreatorId))
+
 	elseif cmd == "serverType" then
-		rbxg:SendAsync("serverType: "..game:GetService("RunService"):IsStudio() and "Studio" or "Game")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverType: "..game:GetService("RunService"):IsStudio() and "Studio" or "Game")
+		local typeStr = (game:GetService("RunService"):IsStudio() and "Studio" or "Game")
+		rbxg:SendAsync("serverType: "..typeStr)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverType: "..typeStr)
+
 	elseif cmd == "serverTime" then
-		rbxg:SendAsync("serverTime: "..tick())
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverTime: "..tick())
+		local timeStr = tostring(tick())
+		rbxg:SendAsync("serverTime: "..timeStr)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", serverTime: "..timeStr)
+
 	elseif cmd == "serverhop" then
 		local TeleportService = game:GetService("TeleportService")
 		local HttpService = game:GetService("HttpService")
@@ -588,6 +601,7 @@ local function do_command(input)
 				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no available servers to hop.")
 			end
 		end
+
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
