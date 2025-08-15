@@ -454,6 +454,14 @@ local function do_command(input)
 			rbxg:SendAsync("couldnt find player :pensive:")
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find player.")
 		end
+	elseif cmd == "float" then
+		rbxg:SendAsync("floating")
+		floating = true
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", floating.")
+	elseif cmd == "unfloat" then
+		rbxg:SendAsync("unfloating")
+		floating = false
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
 	else
 		print("command not found")
 		--webhook_sendMsg(overall_LOGGER, "Invalid/nonexistant command.")
