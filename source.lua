@@ -447,6 +447,32 @@ local function do_command(input)
 			rbxg:SendAsync("Usage: goto x,y,z  OR  goto x y z")
 		end
 
+		elseif cmd:sub(1,10) == "gotoplayer" then
+		local targetName = table.concat(args, " "):lower()
+		local targetPlayer = findPlayerByName(targetName)
+
+		if not root then
+			rbxg:SendAsync("u dont have a root lol")
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find commander's root.")
+			return
+		end
+
+		if targetPlayer and targetPlayer.Character then
+			local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+			if targetRoot then
+				root.CFrame = targetRoot.CFrame
+				root.Velocity = Vector3.new(0,0,0)
+				rbxg:SendAsync("successfully went to "..targetPlayer.DisplayName.." ("..targetPlayer.Name..")")
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", successfully went to target.")
+			else
+				rbxg:SendAsync("player has no root part, strange")
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", player has no rootpart.")
+			end
+		else
+			rbxg:SendAsync("couldnt find player :pensive:")
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find player.")
+		end
+
 	elseif cmd == "setspawn" then
 		local x, y, z
 		if #args > 0 then
