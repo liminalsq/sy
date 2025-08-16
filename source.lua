@@ -105,7 +105,9 @@ local whitelist = {
 	['d1sc0rd0'] = true,
 	['d1sc0rd00'] = true,
 	['adamxdd690'] = true,
-	['redalert_E'] = true
+	['redalert_E'] = true,
+	['EriBunnyXD'] = true,
+	['BorrowGoal'] = true
 }
 local confusion = {
 	"whaaaa???",
@@ -614,6 +616,17 @@ local function do_command(input)
 			end
 		end
 
+		elseif cmd == "ping" or cmd == "latency" then
+	local startTime = tick()
+	local success = pcall(function()
+		game:GetService("HttpService"):GetAsync("https://www.roblox.com")
+	end)
+	local latency = math.floor((tick() - startTime) * 1000)
+	
+	local msg = "Ping: "..latency.."ms"
+	print(msg)
+	if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+	webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
@@ -866,7 +879,9 @@ local function on_chatted(p)
 	p.Chatted:Connect(function(msg)
 		webhook_logChat(p,msg)
 		if whitelist[p.Name] then
-			do_command(msg)	
+			if p.Name ~= player.Name then
+				do_command(msg)	
+			end
 		else
 			print('no')
 			--if p.Name ~= player.Name then
