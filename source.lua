@@ -701,6 +701,7 @@ local function do_command(input)
 		workspace.Gravity = lastGrav
 		bp:Destroy()
 		root.CFrame = lpos
+		root.Velocity = Vector3.new(0,0,0)
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
