@@ -632,32 +632,38 @@ local function do_command(input)
 
 	elseif cmd == "bring" then
 		local target = findPlayerByName(args[1] or "")
-		if not target or not target.Character then 
+		if not target or not target.Character then
 			if rbxg then rbxg:SendAsync("bring: target not found") end
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target not found")
-			return 
+			return
 		end
 
 		local dest
 		if args[2] then
-			local posStr = table.concat(args, " ")
-			local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
-			if x and y and z then
-				dest = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
-			end
-		elseif args[2] and args[2]:lower() == "spawn" and spawnPoint then
-			dest = spawnPoint
-		elseif args[2] then
-			local other = findPlayerByName(args[2])
-			if other and other.Character then
-				local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
-				if otherRoot then dest = otherRoot.CFrame end
+			if args[2]:match("^-?%d") then
+				-- Parse coordinates, supports x y z or x,y,z
+				local posStr = table.concat(args, " ")
+				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
+				if x and y and z then
+					dest = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+				end
+			elseif args[2]:lower() == "spawn" and spawnPoint then
+				dest = spawnPoint
+			else
+				local other = findPlayerByName(args[2])
+				if other and other.Character then
+					local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
+					if otherRoot then
+						dest = otherRoot.CFrame
+					end
+				end
 			end
 		end
-		if not dest then 
+
+		if not dest then
 			if rbxg then rbxg:SendAsync("bring: no destination found") end
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
-			return 
+			return
 		end
 
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
@@ -666,30 +672,22 @@ local function do_command(input)
 		local lastGrav = workspace.Gravity
 		workspace.Gravity = 0
 
-		local oldCanCollide = {}
-		for _, part in ipairs(root.Parent:GetDescendants()) do
-			if part:IsA("BasePart") then
-				oldCanCollide[part] = part.CanCollide
-				part.CanCollide = false
-			end
-		end
+		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
 
-		local bv = Instance.new("BodyVelocity")
-		bv.MaxForce = Vector3.new(1e5,1e5,1e5)
-		bv.Velocity = (theirRoot.Position - root.Position).Unit * 50
-		bv.Parent = root
+		tween:Create(root, TweenInfo.new(1), {
+			CFrame = theirRoot.CFrame * CFrame.new(0, 0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
+		}):Play()
 
 		task.wait(1)
-		bv.Velocity = (dest.Position - root.Position).Unit * 50
-		task.wait(3)
-		bv:Destroy()
 
-		for part, canCollide in pairs(oldCanCollide) do
-			if part then part.CanCollide = canCollide end
-		end
+		tween:Create(root, TweenInfo.new(3), {
+			CFrame = dest * CFrame.Angles(math.rad(90), 0, 0)
+		}):Play()
+
+		task.wait(3)
 
 		workspace.Gravity = lastGrav
-		root.Velocity = Vector3.new(0,0,0)
+		root.Velocity = Vector3.new(0, 0, 0)
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
