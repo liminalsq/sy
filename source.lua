@@ -281,34 +281,48 @@ runs.RenderStepped:Connect(function()
 		if not currentHumanoid or not currentRoot then return end
 
 		for i = #bad_mans, 1, -1 do
-			local name = bad_mans[i]
-			local targetPlayer = players:FindFirstChild(name)
+			local targetName = bad_mans[i]
+			local targetPlayer
+
+			for _, p in ipairs(players:GetPlayers()) do
+				if p.Name:lower() == targetName or p.DisplayName:lower() == targetName then
+					targetPlayer = p
+					break
+				end
+			end
+
 			if targetPlayer and targetPlayer.Character then
-				local h = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-				local hrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-				if h and hrp then
+				local targetHumanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+				local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+				if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
 					local tool = find_tool(currentChar)
-					local handle = find_handle(tool)
+					local handle = tool and find_handle(tool)
+
 					if tool and handle then
 						tool:Activate()
-						kill(handle, hrp)
+						kill(handle, targetRoot)
 					end
 				end
 			end
 		end
 	end
+
 	if hiding then
 		if root then
-			root.CFrame = CFrame.new(0,-65536,65536)
+			root.CFrame = CFrame.new(0, -65536, 65536)
 		end
 	else
 		if root then
 			lpos = root.CFrame
 		end
 	end
+
 	if floating then
 		float_part.Parent = workspace
-		float_part.Position = root.Position + Vector3.new(0,3.5,0)
+		if root then
+			float_part.Position = root.Position + Vector3.new(0, 3.5, 0)
+		end
 	else
 		float_part.Parent = repstor
 	end
