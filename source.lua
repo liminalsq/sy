@@ -684,7 +684,7 @@ local function do_command(input)
 			CFrame = dest * CFrame.Angles(math.rad(90), 0, 0)
 		}):Play()
 
-		task.wait(3)
+		task.wait(4)
 
 		workspace.Gravity = lastGrav
 		root.Velocity = Vector3.new(0, 0, 0)
