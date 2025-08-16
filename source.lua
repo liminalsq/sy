@@ -627,7 +627,11 @@ local function do_command(input)
 
 	elseif cmd == "bring" then
 		local target = findPlayerByName(args[1] or "")
-		if not target or not target.Character then return end
+		if not target or not target.Character then 
+			if rbxg then rbxg:SendAsync("bring: target not found") end
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target not found")
+			return 
+		end
 
 		local dest
 		if args[2] and args[2]:match("^-?%d") then
@@ -637,11 +641,16 @@ local function do_command(input)
 			dest = spawnPoint
 		elseif args[2] then
 			local other = findPlayerByName(args[2])
-			if other and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
-				dest = other.Character.HumanoidRootPart.CFrame
+			if other and other.Character then
+				local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
+				if otherRoot then dest = otherRoot.CFrame end
 			end
 		end
-		if not dest then return end
+		if not dest then 
+			if rbxg then rbxg:SendAsync("bring: no destination found") end
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
+			return 
+		end
 
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
 		if not (root and theirRoot) then return end
@@ -657,6 +666,10 @@ local function do_command(input)
 		tween:Create(root, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
 			CFrame = dest
 		}):Play()
+
+		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
+
 	else
 	print("command not found")
 	if math.random(1,15) == 1 then
