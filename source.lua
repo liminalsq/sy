@@ -646,16 +646,16 @@ local function do_command(input)
 				local posStr = table.concat(args, " ")
 				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
 				if x and y and z then
-					dest = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+					dest = Vector3.new(tonumber(x), tonumber(y), tonumber(z))
 				end
 			elseif args[2]:lower() == "spawn" and spawnPoint then
-				dest = spawnPoint
+				dest = spawnPoint.Position
 			else
 				local other = findPlayerByName(args[2])
 				if other and other.Character then
 					local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
 					if otherRoot then
-						dest = otherRoot.CFrame
+						dest = otherRoot.Position
 					end
 				end
 			end
@@ -668,39 +668,38 @@ local function do_command(input)
 		end
 
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
-		if not (root and theirRoot) then return end
+		if not theirRoot then return end
 
 		local lastGrav = workspace.Gravity
 		workspace.Gravity = 0
 
 		bringing = true
-
 		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
-
 		tween:Create(root, TweenInfo.new(1), {
 			CFrame = theirRoot.CFrame * CFrame.new(0, 0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
 		}):Play()
-
 		task.wait(1)
 
-		local bv = Instance.new("BodyVelocity")
-		bv.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-		bv.Velocity = (dest.Position - root.Position) / 3
-		bv.Parent = root
+		local bp = Instance.new("BodyPosition")
+		bp.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+		bp.P = 1e4
+		bp.D = 500
+		bp.Position = dest
+		bp.Parent = theirRoot
 
-		tween:Create(bv, TweenInfo.new(3), {
-			Velocity = Vector3.new(0, 0, 0)
+		tween:Create(bp, TweenInfo.new(3, Enum.EasingStyle.Linear), {
+			Position = dest
 		}):Play()
 
 		tween:Create(root, TweenInfo.new(3), {
-			CFrame = dest * CFrame.Angles(math.rad(90), 0, 0)
+			CFrame = CFrame.new(dest + Vector3.new(0, 3, 0)) * CFrame.Angles(math.rad(90), 0, 0)
 		}):Play()
 
 		task.wait(4)
 
 		bringing = false
 		workspace.Gravity = lastGrav
-		bv:Destroy()
+		bp:Destroy()
 		root.CFrame = lpos
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
