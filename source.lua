@@ -671,7 +671,10 @@ local function do_command(input)
 
 		local lastGrav = workspace.Gravity
 		workspace.Gravity = 0
-
+		
+		bringing = true
+		
+		root.Anchored = true
 		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
 
 		tween:Create(root, TweenInfo.new(1), {
@@ -685,9 +688,13 @@ local function do_command(input)
 		}):Play()
 
 		task.wait(4)
+		
+		bringing = false
 
 		workspace.Gravity = lastGrav
 		root.Velocity = Vector3.new(0, 0, 0)
+		root.Anchored = false
+		root.CFrame = lpos
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
