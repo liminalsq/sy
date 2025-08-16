@@ -664,7 +664,7 @@ local function do_command(input)
 		task.wait(1)
 
 		tween:Create(root, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
-			CFrame = dest
+			CFrame = dest * CFrame.Angles(math.rad(90),0,0)
 		}):Play()
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
