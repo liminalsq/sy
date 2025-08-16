@@ -35,7 +35,7 @@ local requestFunction =
 	(fluxus and fluxus.request)
 
 local function webhook_logChat(player, message)
-	local avatarUrl = players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+	local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
 	local displayName = player.DisplayName
 	local username = player.Name
 
