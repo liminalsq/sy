@@ -362,6 +362,74 @@ local function findPlayersByName(query)
 	return matches
 end
 
+local function febring(yu, to, tries) --CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
+	tries = tries or 1
+	local sps = 10
+	local sp = 1
+	local me = player
+	local mer = me:FindFirstChild("HumanoidRootPart")
+	local meh = me:FindFirstChild("Humanoid")
+	local yur = yu:FindFirstChild("HumanoidRootPart")
+	local oldcf = mer.CFrame
+	local fr = yur.Position + Vector3.new(0, 2, 0)
+	local lv = (to - fr).Unit
+	local lastpos = mer.Position
+	local oldvel = Vector3.zero
+	local t = 0
+	local ts = 1 / ((to - yur.Position).Magnitude / sps)
+	t -= 0.7 * ts
+	local ct = 0
+	local sspt = 0
+	local coins = {}
+	while t < 1 do
+		local dt = runs.PostSimulation:Wait()
+		meh:ChangeState(Enum.HumanoidStateType.Physics)
+		for _,v in pairs(meh:GetPlayingAnimationTracks()) do
+			v:Stop(0)
+		end
+		t += dt * ts * sp
+		local targ = fr + Vector3.new(0, 5 * ((t / ts) / 0.3), 0)
+		if t >= 0 then
+			targ = fr:Lerp(to, t)
+			if t < 0.5 and sp < 6.4 then
+				sp += dt * 3.0
+				sspt = t
+			elseif t >= 1 - sspt and sp > 1 then
+				sp -= dt * 3.0
+			end
+		end
+		mer.CFrame = CFrame.lookAlong(targ, lv) * CFrame.Angles(-math.pi / 2, 0, 0)
+		local v = (targ - lastpos) / dt
+		local oldvel2 = oldvel
+		oldvel = v
+		v += v - oldvel2
+		if t >= 0 then
+			mer.Velocity = v
+		else
+			mer.Velocity = Vector3.zero
+		end
+		mer.RotVelocity = Vector3.zero
+		lastpos = targ
+		table.insert(coins, targ + Vector3.new(0, 3, 0))
+		ct += dt
+		for i,v in pairs(coins) do
+			if (yur.Position - v).Magnitude < 3 then
+				ct = 0
+				coins[i] = v + Vector3.new(0, 10000, 0)
+			end
+		end
+		if ct > 0.8 + player:GetNetworkPing() then
+			break
+		end
+	end
+	meh:ChangeState(Enum.HumanoidStateType.GettingUp)
+	mer.CFrame = oldcf
+	mer.Velocity = Vector3.zero
+	if t < 1 and yur.Velocity.Y > workspace.Gravity * -0.5 and yu:IsDescendantOf(workspace) and tries < 5 then
+		return febring(yu, to, tries + 1)
+	end
+end
+
 local function do_command(input)
 	local char = player.Character or player.CharacterAdded:Wait()
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
@@ -670,38 +738,18 @@ local function do_command(input)
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
 		if not theirRoot then return end
 
-		local lastGrav = workspace.Gravity
+		if not (humanoid and root) then return end
+		local oldGrav = workspace.Gravity
 		workspace.Gravity = 0
 
 		bringing = true
-		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
-		tween:Create(root, TweenInfo.new(1), {
-			CFrame = theirRoot.CFrame * CFrame.new(0, 0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
-		}):Play()
-		task.wait(1)
 
-		local bp = Instance.new("BodyPosition")
-		bp.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-		bp.P = 1e4
-		bp.D = 500
-		bp.Position = dest
-		bp.Parent = theirRoot
-
-		tween:Create(bp, TweenInfo.new(5.5, Enum.EasingStyle.Linear), {
-			Position = dest
-		}):Play()
-
-		--tween:Create(root, TweenInfo.new(5.5), {
-		--	CFrame = CFrame.new(dest + Vector3.new(0, 3, 0)) * CFrame.Angles(math.rad(90), 0, 0)
-		--}):Play()
-
-		task.wait(4)
+		febring(target.Character, dest)
 
 		bringing = false
-		workspace.Gravity = lastGrav
-		bp:Destroy()
-		root.CFrame = lpos
-		root.Velocity = Vector3.new(0,0,0)
+		workspace.Gravity = oldGrav
+		root.Velocity = Vector3.zero
+		root.CFrame = root.CFrame
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
@@ -810,7 +858,7 @@ local function monitor(p)
 
 		if rawSpeed <= impossibleSpeed then
 			local speed = getSmoothedSpeed(rawSpeed)
-			if state == Enum.HumanoidStateType.Running and speed > 75 and now - debounce.speed > 3 then
+			if state == Enum.HumanoidStateType.Running and speed > 65 and now - debounce.speed > 3 then
 				violationCount.speed += 1
 				if violationCount.speed >= violationLimit then
 					debounce.speed = now
