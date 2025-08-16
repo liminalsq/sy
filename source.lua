@@ -641,6 +641,7 @@ local function do_command(input)
 		local dest
 		if args[2] then
 			if args[2]:match("^-?%d") then
+				-- Parse coordinates, supports x y z or x,y,z
 				local posStr = table.concat(args, " ")
 				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
 				if x and y and z then
@@ -672,21 +673,42 @@ local function do_command(input)
 		workspace.Gravity = 0
 
 		bringing = true
-		root.Anchored = false
-		root.Velocity = Vector3.new(0,0,0)
 
-		local toTarget = (theirRoot.Position - root.Position)
-		root.Velocity = toTarget / 1
+		root.Anchored = true
+		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
+
+		tween:Create(root, TweenInfo.new(1), {
+			CFrame = theirRoot.CFrame * CFrame.new(0, 0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
+		}):Play()
+
 		task.wait(1)
 
-		local toDest = (dest.Position - root.Position)
-		local travelTime = 3
-		root.Velocity = toDest / travelTime
-		task.wait(travelTime + 0.1)
+		local startPos = root.Position
+		local endPos = (dest * CFrame.Angles(math.rad(90), 0, 0)).Position
+		local tweenTime = 3
+		root.Velocity = (endPos - startPos) / tweenTime
 
-		root.Velocity = Vector3.new(0,0,0)
+		spawn(function()
+			local t = 0
+			while t < tweenTime do
+				root.Velocity = (endPos - root.Position) / (tweenTime - t)
+				task.wait(0.03)
+				t = t + 0.03
+			end
+			root.Velocity = Vector3.new(0,0,0)
+		end)
+
+		tween:Create(root, TweenInfo.new(tweenTime), {
+			CFrame = dest * CFrame.Angles(math.rad(90), 0, 0)
+		}):Play()
+
+		task.wait(tweenTime + 1)
+
 		bringing = false
+
 		workspace.Gravity = lastGrav
+		root.Velocity = Vector3.new(0, 0, 0)
+		root.Anchored = false
 		root.CFrame = lpos
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
