@@ -641,7 +641,6 @@ local function do_command(input)
 		local dest
 		if args[2] then
 			if args[2]:match("^-?%d") then
-				-- Parse coordinates, supports x y z or x,y,z
 				local posStr = table.concat(args, " ")
 				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
 				if x and y and z then
@@ -671,34 +670,32 @@ local function do_command(input)
 
 		local lastGrav = workspace.Gravity
 		workspace.Gravity = 0
-		
+
 		bringing = true
-		
-		root.Anchored = true
-		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
+		root.Anchored = false
+		root.Velocity = Vector3.new(0,0,0)
 
-		tween:Create(root, TweenInfo.new(1), {
-			CFrame = theirRoot.CFrame * CFrame.new(0, 0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
-		}):Play()
-
+		local toTarget = (theirRoot.Position - root.Position)
+		root.Velocity = toTarget / 1
 		task.wait(1)
 
-		tween:Create(root, TweenInfo.new(3), {
-			CFrame = dest * CFrame.Angles(math.rad(90), 0, 0)
-		}):Play()
+		local toDest = (dest.Position - root.Position)
+		local travelTime = 3
+		root.Velocity = toDest / travelTime
+		task.wait(travelTime + 0.1)
 
-		task.wait(4)
-		
+		root.Velocity = Vector3.new(0,0,0)
 		bringing = false
-
 		workspace.Gravity = lastGrav
-		root.Velocity = Vector3.new(0, 0, 0)
-		root.Anchored = false
 		root.CFrame = lpos
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
-
+		
+	elseif cmd == "resetgrav" then
+		workspace.Gravity = 196.2
+		if rbxg then rbxg:SendAsync("reset gravity") end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd)
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
