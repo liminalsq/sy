@@ -687,11 +687,11 @@ local function do_command(input)
 		bp.Position = dest
 		bp.Parent = theirRoot
 
-		tween:Create(bp, TweenInfo.new(3, Enum.EasingStyle.Linear), {
+		tween:Create(bp, TweenInfo.new(5.5, Enum.EasingStyle.Linear), {
 			Position = dest
 		}):Play()
 
-		tween:Create(root, TweenInfo.new(3), {
+		tween:Create(root, TweenInfo.new(5.5), {
 			CFrame = CFrame.new(dest + Vector3.new(0, 3, 0)) * CFrame.Angles(math.rad(90), 0, 0)
 		}):Play()
 
