@@ -82,6 +82,7 @@ local root = char:FindFirstChild("HumanoidRootPart")
 local loopkilling = false
 local hiding = false
 local floating = false
+local bringing = false
 
 local float_part = Instance.new("Part")
 float_part.Name = "f"
@@ -318,6 +319,10 @@ runs.RenderStepped:Connect(function()
 		if root then
 			lpos = root.CFrame
 		end
+	end
+	
+	if not bringing then
+		lpos = root.CFrame
 	end
 
 	if floating then
@@ -634,9 +639,12 @@ local function do_command(input)
 		end
 
 		local dest
-		if args[2] and args[2]:match("^-?%d") then
-			local x,y,z = tonumber(args[2]), tonumber(args[3]), tonumber(args[4])
-			if x and y and z then dest = CFrame.new(x,y,z) end
+		if args[2] then
+			local posStr = table.concat(args, " ")
+			local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
+			if x and y and z then
+				dest = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+			end
 		elseif args[2] and args[2]:lower() == "spawn" and spawnPoint then
 			dest = spawnPoint
 		elseif args[2] then
@@ -651,40 +659,47 @@ local function do_command(input)
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
 			return 
 		end
-		
-		local lastGrav = workspace.Gravity
 
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
 		if not (root and theirRoot) then return end
 
-		root.CFrame = theirRoot.CFrame * CFrame.new(0,-3,0) * CFrame.Angles(math.rad(90),0,0)
-		
+		local lastGrav = workspace.Gravity
 		workspace.Gravity = 0
 
-		tween:Create(root, TweenInfo.new(1), {
-			CFrame = theirRoot.CFrame * CFrame.new(0,0.5,0) * CFrame.Angles(math.rad(90),0,0)
-		}):Play()
+		local oldCanCollide = {}
+		for _, part in ipairs(root.Parent:GetDescendants()) do
+			if part:IsA("BasePart") then
+				oldCanCollide[part] = part.CanCollide
+				part.CanCollide = false
+			end
+		end
+
+		local bv = Instance.new("BodyVelocity")
+		bv.MaxForce = Vector3.new(1e5,1e5,1e5)
+		bv.Velocity = (theirRoot.Position - root.Position).Unit * 50
+		bv.Parent = root
 
 		task.wait(1)
-
-		tween:Create(root, TweenInfo.new(3), {
-			CFrame = dest * CFrame.Angles(math.rad(90),0,0)
-		}):Play()
-		
+		bv.Velocity = (dest.Position - root.Position).Unit * 50
 		task.wait(3)
-		
+		bv:Destroy()
+
+		for part, canCollide in pairs(oldCanCollide) do
+			if part then part.CanCollide = canCollide end
+		end
+
 		workspace.Gravity = lastGrav
 		root.Velocity = Vector3.new(0,0,0)
-		
+
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
 
 	else
-	print("command not found")
-	if math.random(1,15) == 1 then
-		rbxg:SendAsync(confusion[math.random(1,#confusion)])
+		print("command not found")
+		if math.random(1,15) == 1 then
+			rbxg:SendAsync(confusion[math.random(1,#confusion)])
+		end
 	end
-end
 end
 
 local function isGrounded(char)
