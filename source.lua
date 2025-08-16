@@ -691,9 +691,9 @@ local function do_command(input)
 			Position = dest
 		}):Play()
 
-		tween:Create(root, TweenInfo.new(5.5), {
-			CFrame = CFrame.new(dest + Vector3.new(0, 3, 0)) * CFrame.Angles(math.rad(90), 0, 0)
-		}):Play()
+		--tween:Create(root, TweenInfo.new(5.5), {
+		--	CFrame = CFrame.new(dest + Vector3.new(0, 3, 0)) * CFrame.Angles(math.rad(90), 0, 0)
+		--}):Play()
 
 		task.wait(4)
 
