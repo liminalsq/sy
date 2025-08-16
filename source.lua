@@ -313,14 +313,16 @@ runs.RenderStepped:Connect(function()
 
 	if hiding then
 		if root then
-			root.CFrame = CFrame.new(0, -65536, 65536)
+			if not bringing then
+				root.CFrame = CFrame.new(0, -65536, 65536)
+			end
 		end
 	else
 		if root then
 			lpos = root.CFrame
 		end
 	end
-	
+
 	if not bringing then
 		lpos = root.CFrame
 	end
@@ -681,10 +683,9 @@ local function do_command(input)
 
 		task.wait(1)
 
-		-- Create BodyVelocity to move to destination
 		local bv = Instance.new("BodyVelocity")
 		bv.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-		bv.Velocity = (dest.Position - root.Position) / 3 -- matches tweenTime
+		bv.Velocity = (dest.Position - root.Position) / 3
 		bv.Parent = root
 
 		tween:Create(bv, TweenInfo.new(3), {
@@ -704,7 +705,7 @@ local function do_command(input)
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
-		
+
 	elseif cmd == "resetgrav" then
 		workspace.Gravity = 196.2
 		if rbxg then rbxg:SendAsync("reset gravity") end
@@ -996,4 +997,3 @@ end
 players.PlayerRemoving:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") left.")
 end)
-
