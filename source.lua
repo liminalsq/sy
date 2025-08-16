@@ -370,33 +370,33 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
-	local addedPlayers = {}
+		local addedPlayers = {}
 
-	for _, name in ipairs(args) do
-		local matches = findPlayersByName(name)
-		if #matches == 0 then
-			rbxg:SendAsync("Could not find: " .. name)
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
-		else
-			for _, targetPlayer in ipairs(matches) do
-				local targetLower = targetPlayer.Name:lower()
-				if not table.find(bad_mans, targetLower) then
-					table.insert(bad_mans, targetLower)
-					table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+		for _, name in ipairs(args) do
+			local matches = findPlayersByName(name)
+			if #matches == 0 then
+				rbxg:SendAsync("Could not find: " .. name)
+				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+			else
+				for _, targetPlayer in ipairs(matches) do
+					local targetLower = targetPlayer.Name:lower()
+					if not table.find(bad_mans, targetLower) then
+						table.insert(bad_mans, targetLower)
+						table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+					end
 				end
 			end
 		end
-	end
 
-	if #addedPlayers > 0 then
-		loopkilling = true
-		print("Loopkilling: " .. table.concat(bad_mans, ", "))
-		rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
-		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
-	else
-		rbxg:SendAsync("No new targets added.")
-		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
-	end
+		if #addedPlayers > 0 then
+			loopkilling = true
+			print("Loopkilling: " .. table.concat(bad_mans, ", "))
+			rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+		else
+			rbxg:SendAsync("No new targets added.")
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+		end
 
 	elseif cmd == "stoplkill" then
 		loopkilling = false
@@ -409,26 +409,26 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared looplist.")
 
 	elseif cmd:sub(1,18) == "removefromtargets" then
-	local removedPlayers = {}
+		local removedPlayers = {}
 
-	for _, name in ipairs(args) do
-		local matches = findPlayersByName(name)
-		if #matches == 0 then
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
-		else
-			for _, targetPlayer in ipairs(matches) do
-				local idx = table.find(bad_mans, targetPlayer.Name:lower())
-				if idx then
-					table.remove(bad_mans, idx)
-					table.insert(removedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+		for _, name in ipairs(args) do
+			local matches = findPlayersByName(name)
+			if #matches == 0 then
+				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
+			else
+				for _, targetPlayer in ipairs(matches) do
+					local idx = table.find(bad_mans, targetPlayer.Name:lower())
+					if idx then
+						table.remove(bad_mans, idx)
+						table.insert(removedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+					end
 				end
 			end
 		end
-	end
 
-	if #removedPlayers > 0 then
-		webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
-	end
+		if #removedPlayers > 0 then
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
+		end
 
 	elseif cmd == "die" or cmd == "reset" then
 		if humanoid then humanoid.Health = 0 end
@@ -463,7 +463,7 @@ local function do_command(input)
 			rbxg:SendAsync("Usage: goto x,y,z  OR  goto x y z")
 		end
 
-		elseif cmd:sub(1,10) == "gotoplayer" then
+	elseif cmd:sub(1,10) == "gotoplayer" then
 		local targetName = table.concat(args, " "):lower()
 		local targetPlayer = findPlayerByName(targetName)
 
@@ -616,21 +616,53 @@ local function do_command(input)
 			end
 		end
 
-		elseif cmd == "ping" or cmd == "latency" then
-	local stats = game:GetService("Stats")
-	local item = stats.Network.ServerStatsItem["Data Ping"]
-	local ms = tonumber(((item and item:GetValueString()) or ""):match("%d+")) or 0
-	local msg = "Ping: "..ms.."ms"
-	print(msg)
-	if rbxg then rbxg:SendAsync(msg) end
-	webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+	elseif cmd == "ping" or cmd == "latency" then
+		local stats = game:GetService("Stats")
+		local item = stats.Network.ServerStatsItem["Data Ping"]
+		local ms = tonumber(((item and item:GetValueString()) or ""):match("%d+")) or 0
+		local msg = "Ping: "..ms.."ms"
+		print(msg)
+		if rbxg then rbxg:SendAsync(msg) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
-	else
-		print("command not found")
-		if math.random(1,15) == 1 then
-			rbxg:SendAsync(confusion[math.random(1,#confusion)])
+	elseif cmd == "bring" then
+		local target = findPlayerByName(args[1] or "")
+		if not target or not target.Character then return end
+
+		local dest
+		if args[2] and args[2]:match("^-?%d") then
+			local x,y,z = tonumber(args[2]), tonumber(args[3]), tonumber(args[4])
+			if x and y and z then dest = CFrame.new(x,y,z) end
+		elseif args[2] and args[2]:lower() == "spawn" and spawnPoint then
+			dest = spawnPoint
+		elseif args[2] then
+			local other = findPlayerByName(args[2])
+			if other and other.Character and other.Character:FindFirstChild("HumanoidRootPart") then
+				dest = other.Character.HumanoidRootPart.CFrame
+			end
 		end
+		if not dest then return end
+
+		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
+		if not (root and theirRoot) then return end
+
+		root.CFrame = theirRoot.CFrame * CFrame.new(0,-3,0) * CFrame.Angles(math.rad(90),0,0)
+
+		tween:Create(root, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+			CFrame = theirRoot.CFrame * CFrame.new(0,0.5,0) * CFrame.Angles(math.rad(90),0,0)
+		}):Play()
+
+		task.wait(1)
+
+		tween:Create(root, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+			CFrame = dest
+		}):Play()
+	else
+	print("command not found")
+	if math.random(1,15) == 1 then
+		rbxg:SendAsync(confusion[math.random(1,#confusion)])
 	end
+end
 end
 
 local function isGrounded(char)
