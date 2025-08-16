@@ -674,7 +674,6 @@ local function do_command(input)
 
 		bringing = true
 
-		root.Anchored = true
 		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
 
 		tween:Create(root, TweenInfo.new(1), {
@@ -708,7 +707,6 @@ local function do_command(input)
 
 		workspace.Gravity = lastGrav
 		root.Velocity = Vector3.new(0, 0, 0)
-		root.Anchored = false
 		root.CFrame = lpos
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
