@@ -655,6 +655,8 @@ local function do_command(input)
 		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
 		if not (root and theirRoot) then return end
 
+		root.Anchored = true
+		root.Velocity = Vector3.new(0,0,0)
 		root.CFrame = theirRoot.CFrame * CFrame.new(0,-3,0) * CFrame.Angles(math.rad(90),0,0)
 
 		tween:Create(root, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
@@ -666,6 +668,11 @@ local function do_command(input)
 		tween:Create(root, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
 			CFrame = dest * CFrame.Angles(math.rad(90),0,0)
 		}):Play()
+
+		task.wait(3)
+
+		root.Anchored = false
+		root.Velocity = Vector3.new(0,0,0)
 
 		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
