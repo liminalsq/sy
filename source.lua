@@ -673,7 +673,6 @@ local function do_command(input)
 
 		bringing = true
 
-		root.Anchored = true
 		root.CFrame = theirRoot.CFrame * CFrame.new(0, -3, 0) * CFrame.Angles(math.rad(90), 0, 0)
 
 		tween:Create(root, TweenInfo.new(1), {
@@ -700,7 +699,6 @@ local function do_command(input)
 
 		bringing = false
 		workspace.Gravity = lastGrav
-		root.Anchored = false
 		bv:Destroy()
 		root.CFrame = lpos
 
