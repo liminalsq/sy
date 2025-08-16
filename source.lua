@@ -617,16 +617,14 @@ local function do_command(input)
 		end
 
 		elseif cmd == "ping" or cmd == "latency" then
-	local startTime = tick()
-	local success = pcall(function()
-		game:GetService("HttpService"):GetAsync("https://www.roblox.com")
-	end)
-	local latency = math.floor((tick() - startTime) * 1000)
-	
-	local msg = "Ping: "..latency.."ms"
+	local stats = game:GetService("Stats")
+	local item = stats.Network.ServerStatsItem["Data Ping"]
+	local ms = tonumber(((item and item:GetValueString()) or ""):match("%d+")) or 0
+	local msg = "Ping: "..ms.."ms"
 	print(msg)
-	if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+	if rbxg then rbxg:SendAsync(msg) end
 	webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
