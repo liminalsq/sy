@@ -715,13 +715,13 @@ local function do_command(input)
 				if x and y and z then
 					dest = Vector3.new(tonumber(x), tonumber(y), tonumber(z))
 				end
-		
+
 			elseif args[2]:lower() == "spawn" and spawnPoint then
 				dest = spawnPoint.Position
-		
+
 			elseif args[2]:lower() == "platform1" then
 				dest = Vector3.new(-119, 250, -133)
-		
+
 			elseif findPlayerByName(args[2]) then
 				local other = findPlayerByName(args[2])
 				if other and other.Character then
@@ -948,63 +948,62 @@ local function monitor(p)
 		prevPos = currPos
 		prevTime = now
 
-		for _, attacker in pairs(players:GetPlayers()) do
-			if attacker ~= p and attacker.Character and attacker.Character:FindFirstChild("HumanoidRootPart") then
-				local attackerRoot = attacker.Character.HumanoidRootPart
-				for _, target in pairs(players:GetPlayers()) do
-					if target ~= attacker and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
-						local targetRoot = target.Character.HumanoidRootPart
-						local tooFarHit = false
-						local closestDistance = math.huge
-
-						local limbNames
-						if attacker.Character:FindFirstChild("RightHand") then
-							limbNames = {"RightHand","RightLowerArm","RightUpperArm","LeftHand","LeftLowerArm","LeftUpperArm"}
-							threshold = 12
-						else
-							limbNames = {"RightArm","LeftArm"}
-							threshold = 10
-						end
-
-						for _, limbName in ipairs(limbNames) do
-							local limb = attacker.Character:FindFirstChild(limbName)
-							if limb and limb:IsA("BasePart") then
-								local d = (limb.Position - targetRoot.Position).Magnitude
-								if d > threshold then
-									tooFarHit = true
+		for _, victim in pairs(players:GetPlayers()) do
+			if victim.Character and victim.Character:FindFirstChild("Humanoid") then
+				local humanoid = victim.Character.Humanoid
+				humanoid.Died:Connect(function()
+					local creator = humanoid:FindFirstChild("creator")
+					if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
+						local killer = creator.Value
+						if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
+							local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
+							if victimRoot then
+								local limbNames
+								local threshold
+								if killer.Character:FindFirstChild("RightHand") then
+									limbNames = {"RightHand","RightLowerArm","RightUpperArm","LeftHand","LeftLowerArm","LeftUpperArm"}
+									threshold = 14
+								else
+									limbNames = {"RightArm","LeftArm"}
+									threshold = 12
 								end
-								if d < closestDistance then
-									closestDistance = d
-								end
-							end
-						end
 
-						if tooFarHit then
-							local key = attacker.Name..":"..target.Name
-							violationCount.reach[key] = (violationCount.reach[key] or 0) + 1
+								local tooFarHit = false
+								local closestDistance = math.huge
 
-							if violationCount.reach[key] >= 2 then
-								local now = tick()
-								local k = attacker.Name.."_reach"
-								if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-									lastAlert[k] = now
-									table.insert(bad_mans, attacker.Name)
-									loopkilling = loopkilling or true
-									pcall(function()
-										if rbxg then
-											rbxg:SendAsync(attacker.Name.." reached "..target.Name.." ("..string.format("%.2f", closestDistance).." studs)")
+								for _, limbName in ipairs(limbNames) do
+									local limb = killer.Character:FindFirstChild(limbName)
+									if limb and limb:IsA("BasePart") then
+										local d = (limb.Position - victimRoot.Position).Magnitude
+										if d > threshold then
+											tooFarHit = true
 										end
-										webhook_sendMsg(overall_LOGGER, attacker.DisplayName.." ("..attacker.Name..") used reach exploit on "..target.Name)
-										webhook_sendMsg(overall_LOGGER, "Added "..attacker.DisplayName.." ("..attacker.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-									end)
+										if d < closestDistance then
+											closestDistance = d
+										end
+									end
 								end
-								violationCount.reach[key] = 0
+
+								if tooFarHit then
+									local now = tick()
+									local k = killer.Name.."_reach"
+									if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+										lastAlert[k] = now
+										table.insert(bad_mans, killer.Name)
+										loopkilling = loopkilling or true
+										pcall(function()
+											if rbxg then
+												rbxg:SendAsync(killer.Name.." killed "..victim.Name.." with reach ("..string.format("%.2f", closestDistance).." studs)")
+											end
+											webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit")
+											webhook_sendMsg(overall_LOGGER, "Added "..killer.DisplayName.." ("..killer.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+										end)
+									end
+								end
 							end
-						else
-							violationCount.reach[attacker.Name..":"..target.Name] = 0
 						end
 					end
-				end
+				end)
 			end
 		end
 	end)
