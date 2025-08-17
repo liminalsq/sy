@@ -966,31 +966,20 @@ local function monitor(p)
 						local killer = creator.Value
 						if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
 							local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
+							local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
 							if victimRoot then
-								local limbNames
-								local threshold
-								if killer.Character:FindFirstChild("RightHand") then
-									limbNames = {"RightHand","RightLowerArm","RightUpperArm","LeftHand","LeftLowerArm","LeftUpperArm"}
-									threshold = 14
-								else
-									limbNames = {"RightArm","LeftArm"}
-									threshold = 12
-								end
+								local threshold = 12
 
 								local tooFarHit = false
 								local closestDistance = math.huge
 
-								for _, limbName in ipairs(limbNames) do
-									local limb = killer.Character:FindFirstChild(limbName)
-									if limb and limb:IsA("BasePart") then
-										local d = (limb.Position - victimRoot.Position).Magnitude
-										if d > threshold then
-											tooFarHit = true
-										end
-										if d < closestDistance then
-											closestDistance = d
-										end
-									end
+								local d = (victimRoot - killerRoot).Magnitude
+
+								if d > threshold then
+									tooFarHit = true
+								end
+								if d < closestDistance then
+									closestDistance = d
 								end
 
 								if tooFarHit then
