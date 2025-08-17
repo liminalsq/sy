@@ -829,6 +829,10 @@ local function monitor(p)
 	local speedHistory = {}
 	local maxHistory = 5
 	local alertCooldown = 5
+	
+	local jumpTimestamps = {}
+	local jumpCooldown = 0.25
+	local maxRapidJumps = 3
 
 	local threshold = 10
 
@@ -951,6 +955,41 @@ local function monitor(p)
 		else
 			hoverStart = nil
 			violationCount.fly = 0
+		end
+		
+		if state == Enum.HumanoidStateType.Jumping then
+			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
+			table.insert(jumpTimestamps[p], now)
+
+			-- keep only recent jumps
+			for i = #jumpTimestamps[p], 1, -1 do
+				if now - jumpTimestamps[p][i] > jumpCooldown then
+					table.remove(jumpTimestamps[p], i)
+				end
+			end
+
+			if #jumpTimestamps[p] > maxRapidJumps and now - debounce.infjump > 3 then
+				violationCount.infjump += 1
+				if violationCount.infjump >= violationLimit then
+					debounce.infjump = now
+					violationCount.infjump = 0
+					local k = p.Name.."_infjump"
+					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
+						lastAlert[k] = now
+						table.insert(bad_mans, p.Name)
+						loopkilling = true
+						pcall(function()
+							if rbxg then
+								rbxg:SendAsync(p.Name.." is using infinite jump.")
+							end
+							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is infinite jumping.")
+							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
+						end)
+					end
+				end
+			end
+		else
+			violationCount.infjump = 0
 		end
 
 		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
