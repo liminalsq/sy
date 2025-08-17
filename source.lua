@@ -928,11 +928,7 @@ local function monitor(p)
 							loopkilling = true
 							pcall(function()
 								if rbxg then
-									if h.FloorMaterial == Enum.Material.Air then
-										rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
-									else
-										rbxg:SendAsync(p.Name..".. THATS NOT A SKID THATS A GHOST")
-									end
+									rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
 								end
 								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
 								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
