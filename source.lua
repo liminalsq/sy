@@ -818,41 +818,45 @@ local function monitor(p)
 
 	local prevPos, prevTime = r.Position, tick()
 	local hoverStart = nil
-
 	local violationLimit = 3
-	local violationCount = {tp = 0, speed = 0, fly = 0, fling = 0, reach = {}}
-	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0}
+	local violationCount = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0, reach = {}}
+	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0}
 	local lastAlert = {}
+	local bad_mans = {}
 
 	local flingVelThreshold, flingSpinThreshold = 2000, 3000
 	local impossibleSpeed = 80
 	local speedHistory = {}
 	local maxHistory = 5
 	local alertCooldown = 5
-	
 	local jumpTimestamps = {}
 	local jumpCooldown = 0.25
 	local maxRapidJumps = 3
 
-	local threshold = 10
-
 	local function getSmoothedSpeed(newSpeed)
 		table.insert(speedHistory, newSpeed)
-		if #speedHistory > maxHistory then
-			table.remove(speedHistory, 1)
-		end
+		if #speedHistory > maxHistory then table.remove(speedHistory, 1) end
 		local total = 0
-		for _, s in ipairs(speedHistory) do
-			total += s
-		end
+		for _, s in ipairs(speedHistory) do total += s end
 		return total / #speedHistory
+	end
+
+	local function flagPlayer(player, reason, messageCallback)
+		if table.find(bad_mans, player.Name) then return end
+		table.insert(bad_mans, player.Name)
+		loopkilling = true
+		pcall(function()
+			if rbxg then rbxg:SendAsync(messageCallback()) end
+			webhook_sendMsg(overall_LOGGER, player.DisplayName.." ("..player.Name..") "..reason)
+			webhook_sendMsg(overall_LOGGER, "Added "..player.DisplayName.." ("..player.Name..") to the looplist. (TEMPORARY.)")
+		end)
 	end
 
 	runs.RenderStepped:Connect(function()
 		if whitelist[p.Name] or not p.Character or (player and p == player) then return end
 		c = p.Character
-		r = c and c:FindFirstChild("HumanoidRootPart")
-		h = c and c:FindFirstChildOfClass("Humanoid")
+		r = c:FindFirstChild("HumanoidRootPart")
+		h = c:FindFirstChildOfClass("Humanoid")
 		if not r or not h then return end
 
 		local now = tick()
@@ -863,28 +867,17 @@ local function monitor(p)
 		local dist = (Vector3.new(currPos.X, 0, currPos.Z) - Vector3.new(prevPos.X, 0, prevPos.Z)).Magnitude
 		local rawSpeed = dist / dt
 		local state = h:GetState()
-
 		local grounded = isGrounded and isGrounded(c)
-		local vertVel = math.abs(root.Velocity.Y)
+		local vertVel = r.Velocity.Y
 
 		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
 			violationCount.tp += 1
 			if violationCount.tp >= violationLimit then
 				debounce.tp = now
 				violationCount.tp = 0
-				local k = p.Name.."_tp"
-				if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-					lastAlert[k] = now
-					table.insert(bad_mans, p.Name)
-					loopkilling = true
-					pcall(function()
-						if rbxg then
-							rbxg:SendAsync(p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)")
-						end
-						webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") teleported")
-						webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-					end)
-				end
+				flagPlayer(p, "teleported.", function()
+					return p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)"
+				end)
 			end
 		else
 			violationCount.tp = 0
@@ -897,19 +890,9 @@ local function monitor(p)
 				if violationCount.speed >= violationLimit then
 					debounce.speed = now
 					violationCount.speed = 0
-					local k = p.Name.."_speed"
-					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-						lastAlert[k] = now
-						table.insert(bad_mans, p.Name)
-						loopkilling = true
-						pcall(function()
-							if rbxg then
-								rbxg:SendAsync(p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")")
-							end
-							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") used speed exploits.")
-							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-						end)
-					end
+					flagPlayer(p, "used speed exploits.", function()
+						return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
+					end)
 				end
 			else
 				violationCount.speed = 0
@@ -922,30 +905,19 @@ local function monitor(p)
 			local falling = vertVel < -2
 
 			if hovering and not jumping and not falling then
-				if not hoverStart then
-					hoverStart = now
+				if not hoverStart then hoverStart = now
 				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
 					violationCount.fly += 1
 					if violationCount.fly >= violationLimit then
 						debounce.fly = now
 						violationCount.fly = 0
-						local k = p.Name.."_fly"
-						if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-							lastAlert[k] = now
-							table.insert(bad_mans, p.Name)
-							loopkilling = true
-							pcall(function()
-								if rbxg then
-									if h.FloorMaterial == Enum.Material.Air then
-										rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
-									else
-										rbxg:SendAsync(p.Name..".. THATS NOT A SKID THATS A GHOST")
-									end
-								end
-								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
-								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-							end)
-						end
+						flagPlayer(p, "is flying.", function()
+							if h.FloorMaterial == Enum.Material.Air then
+								return p.Name.." u dont look like a bird... seems sus..."
+							else
+								return p.Name..".. THATS NOT A SKID THATS A GHOST"
+							end
+						end)
 					end
 				end
 			else
@@ -956,12 +928,11 @@ local function monitor(p)
 			hoverStart = nil
 			violationCount.fly = 0
 		end
-		
+
 		if state == Enum.HumanoidStateType.Jumping then
 			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
 			table.insert(jumpTimestamps[p], now)
 
-			-- keep only recent jumps
 			for i = #jumpTimestamps[p], 1, -1 do
 				if now - jumpTimestamps[p][i] > jumpCooldown then
 					table.remove(jumpTimestamps[p], i)
@@ -973,19 +944,9 @@ local function monitor(p)
 				if violationCount.infjump >= violationLimit then
 					debounce.infjump = now
 					violationCount.infjump = 0
-					local k = p.Name.."_infjump"
-					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-						lastAlert[k] = now
-						table.insert(bad_mans, p.Name)
-						loopkilling = true
-						pcall(function()
-							if rbxg then
-								rbxg:SendAsync(p.Name.." is using infinite jump.")
-							end
-							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is infinite jumping.")
-							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-						end)
-					end
+					flagPlayer(p, "is infinite jumping.", function()
+						return p.Name.." is using infinite jump."
+					end)
 				end
 			end
 		else
@@ -999,19 +960,9 @@ local function monitor(p)
 				if violationCount.fling >= violationLimit then
 					debounce.fling = now
 					violationCount.fling = 0
-					local k = p.Name.."_fling"
-					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-						lastAlert[k] = now
-						table.insert(bad_mans, p.Name)
-						loopkilling = true
-						pcall(function()
-							if rbxg then
-								rbxg:SendAsync(p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")")
-							end
-							webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is using fling exploits.")
-							webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-						end)
-					end
+					flagPlayer(p, "is using fling exploits.", function()
+						return p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")"
+					end)
 				end
 			end
 		else
@@ -1020,47 +971,27 @@ local function monitor(p)
 
 		prevPos = currPos
 		prevTime = now
-
+		
 		for _, victim in pairs(players:GetPlayers()) do
 			if victim.Character and victim.Character:FindFirstChild("Humanoid") then
 				local humanoid = victim.Character.Humanoid
 				humanoid.Died:Connect(function()
 					local creator = humanoid:FindFirstChild("creator")
-					if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
+					if creator and creator.Value and creator.Value:IsA("Player") then
 						local killer = creator.Value
 						if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
 							local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
 							local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
-							if victimRoot then
+							if victimRoot and killerRoot then
+								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
 								local threshold = 12
-
-								local tooFarHit = false
-								local closestDistance = math.huge
-
-								local d = (victimRoot.Position - killerRoot.Position).Magnitude
-
-								if d > threshold then
-									tooFarHit = true
-								end
-								if d < closestDistance then
-									closestDistance = d
-								end
-
-								if tooFarHit then
-									local now = tick()
-									local k = killer.Name.."_reach"
-									if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
-										lastAlert[k] = now
-										table.insert(bad_mans, killer.Name)
-										loopkilling = true
-										pcall(function()
-											if rbxg then
-												rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", closestDistance).." studs)")
-											end
-											webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit")
-											webhook_sendMsg(overall_LOGGER, "Added "..killer.DisplayName.." ("..killer.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
-										end)
-									end
+								if distance > threshold then
+									flagUser(killer, "reach", function()
+										if rbxg then
+											rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)")
+										end
+										webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit")
+									end)
 								end
 							end
 						end
