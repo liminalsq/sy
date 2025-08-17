@@ -913,7 +913,7 @@ local function monitor(p)
 		end
 
 		if not grounded then
-			if vertVel > -2 and vertVel < 2 and rawSpeed > 3 then
+			if vertVel < 2 and rawSpeed > 3 then
 				if not hoverStart then
 					hoverStart = now
 				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
@@ -940,9 +940,6 @@ local function monitor(p)
 				hoverStart = nil
 				violationCount.fly = 0
 			end
-		else
-			hoverStart = nil
-			violationCount.fly = 0
 		end
 
 		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
@@ -1046,7 +1043,7 @@ local function on_chatted(p)
 			elseif msg:lower():find("my boy") then
 				rbxg:SendAsync(">v<")
 			elseif msg:lower():find("pat") and (p.Character:WaitForChild("HumanoidRootPart").Position - root.Position).Magnitude <= 8 then
-				rbxg:SendAsync(":⟩")
+				rbxg:SendAsync(">⏑<")
 			end
 		end
 	end)
@@ -1055,7 +1052,9 @@ end
 players.PlayerAdded:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") joined.")
 	on_chatted(p)
-	monitor(p)
+	if p ~= player then
+		monitor(p)
+	end
 	if p.Name == "s71pl" then
 		rbxg:SendAsync("OMG!!! HI DAD!!!")
 	elseif p.Name == "TheTerminalClone" then
@@ -1067,7 +1066,9 @@ end)
 
 for i, v in pairs(players:GetPlayers()) do
 	on_chatted(v)
-	monitor(v)
+	if p ~= player then
+		monitor(v)
+	end
 	if v.Name == "s71pl" then
 		rbxg:SendAsync("OMG!!! HI DAD!!!")
 	elseif v.Name == "TheTerminalClone" then
