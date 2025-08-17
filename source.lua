@@ -362,13 +362,12 @@ local function findPlayersByName(query)
 	return matches
 end
 
-local function febring(yu, to, tries) --CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
+local function febring(me, yu, to, tries) --CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
 	tries = tries or 1
 	local sps = 10
 	local sp = 1
-	local me = char
 	local mer = me:FindFirstChild("HumanoidRootPart")
-	local meh = me:FindFirstChild("Humanoid")
+	local meh = me:FindFirstChildOfClass("Humanoid")
 	local yur = yu:FindFirstChild("HumanoidRootPart")
 	local oldcf = mer.CFrame
 	local fr = yur.Position + Vector3.new(0, 2, 0)
@@ -744,7 +743,7 @@ local function do_command(input)
 
 		bringing = true
 
-		febring(target.Character, dest)
+		febring(char, target.Character, dest)
 
 		bringing = false
 		workspace.Gravity = oldGrav
