@@ -366,7 +366,7 @@ local function febring(yu, to, tries) --CREDITS TO THETERMINALCLONE FOR GIVING T
 	tries = tries or 1
 	local sps = 10
 	local sp = 1
-	local me = player
+	local me = char
 	local mer = me:FindFirstChild("HumanoidRootPart")
 	local meh = me:FindFirstChild("Humanoid")
 	local yur = yu:FindFirstChild("HumanoidRootPart")
