@@ -843,8 +843,8 @@ local function monitor(p)
 	end
 
 	local function flagPlayer(player, reason, messageCallback)
-		if bad_mans[player.Name] then return end 
-		bad_mans[player.Name] = true
+		if table.find(bad_mans, player.Name:lower()) then return end
+		table.insert(bad_mans, player.Name:lower())
 
 		loopkilling = true
 		pcall(function()
