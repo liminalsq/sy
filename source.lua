@@ -913,10 +913,11 @@ local function monitor(p)
 		end
 
 		if not grounded then
-			local isJumping = vertVel > 5
-			local isFalling = vertVel < -5
+			local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
+			local jumping = vertVel > 2
+			local falling = vertVel < -2
 
-			if not isJumping and not isFalling and rawSpeed > 3 then
+			if hovering and not jumping and not falling then
 				if not hoverStart then
 					hoverStart = now
 				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
@@ -931,7 +932,11 @@ local function monitor(p)
 							loopkilling = true
 							pcall(function()
 								if rbxg then
-									rbxg:SendAsync(p.Name.." u dont look like a bird. u cant fly")
+									if h.FloorMaterial == Enum.Material.Air then
+										rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
+									else
+										rbxg:SendAsync(p.Name..".. THATS NOT A SKID THATS A GHOST")
+									end
 								end
 								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
 								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
