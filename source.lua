@@ -986,7 +986,7 @@ local function monitor(p)
 								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
 								local threshold = 12
 								if distance > threshold then
-									flagUser(killer, "reach", function()
+									flagPlayer(killer, "reach", function()
 										if rbxg then
 											rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)")
 										end
