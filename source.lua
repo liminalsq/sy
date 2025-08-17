@@ -673,12 +673,15 @@ local function do_command(input)
 	elseif cmd == "serverhop" then
 		local TeleportService = game:GetService("TeleportService")
 		local HttpService = game:GetService("HttpService")
-		local LocalPlayer = game.Players.LocalPlayer
+		local Players = game:GetService("Players")
+		local LocalPlayer = Players.LocalPlayer
 		local placeId = game.PlaceId
 
 		local function getAvailableServers(cursor)
 			local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
-			if cursor then url = url .. "&cursor=" .. cursor end
+			if cursor then
+				url = url .. "&cursor=" .. cursor
+			end
 			local success, res = pcall(function() return HttpService:GetAsync(url) end)
 			if success and res then
 				return HttpService:JSONDecode(res)
@@ -688,33 +691,40 @@ local function do_command(input)
 			end
 		end
 
-		local serversData = getAvailableServers()
-		if serversData and serversData.data then
-			local myJobId = game.JobId
-			local targetServer
-			for _, server in ipairs(serversData.data) do
-				if server.playing < server.maxPlayers and server.id ~= myJobId then
-					targetServer = server.id
-					break
-				end
-			end
+		local function findAvailableServer()
+			local cursor
+			repeat
+				local serversData = getAvailableServers(cursor)
+				if not serversData or not serversData.data then break end
 
-			if targetServer then
-				local msg = "serverhopping to server ID: "..targetServer
-				print(msg)
-				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
-				if LocalPlayer then
-					TeleportService:TeleportToPlaceInstance(placeId, targetServer, LocalPlayer)
-				else
-					warn("LocalPlayer not found, cannot teleport")
+				for _, server in ipairs(serversData.data) do
+					if server.playing < server.maxPlayers and server.id ~= game.JobId then
+						return server.id
+					end
 				end
+
+				cursor = serversData.nextPageCursor
+			until not cursor
+			return nil
+		end
+
+		local targetServer = findAvailableServer()
+		if targetServer then
+			local msg = "serverhopping to server ID: "..targetServer
+			print(msg)
+			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+
+			if LocalPlayer then
+				TeleportService:TeleportToPlaceInstance(placeId, targetServer, LocalPlayer)
 			else
-				local msg = "no available servers found"
-				print(msg)
-				if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+				warn("LocalPlayer not found, cannot teleport")
 			end
+		else
+			local msg = "no available servers found"
+			print(msg)
+			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 		end
 
 	elseif cmd == "ping" or cmd == "latency" then
