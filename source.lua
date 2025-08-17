@@ -176,6 +176,19 @@ local dummy = {
 	"not whitelisted, LOL"
 }
 
+local death = {
+	"oww!!! >-<",
+	"IM TELLING DAD",
+	"*wails loudly*",
+	"aughh!!! ;-;",
+	"DADDDDD",
+	"DADD HE HIT ME",
+	"UGHH!!",
+	"OUCH!!",
+	"dad i have a boo boo 😭😭😭",
+	"i just wanted to be friends :("
+}
+
 local function add_to_table(t, any)
 	table.insert(t, any)
 end
@@ -246,7 +259,7 @@ player.CharacterAdded:Connect(function(c)
 	end 
 
 	humanoid.Died:Connect(function()
-		rbxg:SendAsync("oww!!! >-<")
+		rbxg:SendAsync(death[math.random(1,#death)])
 	end)
 end)
 
