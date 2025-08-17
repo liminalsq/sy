@@ -872,7 +872,7 @@ local function monitor(p)
 				if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
 					lastAlert[k] = now
 					table.insert(bad_mans, p.Name)
-					loopkilling = loopkilling or true
+					loopkilling = true
 					pcall(function()
 						if rbxg then
 							rbxg:SendAsync(p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)")
@@ -897,7 +897,7 @@ local function monitor(p)
 					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
 						lastAlert[k] = now
 						table.insert(bad_mans, p.Name)
-						loopkilling = loopkilling or true
+						loopkilling = true
 						pcall(function()
 							if rbxg then
 								rbxg:SendAsync(p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")")
@@ -925,7 +925,7 @@ local function monitor(p)
 						if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
 							lastAlert[k] = now
 							table.insert(bad_mans, p.Name)
-							loopkilling = loopkilling or true
+							loopkilling = true
 							pcall(function()
 								if rbxg then
 									if h.FloorMaterial == Enum.Material.Air then
@@ -960,7 +960,7 @@ local function monitor(p)
 					if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
 						lastAlert[k] = now
 						table.insert(bad_mans, p.Name)
-						loopkilling = loopkilling or true
+						loopkilling = true
 						pcall(function()
 							if rbxg then
 								rbxg:SendAsync(p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")")
@@ -1009,7 +1009,7 @@ local function monitor(p)
 									if not lastAlert[k] or now - lastAlert[k] > alertCooldown then
 										lastAlert[k] = now
 										table.insert(bad_mans, killer.Name)
-										loopkilling = loopkilling or true
+										loopkilling = true
 										pcall(function()
 											if rbxg then
 												rbxg:SendAsync(killer.Name.." killed "..victim.Name.." with reach ("..string.format("%.2f", closestDistance).." studs)")
