@@ -949,7 +949,7 @@ local function monitor(p)
 			violationCount.fly = 0
 		end
 
-		local vel, spin = root.Velocity.Magnitude, root.RotVelocity.Magnitude
+		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
 		if vel > flingVelThreshold or spin > flingSpinThreshold then
 			if now - debounce.fling > 3 then
 				violationCount.fling += 1
