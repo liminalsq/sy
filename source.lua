@@ -931,7 +931,11 @@ local function monitor(p)
 
 		if state == Enum.HumanoidStateType.Jumping then
 			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
-			table.insert(jumpTimestamps[p], now)
+
+			local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
+			if not lastJump or now - lastJump > jumpCooldown then
+				table.insert(jumpTimestamps[p], now)
+			end
 
 			for i = #jumpTimestamps[p], 1, -1 do
 				if now - jumpTimestamps[p][i] > jumpCooldown then
