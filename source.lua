@@ -330,10 +330,6 @@ runs.RenderStepped:Connect(function()
 				root.CFrame = CFrame.new(0, -65536, 65536)
 			end
 		end
-	else
-		if root then
-			lpos = root.CFrame
-		end
 	end
 
 	if not bringing then
