@@ -841,10 +841,17 @@ local function monitor(p)
 		return total / #speedHistory
 	end
 
-	local function flagPlayer(player, reason, messageCallback)
+	local function flagPlayer(player, reason, type, messageCallback)
+		lastAlert[player] = lastAlert[player] or {}
+		local now = tick()
+
 		if table.find(bad_mans, player.Name) then return end
+		if lastAlert[player][type] and now - lastAlert[player][type] <= alertCooldown then return end
+		lastAlert[player][type] = now
+
 		table.insert(bad_mans, player.Name)
 		loopkilling = true
+
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, player.DisplayName.." ("..player.Name..") "..reason)
