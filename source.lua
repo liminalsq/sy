@@ -671,57 +671,34 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverTime: "..tostring(tick()))
 
 	elseif cmd == "serverhop" then
-		local TeleportService = game:GetService("TeleportService")
-		local HttpService = game:GetService("HttpService")
-		local Players = game:GetService("Players")
-		local LocalPlayer = Players.LocalPlayer
 		local placeId = game.PlaceId
+		local jobId = game.JobId
 
-		local function getAvailableServers(cursor)
-			local url = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
-			if cursor then
-				url = url .. "&cursor=" .. cursor
-			end
-			local success, res = pcall(function() return HttpService:GetAsync(url) end)
-			if success and res then
-				return HttpService:JSONDecode(res)
-			else
-				warn("Failed to fetch server list")
-				return nil
-			end
-		end
+		local servers = {}
+		local success, res = pcall(function()
+			return game:HttpGet("https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true")
+		end)
 
-		local function findAvailableServer()
-			local cursor
-			repeat
-				local serversData = getAvailableServers(cursor)
-				if not serversData or not serversData.data then break end
-
-				for _, server in ipairs(serversData.data) do
-					if server.playing < server.maxPlayers and server.id ~= game.JobId then
-						return server.id
+		if success and res then
+			local body = httpsService:JSONDecode(res)
+			if body and body.data then
+				for _, server in ipairs(body.data) do
+					if type(server) == "table" and tonumber(server.playing) and tonumber(server.maxPlayers) and server.playing < server.maxPlayers and server.id ~= jobId then
+						table.insert(servers, server.id)
 					end
 				end
-
-				cursor = serversData.nextPageCursor
-			until not cursor
-			return nil
+			end
 		end
 
-		local targetServer = findAvailableServer()
-		if targetServer then
-			local msg = "serverhopping to server ID: "..targetServer
+		if #servers > 0 then
+			local targetServer = servers[math.random(1, #servers)]
+			local msg = "Serverhop: teleporting to server ID "..targetServer
 			print(msg)
 			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
-
-			if LocalPlayer then
-				TeleportService:TeleportToPlaceInstance(placeId, targetServer, LocalPlayer)
-			else
-				warn("LocalPlayer not found, cannot teleport")
-			end
+			teleportServ:TeleportToPlaceInstance(placeId, targetServer, player)
 		else
-			local msg = "no available servers found"
+			local msg = "Serverhop: couldn't find a server"
 			print(msg)
 			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
