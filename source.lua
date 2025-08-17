@@ -994,7 +994,7 @@ local function monitor(p)
 								local tooFarHit = false
 								local closestDistance = math.huge
 
-								local d = (victimRoot - killerRoot).Magnitude
+								local d = (victimRoot.Position - killerRoot.Position).Magnitude
 
 								if d > threshold then
 									tooFarHit = true
