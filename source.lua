@@ -863,7 +863,7 @@ local function monitor(p)
 		local grounded = isGrounded and isGrounded(c)
 		local vertVel = math.abs(root.Velocity.Y)
 
-		if dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
+		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
 			violationCount.tp += 1
 			if violationCount.tp >= violationLimit then
 				debounce.tp = now
