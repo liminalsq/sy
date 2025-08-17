@@ -913,7 +913,7 @@ local function monitor(p)
 		end
 
 		if not grounded then
-			if vertVel < 2 and rawSpeed > 3 then
+			if vertVel > -2 and vertVel < 2 and rawSpeed > 3 then
 				if not hoverStart then
 					hoverStart = now
 				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
@@ -1045,7 +1045,7 @@ local function on_chatted(p)
 			end
 		end
 		if p.Name == "s71pl" then
-			if msg == "spawnyellow" then
+			if msg:lower():find("spawnyellow") or msg:lower():find("son") then
 				rbxg:SendAsync("hi dad!!")
 			elseif msg:lower():find("my boy") then
 				rbxg:SendAsync(">v<")
