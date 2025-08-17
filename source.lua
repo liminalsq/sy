@@ -189,10 +189,6 @@ local death = {
 	"i just wanted to be friends :("
 }
 
-local function add_to_table(t, any)
-	table.insert(t, any)
-end
-
 local fps = 0
 local frameCount = 0
 local elapsedTime = 0
@@ -258,7 +254,7 @@ player.CharacterAdded:Connect(function(c)
 		end
 	end 
 
-	humanoid.Died:Connect(function()
+	humanoid.Died:Once(function()
 		rbxg:SendAsync(death[math.random(1,#death)])
 	end)
 end)
@@ -266,12 +262,14 @@ end)
 task.spawn(function()
 	while wait(0.9) do
 		if loopkilling then
-			local tool = find_tool(char)
+			local tool = find_tool(player.Backpack)
 			if tool then
 				local handle = find_handle(tool)
 				if handle then
 					wait(0.9)
-					humanoid:EquipTool(tool)
+					if tool.Parent ~= char then
+						humanoid:EquipTool(tool)
+					end
 				end
 			end
 		end 
@@ -371,70 +369,89 @@ local function findPlayersByName(query)
 	return matches
 end
 
-local function febring(me, yu, to, tries) --CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
+local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
 	tries = tries or 1
-	local sps = 10
-	local sp = 1
-	local mer = me:FindFirstChild("HumanoidRootPart")
-	local meh = me:FindFirstChildOfClass("Humanoid")
-	local yur = yu:FindFirstChild("HumanoidRootPart")
-	local oldcf = mer.CFrame
-	local fr = yur.Position + Vector3.new(0, 2, 0)
-	local lv = (to - fr).Unit
-	local lastpos = mer.Position
-	local oldvel = Vector3.zero
-	local t = 0
-	local ts = 1 / ((to - yur.Position).Magnitude / sps)
-	t -= 0.7 * ts
-	local ct = 0
-	local sspt = 0
-	local coins = {}
-	while t < 1 do
-		local dt = runs.PostSimulation:Wait()
-		meh:ChangeState(Enum.HumanoidStateType.Physics)
-		for _,v in pairs(meh:GetPlayingAnimationTracks()) do
-			v:Stop(0)
-		end
-		t += dt * ts * sp
-		local targ = fr + Vector3.new(0, 5 * ((t / ts) / 0.3), 0)
-		if t >= 0 then
-			targ = fr:Lerp(to, t)
-			if t < 0.5 and sp < 6.4 then
-				sp += dt * 3.0
-				sspt = t
-			elseif t >= 1 - sspt and sp > 1 then
-				sp -= dt * 3.0
+	local success, err = pcall(function()
+		local sps = 10
+		local sp = 1
+		local mer = me:FindFirstChild("HumanoidRootPart")
+		local meh = me:FindFirstChildOfClass("Humanoid")
+		local yur = yu:FindFirstChild("HumanoidRootPart")
+		if not mer or not meh or not yur then return end
+
+		local oldcf = mer.CFrame
+		local fr = yur.Position + Vector3.new(0, 2, 0)
+		local lv = (to - fr).Unit
+		local lastpos = mer.Position
+		local oldvel = Vector3.zero
+		local t = 0
+		local ts = 1 / ((to - yur.Position).Magnitude / sps)
+		t -= 0.7 * ts
+		local ct = 0
+		local sspt = 0
+		local coins = {}
+
+		while t < 1 do
+			local dt = runs.PostSimulation:Wait()
+			if not (me.Parent and yu.Parent) then break end
+
+			meh:ChangeState(Enum.HumanoidStateType.Physics)
+			for _, v in pairs(meh:GetPlayingAnimationTracks()) do
+				v:Stop(0)
+			end
+
+			t += dt * ts * sp
+			local targ = fr + Vector3.new(0, 5 * ((t / ts) / 0.3), 0)
+			if t >= 0 then
+				targ = fr:Lerp(to, t)
+				if t < 0.5 and sp < 6.4 then
+					sp += dt * 3.0
+					sspt = t
+				elseif t >= 1 - sspt and sp > 1 then
+					sp -= dt * 3.0
+				end
+			end
+
+			mer.CFrame = CFrame.lookAlong(targ, lv) * CFrame.Angles(-math.pi / 2, 0, 0)
+			local v = (targ - lastpos) / dt
+			local oldvel2 = oldvel
+			oldvel = v
+			v += v - oldvel2
+
+			if t >= 0 then
+				mer.Velocity = v
+			else
+				mer.Velocity = Vector3.zero
+			end
+			mer.RotVelocity = Vector3.zero
+			lastpos = targ
+
+			table.insert(coins, targ + Vector3.new(0, 3, 0))
+			ct += dt
+
+			for i, v in pairs(coins) do
+				if (yur.Position - v).Magnitude < 3 then
+					ct = 0
+					coins[i] = v + Vector3.new(0, 10000, 0)
+				end
+			end
+
+			if ct > 0.8 + player:GetNetworkPing() then
+				break
 			end
 		end
-		mer.CFrame = CFrame.lookAlong(targ, lv) * CFrame.Angles(-math.pi / 2, 0, 0)
-		local v = (targ - lastpos) / dt
-		local oldvel2 = oldvel
-		oldvel = v
-		v += v - oldvel2
-		if t >= 0 then
-			mer.Velocity = v
-		else
-			mer.Velocity = Vector3.zero
+
+		meh:ChangeState(Enum.HumanoidStateType.GettingUp)
+		mer.CFrame = oldcf
+		mer.Velocity = Vector3.zero
+
+		if t < 1 and yur.Velocity.Y > workspace.Gravity * -0.5 and yu:IsDescendantOf(workspace) and tries < 5 then
+			return febring(me, yu, to, tries + 1)
 		end
-		mer.RotVelocity = Vector3.zero
-		lastpos = targ
-		table.insert(coins, targ + Vector3.new(0, 3, 0))
-		ct += dt
-		for i,v in pairs(coins) do
-			if (yur.Position - v).Magnitude < 3 then
-				ct = 0
-				coins[i] = v + Vector3.new(0, 10000, 0)
-			end
-		end
-		if ct > 0.8 + player:GetNetworkPing() then
-			break
-		end
-	end
-	meh:ChangeState(Enum.HumanoidStateType.GettingUp)
-	mer.CFrame = oldcf
-	mer.Velocity = Vector3.zero
-	if t < 1 and yur.Velocity.Y > workspace.Gravity * -0.5 and yu:IsDescendantOf(workspace) and tries < 5 then
-		return febring(yu, to, tries + 1)
+	end)
+
+	if not success then
+		warn("[febring] Error:", err)
 	end
 end
 
@@ -743,7 +760,7 @@ local function do_command(input)
 		end
 
 		if not dest then
-			if rbxg then rbxg:SendAsync("bring: no destination found") end
+			if rbxg then rbxg:SendAsync("where do u want me to bring u") end
 			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
 			return
 		end
@@ -764,8 +781,8 @@ local function do_command(input)
 		root.Velocity = Vector3.zero
 		root.CFrame = root.CFrame
 
-		if rbxg then rbxg:SendAsync("bring: "..target.Name) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name)
+		if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name.." ("..target.DisplayName..")")
 
 	elseif cmd == "resetgrav" then
 		workspace.Gravity = 196.2
@@ -795,11 +812,11 @@ local function monitor(p)
 	local c = p.Character or p.CharacterAdded:Wait()
 	if not c then return end
 
-	local root = c:FindFirstChild("HumanoidRootPart")
-	local humanoid = c:FindFirstChildOfClass("Humanoid")
-	if not root or not humanoid then return end
+	local r = c:FindFirstChild("HumanoidRootPart")
+	local h = c:FindFirstChildOfClass("Humanoid")
+	if not r or not h then return end
 
-	local prevPos, prevTime = root.Position, tick()
+	local prevPos, prevTime = r.Position, tick()
 	local hoverStart = nil
 
 	local violationLimit = 3
@@ -830,23 +847,23 @@ local function monitor(p)
 	runs.RenderStepped:Connect(function()
 		if whitelist[p.Name] or not p.Character or (player and p == player) then return end
 		c = p.Character
-		root = c and c:FindFirstChild("HumanoidRootPart")
-		humanoid = c and c:FindFirstChildOfClass("Humanoid")
-		if not root or not humanoid then return end
+		r = c and c:FindFirstChild("HumanoidRootPart")
+		h = c and c:FindFirstChildOfClass("Humanoid")
+		if not r or not h then return end
 
 		local now = tick()
-		local currPos = root.Position
+		local currPos = r.Position
 		local dt = now - prevTime
 		if dt <= 0.015 then return end
 
 		local dist = (Vector3.new(currPos.X, 0, currPos.Z) - Vector3.new(prevPos.X, 0, prevPos.Z)).Magnitude
 		local rawSpeed = dist / dt
-		local state = humanoid:GetState()
+		local state = h:GetState()
 
 		local grounded = isGrounded and isGrounded(c)
 		local vertVel = math.abs(root.Velocity.Y)
 
-		if state == Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
+		if dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
 			violationCount.tp += 1
 			if violationCount.tp >= violationLimit then
 				debounce.tp = now
@@ -911,7 +928,11 @@ local function monitor(p)
 							loopkilling = loopkilling or true
 							pcall(function()
 								if rbxg then
-									rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
+									if h.FloorMaterial == Enum.Material.Air then
+										rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
+									else
+										rbxg:SendAsync(p.Name..".. THATS NOT A SKID THATS A GHOST")
+									end
 								end
 								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
 								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
@@ -1023,6 +1044,15 @@ local function on_chatted(p)
 				rbxg:SendAsync(dummy[math.random(1,#dummy)])
 			end
 		end
+		if p.Name == "s71pl" then
+			if msg == "spawnyellow" then
+				rbxg:SendAsync("hi dad!!")
+			elseif msg:lower():find("my boy") then
+				rbxg:SendAsync(">v<")
+			elseif msg:lower():find("pat") and (p.Character:WaitForChild("HumanoidRootPart").Position - root.Position).Magnitude <= 8 then
+				rbxg:SendAsync(":⟩")
+			end
+		end
 	end)
 end
 
@@ -1032,6 +1062,10 @@ players.PlayerAdded:Connect(function(p)
 	monitor(p)
 	if p.Name == "s71pl" then
 		rbxg:SendAsync("OMG!!! HI DAD!!!")
+	elseif p.Name == "TheTerminalClone" then
+		rbxg:SendAsync("hi terminal!1!")
+	elseif p.Name == "ColonThreeSpam" then
+		rbxg:SendAsync("hi fluffy boi!!!")
 	end
 end)
 
@@ -1040,6 +1074,10 @@ for i, v in pairs(players:GetPlayers()) do
 	monitor(v)
 	if v.Name == "s71pl" then
 		rbxg:SendAsync("OMG!!! HI DAD!!!")
+	elseif v.Name == "TheTerminalClone" then
+		rbxg:SendAsync("hi terminal!1!")
+	elseif v.Name == "ColonThreeSpam" then
+		rbxg:SendAsync("hi fluffy boi!!!")
 	end
 end
 
