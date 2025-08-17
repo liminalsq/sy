@@ -671,37 +671,24 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverTime: "..tostring(tick()))
 
 	elseif cmd == "serverhop" then
-		local placeId = game.PlaceId
-		local jobId = game.JobId
-
 		local servers = {}
-		local success, res = pcall(function()
-			return game:HttpGet("https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true")
-		end)
+		local req = game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true")
+		local body = httpsService:JSONDecode(req)
 
-		if success and res then
-			local body = httpsService:JSONDecode(res)
-			if body and body.data then
-				for _, server in ipairs(body.data) do
-					if type(server) == "table" and tonumber(server.playing) and tonumber(server.maxPlayers) and server.playing < server.maxPlayers and server.id ~= jobId then
-						table.insert(servers, server.id)
-					end
+		if body and body.data then
+			for i, v in next, body.data do
+				if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= game.JobId then
+					table.insert(servers, 1, v.id)
 				end
 			end
 		end
 
 		if #servers > 0 then
-			local targetServer = servers[math.random(1, #servers)]
-			local msg = "Serverhop: teleporting to server ID "..targetServer
-			print(msg)
-			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
-			teleportServ:TeleportToPlaceInstance(placeId, targetServer, player)
+			local server = servers[math.random(1, #servers)]
+			teleportServ:TeleportToPlaceInstance(game.PlaceId, server, player)
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverhop successful. New Server Instance/Job Id: "..server)
 		else
-			local msg = "Serverhop: couldn't find a server"
-			print(msg)
-			if rbxg then pcall(function() rbxg:SendAsync(msg) end) end
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverhop unsuccessful. Couldn't find a server or server was full.")
 		end
 
 	elseif cmd == "ping" or cmd == "latency" then
