@@ -913,7 +913,9 @@ local function monitor(p)
 		end
 
 		if not grounded then
-			if vertVel < 2 and rawSpeed > 3 then
+			local vertVel = r.Velocity.Y
+
+			if vertVel > -2 and vertVel < 2 and rawSpeed > 3 then
 				if not hoverStart then
 					hoverStart = now
 				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
@@ -928,7 +930,7 @@ local function monitor(p)
 							loopkilling = true
 							pcall(function()
 								if rbxg then
-									rbxg:SendAsync(p.Name.." u dont look like a bird... seems sus...")
+									rbxg:SendAsync(p.Name.." seems to be hovering in midair (possible fly)")
 								end
 								webhook_sendMsg(overall_LOGGER, p.DisplayName.." ("..p.Name..") is flying.")
 								webhook_sendMsg(overall_LOGGER, "Added "..p.DisplayName.." ("..p.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
@@ -1005,7 +1007,7 @@ local function monitor(p)
 										loopkilling = true
 										pcall(function()
 											if rbxg then
-												rbxg:SendAsync(killer.Name.." killed "..victim.Name.." with reach ("..string.format("%.2f", closestDistance).." studs)")
+												rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", closestDistance).." studs)")
 											end
 											webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit")
 											webhook_sendMsg(overall_LOGGER, "Added "..killer.DisplayName.." ("..killer.Name..") to the looplist. (TEMPORARY. IF SPAWNYELLOW DISCONNECTS IN ANY WAY, THE LOOPLIST WILL RESET.)")
@@ -1052,7 +1054,7 @@ end
 players.PlayerAdded:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") joined.")
 	on_chatted(p)
-	if p ~= player then
+	if p ~= player or p.Name ~= player.Name then
 		monitor(p)
 	end
 	if p.Name == "s71pl" then
@@ -1066,7 +1068,7 @@ end)
 
 for i, v in pairs(players:GetPlayers()) do
 	on_chatted(v)
-	if p ~= player then
+	if v ~= player or v.Name ~= player.Name then
 		monitor(v)
 	end
 	if v.Name == "s71pl" then
