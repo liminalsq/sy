@@ -709,7 +709,7 @@ local function do_command(input)
 
 		local dest
 		if args[2] then
-			if args[2]:match("^%-?%d+$") or args[2]:match("^%-?%d+%.?%d*$") then
+			if args[2]:match("^%-?%d+[, ]%s*%-?%d+[, ]%s*%-?%d+") then
 				local posStr = table.concat(args, " ")
 				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
 				if x and y and z then
