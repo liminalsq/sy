@@ -709,28 +709,29 @@ local function do_command(input)
 
 		local dest
 		if args[2] then
-		if args[2]:match("^-?%d") then
-			local posStr = table.concat(args, " ")
-			local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
-			if x and y and z then
-				dest = Vector3.new(tonumber(x), tonumber(y), tonumber(z))
-			end
-	
-		elseif args[2]:lower() == "spawn" and spawnPoint then
-			dest = spawnPoint.Position
-	
-		elseif findPlayerByName(args[2]) then
-			local other = findPlayerByName(args[2])
-			if other and other.Character then
-				local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
-				if otherRoot then
-					dest = otherRoot.Position
+			if args[2]:match("^-?%d") then
+				local posStr = table.concat(args, " ")
+				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
+				if x and y and z then
+					dest = Vector3.new(tonumber(x), tonumber(y), tonumber(z))
+				end
+		
+			elseif args[2]:lower() == "spawn" and spawnPoint then
+				dest = spawnPoint.Position
+		
+			elseif args[2]:lower() == "platform1" then
+				dest = Vector3.new(-119, 250, -133)
+		
+			elseif findPlayerByName(args[2]) then
+				local other = findPlayerByName(args[2])
+				if other and other.Character then
+					local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
+					if otherRoot then
+						dest = otherRoot.Position
+					end
 				end
 			end
 		end
-		elseif args[2]:lower() == "platform1" then
-			dest = Vector3.new(-119, 250, -133)
-	end
 
 		if not dest then
 			if rbxg then rbxg:SendAsync("bring: no destination found") end
