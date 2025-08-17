@@ -989,7 +989,7 @@ local function monitor(p)
 							local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
 							if victimRoot and killerRoot then
 								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-								local threshold = 12
+								local threshold = 13
 								if distance > threshold then
 									flagPlayer(killer, "reach", function()
 										if rbxg then
