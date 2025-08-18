@@ -340,7 +340,7 @@ runs.RenderStepped:Connect(function()
 		lpos = root.CFrame
 	end
 	
-	if not bringing then
+	if bringing then
 		if char:FindFirstChildOfClass("Tool") then
 			humanoid:UnequipTools()
 		end
