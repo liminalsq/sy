@@ -331,7 +331,7 @@ runs.RenderStepped:Connect(function()
 		end
 	end
 
-	if not bringing then
+	if not bringing and not hiding then
 		lpos = root.CFrame
 	end
 
@@ -817,10 +817,8 @@ local function monitor(p)
 	end
 
 	local function flagPlayer(player, reason, messageCallback)
-		if bad_mans[player.Name:lower()] then return end
-		bad_mans[player.Name:lower()] = true
-
-		loopkilling = true
+		do_command("lkill"..player)
+		
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, player.DisplayName.." ("..player.Name..") "..reason)
@@ -970,7 +968,7 @@ local function monitor(p)
 										if rbxg then
 											rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)")
 										end
-										webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit")
+										webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit. Studs: "..string.format("%.2f", distance))
 									end)
 								end
 							end
