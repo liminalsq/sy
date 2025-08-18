@@ -929,7 +929,13 @@ local function monitor(p)
 		local vertVel = r.Velocity.Y
 
 		if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
-			if tick() - spawnTime > spawnGrace and dt > 0.05 then
+			local sinceSpawn = tick() - spawnTime
+			local safeDt = math.max(dt, 0.02)
+			local clampedDist = math.min(dist, 20)
+			local rawSpeed = clampedDist / safeDt
+			local safeSpeed = getSmoothedSpeed(rawSpeed)
+
+			if sinceSpawn > spawnGrace and dt > 0.05 then
 				if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
 					violationCount.tp += 1
 					if violationCount.tp >= violationLimit then
@@ -942,27 +948,25 @@ local function monitor(p)
 					violationCount.tp = 0
 				end
 
-				local speed = getSmoothedSpeed(rawSpeed)
-				if state == Enum.HumanoidStateType.Running and speed > 65 then
+				if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
 					violationCount.speed += 1
 					if violationCount.speed >= violationLimit then
 						violationCount.speed = 0
 						flagPlayer(p, "speed", function()
-							return p.Name.." can't sprint here (Speed: "..string.format("%.2f", speed)..")"
+							return p.Name.." can't sprint here (Speed: "..string.format("%.2f", safeSpeed)..")"
 						end)
 					end
 				else
 					violationCount.speed = 0
 				end
-
 			end
 		end
 
 		if not grounded then
 			local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
 			if hovering then
-				if not hoverStart then hoverStart = now
-				elseif now - hoverStart > 1.5 then
+				if not hoverStart then hoverStart = tick()
+				elseif tick() - hoverStart > 1.5 then
 					violationCount.fly += 1
 					if violationCount.fly >= violationLimit then
 						violationCount.fly = 0
