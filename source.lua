@@ -345,7 +345,7 @@ runs.Heartbeat:Connect(function()
 	if floating then
 		float_part.Parent = workspace
 		if root then
-			float_part.Position = root.Position + Vector3.new(0, 3.5, 0)
+			float_part.Position = root.Position + Vector3.new(0, -3.5, 0)
 		end
 	else
 		float_part.Parent = repstor
