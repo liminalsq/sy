@@ -907,12 +907,14 @@ local function monitor(p)
 		local vertVel = r.Velocity.Y
 
 		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
-			violationCount.tp += 1
-			if violationCount.tp >= violationLimit then
-				violationCount.tp = 0
-				flagPlayer(p, "tp", function()
-					return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
-				end)
+			if tick() - spawnTime > spawnGrace then
+				violationCount.tp += 1
+				if violationCount.tp >= violationLimit then
+					violationCount.tp = 0
+					flagPlayer(p, "tp", function()
+						return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
+					end)
+				end
 			end
 		else
 			violationCount.tp = 0
@@ -920,12 +922,14 @@ local function monitor(p)
 
 		local speed = getSmoothedSpeed(rawSpeed)
 		if state == Enum.HumanoidStateType.Running and speed > 65 then
-			violationCount.speed += 1
-			if violationCount.speed >= violationLimit then
-				violationCount.speed = 0
-				flagPlayer(p, "speed", function()
-					return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
-				end)
+			if tick() - spawnTime > spawnGrace then
+				violationCount.speed += 1
+				if violationCount.speed >= violationLimit then
+					violationCount.speed = 0
+					flagPlayer(p, "speed", function()
+						return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
+					end)
+				end
 			end
 		else
 			violationCount.speed = 0
@@ -1030,23 +1034,22 @@ local function monitor(p)
 								end
 							end
 
-							local ls = killer:FindFirstChild("leaderstats")
-							if ls and ls:FindFirstChild("KOs") and ls.KOs:IsA("NumberValue") then
-								local current = ls.KOs.Value
-								local previous = lastKOs[killer] or current
-								lastKOs[killer] = current
-
-								local change = current - previous
-								if change > 0 then
-									if change >= 3 then
-										local now = tick()
-										if now - (debounce.reach or 0) >= alertCooldown then
-											debounce.reach = now
-											flagPlayer(killer, "reach", function()
-												return killer.Name.." where do u get "..change.." kills at once"
-											end)
+							for _, plr in pairs(players:GetPlayers()) do
+								if plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("KOs") then
+									lastKOs[plr] = plr.leaderstats.KOs.Value
+									plr.leaderstats.KOs:GetPropertyChangedSignal("Value"):Connect(function()
+										local change = plr.leaderstats.KOs.Value - (lastKOs[plr] or 0)
+										lastKOs[plr] = plr.leaderstats.KOs.Value
+										if change >= 3 then
+											local now = tick()
+											if now - (debounce.reach or 0) >= alertCooldown then
+												debounce.reach = now
+												flagPlayer(plr, "reach", function()
+													return plr.Name.." where did u get "..change.." kills at once?"
+												end)
+											end
 										end
-									end
+									end)
 								end
 							end
 						end
