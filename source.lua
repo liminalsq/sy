@@ -916,33 +916,34 @@ local function monitor(p)
 		local vertVel = r.Velocity.Y
 
 		if h.Health > 0 and h:GetState() ~= Enum.HumanoidStateType.Dead then
-			if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
-				if tick() - spawnTime > spawnGrace then
+			if tick() - spawnTime > spawnGrace and tick() - prevTime > 0.05 then
+
+				-- TELEPORT CHECK
+				if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
 					violationCount.tp += 1
 					if violationCount.tp >= violationLimit then
 						violationCount.tp = 0
 						flagPlayer(p, "tp", function()
-							return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
+							return p.Name.." used an imaginary ender pearl. Distance: "..math.floor(dist).." studs"
 						end)
 					end
+				else
+					violationCount.tp = 0
 				end
-			else
-				violationCount.tp = 0
-			end
 
-			local speed = getSmoothedSpeed(rawSpeed)
-			if state == Enum.HumanoidStateType.Running and speed > 65 then
-				if tick() - spawnTime > spawnGrace then
+				local speed = getSmoothedSpeed(rawSpeed)
+				if state == Enum.HumanoidStateType.Running and speed > 65 then
 					violationCount.speed += 1
 					if violationCount.speed >= violationLimit then
 						violationCount.speed = 0
 						flagPlayer(p, "speed", function()
-							return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
+							return p.Name.." can't sprint here (Speed: "..string.format("%.2f", speed)..")"
 						end)
 					end
+				else
+					violationCount.speed = 0
 				end
-			else
-				violationCount.speed = 0
+
 			end
 		end
 
