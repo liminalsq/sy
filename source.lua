@@ -464,6 +464,41 @@ local function do_command(input)
 	local args = string.split(input, " ")
 	local cmd = args[1]:lower() -- lowercase only the command
 	table.remove(args, 1) -- remove command from args
+	
+	--probably important functions
+	local bringQueue = {}
+	local isBringing = false
+
+	local function processBringQueue()
+		if isBringing or #bringQueue == 0 then return end
+		isBringing = true
+
+		while #bringQueue > 0 do
+			local job = table.remove(bringQueue, 1)
+			local target, dest = job.target, job.dest
+
+			if target and target.Character then
+				local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
+				if theirRoot and humanoid and root then
+					local oldGrav = workspace.Gravity
+					workspace.Gravity = 0
+
+					bringing = true
+					febring(char, target.Character, dest)
+					bringing = false
+
+					workspace.Gravity = oldGrav
+					root.Velocity = Vector3.zero
+					root.CFrame = root.CFrame
+
+					if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
+					webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
+				end
+			end
+		end
+
+		isBringing = false
+	end
 
 	if cmd == "fps" then
 		print(fps)
@@ -701,14 +736,10 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
 	elseif cmd == "bring" then
-		local target = findPlayerByName(args[1] or "")
-		if not target or not target.Character then
-			if rbxg then rbxg:SendAsync("bring: target not found") end
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target not found")
-			return
-		end
-
+		local rawNames = args[1] or ""
+		local names = string.split(rawNames, ",")
 		local dest
+
 		if args[2] then
 			if args[2]:match("^%-?%d+[, ]%s*%-?%d+[, ]%s*%-?%d+") then
 				local posStr = table.concat(args, " ")
@@ -740,25 +771,19 @@ local function do_command(input)
 			return
 		end
 
-		local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
-		if not theirRoot then return end
+		for _, name in ipairs(names) do
+			name = name:match("^%s*(.-)%s*$") -- trim spaces
+			local target = findPlayerByName(name)
+			if target and target.Character then
+				table.insert(bringQueue, {target = target, dest = dest})
+			else
+				if rbxg then rbxg:SendAsync("bring: "..name.." not found") end
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target "..name.." not found")
+			end
+		end
 
-		if not (humanoid and root) then return end
-		local oldGrav = workspace.Gravity
-		workspace.Gravity = 0
-
-		bringing = true
-
-		febring(char, target.Character, dest)
-
-		bringing = false
-		workspace.Gravity = oldGrav
-		root.Velocity = Vector3.zero
-		root.CFrame = root.CFrame
-
-		if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", brought "..target.Name.." ("..target.DisplayName..")")
-
+		processBringQueue()
+	
 	elseif cmd == "resetgrav" then
 		workspace.Gravity = 196.2
 		if rbxg then rbxg:SendAsync("reset gravity") end
