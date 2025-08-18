@@ -277,6 +277,7 @@ task.spawn(function()
 		else
 			if aUnequip then
 				humanoid:UnequipTools()
+				task.wait()
 			end
 		end 
 	end
@@ -292,7 +293,7 @@ end
 local killCooldowns = {}
 local lpos = root.CFrame
 
-runs.RenderStepped:Connect(function()
+runs.Heartbeat:Connect(function()
 	if loopkilling then
 		local looplisted_preset = false
 
@@ -898,7 +899,7 @@ local function monitor(p)
 		framesSkipped = 0
 	end)
 
-	runs.RenderStepped:Connect(function()
+	runs.Heartbeat:Connect(function()
 		if whitelist[p.Name] or not p.Character then return end
 		c = p.Character
 		r = c:FindFirstChild("HumanoidRootPart")
@@ -911,7 +912,7 @@ local function monitor(p)
 
 		if framesSkipped < initialFramesToSkip then
 			prevPos = r.Position
-			prevTime = tick()
+			prevTime = now
 			framesSkipped += 1
 			return
 		end
@@ -932,8 +933,7 @@ local function monitor(p)
 			local sinceSpawn = tick() - spawnTime
 			local safeDt = math.max(dt, 0.02)
 			local clampedDist = math.min(dist, 20)
-			local rawSpeed = clampedDist / safeDt
-			local safeSpeed = getSmoothedSpeed(rawSpeed)
+			local safeSpeed = getSmoothedSpeed(clampedDist / safeDt)
 
 			if sinceSpawn > spawnGrace and dt > 0.05 then
 				if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
@@ -1041,9 +1041,7 @@ local function monitor(p)
 								local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
 								if victimRoot and killerRoot then
 									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-									local threshold = 14
-									if distance > threshold then
-										local now = tick()
+									if distance > 14 then
 										if now - (debounce.reach or 0) >= alertCooldown then
 											debounce.reach = now
 											flagPlayer(killer, "reach", function()
@@ -1060,7 +1058,6 @@ local function monitor(p)
 										local change = plr.leaderstats.KOs.Value - (lastKOs[plr] or 0)
 										lastKOs[plr] = plr.leaderstats.KOs.Value
 										if change >= 3 then
-											local now = tick()
 											if now - (debounce.reach or 0) >= alertCooldown then
 												debounce.reach = now
 												flagPlayer(plr, "reach", function()
