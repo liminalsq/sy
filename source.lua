@@ -856,6 +856,8 @@ local function monitor(p)
 	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0}
 	local spawnGrace = 3
 	local spawnTime = tick()
+	local initialFramesToSkip = 5
+	local framesSkipped = 0
 
 	local flingVelThreshold, flingSpinThreshold = 2000, 3000
 	local impossibleSpeed = 80
@@ -885,7 +887,7 @@ local function monitor(p)
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
 		end)
 	end
-	
+
 	p.CharacterAdded:Connect(function(c)
 		local r = c:WaitForChild("HumanoidRootPart")
 		prevPos = r.Position
@@ -893,12 +895,11 @@ local function monitor(p)
 		spawnTime = tick()
 		violationCount.tp = 0
 		violationCount.speed = 0
+		framesSkipped = 0
 	end)
 
 	runs.RenderStepped:Connect(function()
 		if whitelist[p.Name] or not p.Character then return end
-		if tick() - spawnTime < spawnGrace then return end
-
 		c = p.Character
 		r = c:FindFirstChild("HumanoidRootPart")
 		h = c:FindFirstChildOfClass("Humanoid")
@@ -908,17 +909,27 @@ local function monitor(p)
 		local dt = now - prevTime
 		if dt <= 0.015 then return end
 
+		if framesSkipped < initialFramesToSkip then
+			prevPos = r.Position
+			prevTime = tick()
+			framesSkipped += 1
+			return
+		end
+
 		local currPos = r.Position
 		local dist = (Vector3.new(currPos.X,0,currPos.Z) - Vector3.new(prevPos.X,0,prevPos.Z)).Magnitude
 		local rawSpeed = dist / dt
+
+		if tick() - spawnTime < spawnGrace then
+			rawSpeed = math.min(rawSpeed, 20)
+		end
+
 		local state = h:GetState()
 		local grounded = isGrounded and isGrounded(c)
 		local vertVel = r.Velocity.Y
 
-		if h.Health > 0 and h:GetState() ~= Enum.HumanoidStateType.Dead then
-			if tick() - spawnTime > spawnGrace and tick() - prevTime > 0.05 then
-
-				-- TELEPORT CHECK
+		if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
+			if tick() - spawnTime > spawnGrace and dt > 0.05 then
 				if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
 					violationCount.tp += 1
 					if violationCount.tp >= violationLimit then
@@ -984,18 +995,15 @@ local function monitor(p)
 
 		if state == Enum.HumanoidStateType.Jumping then
 			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
-
 			local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
 			if not lastJump or now - lastJump > jumpCooldown then
 				table.insert(jumpTimestamps[p], now)
 			end
-
 			for i = #jumpTimestamps[p], 1, -1 do
 				if now - jumpTimestamps[p][i] > jumpCooldown then
 					table.remove(jumpTimestamps[p], i)
 				end
 			end
-
 			if #jumpTimestamps[p] > maxRapidJumps then
 				violationCount.infjump += 1
 				if violationCount.infjump >= violationLimit then
@@ -1014,13 +1022,11 @@ local function monitor(p)
 
 		prevPos = currPos
 		prevTime = now
-		
-		local lastKOs = {}
 
+		local lastKOs = {}
 		for _, victim in pairs(players:GetPlayers()) do
 			if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
 				local humanoid = victim.Character.Humanoid
-
 				if not humanoid:FindFirstChild("ReachCheck") then
 					humanoid.Died:Connect(function()
 						local creator = humanoid:FindFirstChild("creator")
@@ -1029,11 +1035,9 @@ local function monitor(p)
 							if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
 								local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
 								local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
-
 								if victimRoot and killerRoot then
 									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
 									local threshold = 14
-
 									if distance > threshold then
 										local now = tick()
 										if now - (debounce.reach or 0) >= alertCooldown then
@@ -1045,7 +1049,6 @@ local function monitor(p)
 									end
 								end
 							end
-
 							for _, plr in pairs(players:GetPlayers()) do
 								if plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("KOs") then
 									lastKOs[plr] = plr.leaderstats.KOs.Value
