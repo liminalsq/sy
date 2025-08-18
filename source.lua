@@ -293,18 +293,8 @@ local killCooldowns = {}
 local lpos = root.CFrame
 
 runs.RenderStepped:Connect(function()
-	if #bad_mans == 0 then
-		loopkilling = false
-	else
-		loopkilling = true
-	end
-
 	if loopkilling then
-		local currentChar = player.Character
-		if not currentChar then return end
-		local currentHumanoid = currentChar:FindFirstChildOfClass("Humanoid")
-		local currentRoot = currentChar:FindFirstChild("HumanoidRootPart")
-		if not currentHumanoid or not currentRoot then return end
+		local looplisted_preset = false
 
 		for i = #bad_mans, 1, -1 do
 			local targetName = bad_mans[i]
@@ -318,11 +308,12 @@ runs.RenderStepped:Connect(function()
 			end
 
 			if targetPlayer and targetPlayer.Character then
+				looplisted_preset = true
 				local targetHumanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
 				local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
 
 				if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
-					local tool = find_tool(currentChar)
+					local tool = find_tool(char)
 					local handle = tool and find_handle(tool)
 
 					if tool and handle then
@@ -331,6 +322,10 @@ runs.RenderStepped:Connect(function()
 					end
 				end
 			end
+		end
+
+		if not looplisted_preset then
+			loopkilling = false
 		end
 	end
 
