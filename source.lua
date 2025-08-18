@@ -885,6 +885,15 @@ local function monitor(p)
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
 		end)
 	end
+	
+	p.CharacterAdded:Connect(function(c)
+		local r = c:WaitForChild("HumanoidRootPart")
+		prevPos = r.Position
+		prevTime = tick()
+		spawnTime = tick()
+		violationCount.tp = 0
+		violationCount.speed = 0
+	end)
 
 	runs.RenderStepped:Connect(function()
 		if whitelist[p.Name] or not p.Character then return end
