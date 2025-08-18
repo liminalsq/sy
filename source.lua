@@ -999,12 +999,13 @@ local function monitor(p)
 		prevPos = currPos
 		prevTime = now
 		
+		local lastKOs = {}
+
 		for _, victim in pairs(players:GetPlayers()) do
 			if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
 				local humanoid = victim.Character.Humanoid
 
 				if not humanoid:FindFirstChild("ReachCheck") then
-
 					humanoid.Died:Connect(function()
 						local creator = humanoid:FindFirstChild("creator")
 						if creator and creator.Value and creator.Value:IsA("Player") then
@@ -1023,6 +1024,26 @@ local function monitor(p)
 											debounce.reach = now
 											flagPlayer(killer, "reach", function()
 												return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
+											end)
+										end
+									end
+								end
+							end
+
+							local ls = killer:FindFirstChild("leaderstats")
+							if ls and ls:FindFirstChild("KOs") and ls.KOs:IsA("NumberValue") then
+								local current = ls.KOs.Value
+								local previous = lastKOs[killer] or current
+								lastKOs[killer] = current
+
+								local change = current - previous
+								if change > 0 then
+									if change >= 3 then
+										local now = tick()
+										if now - (debounce.reach or 0) >= alertCooldown then
+											debounce.reach = now
+											flagPlayer(killer, "reach", function()
+												return killer.Name.." where do u get "..change.." kills at once"
 											end)
 										end
 									end
