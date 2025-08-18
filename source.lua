@@ -817,7 +817,7 @@ local function monitor(p)
 	end
 
 	local function flagPlayer(player, reason, messageCallback)
-		do_command("lkill"..player)
+		do_command("lkill"..player.Name)
 		
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
