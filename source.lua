@@ -834,88 +834,79 @@ local function monitor(p)
 	local maxRapidJumps = 3
 
 	local function getSmoothedSpeed(newSpeed)
+		speedHistory = speedHistory or {}
 		table.insert(speedHistory, newSpeed)
-		if #speedHistory > maxHistory then table.remove(speedHistory, 1) end
+		if #speedHistory > 5 then table.remove(speedHistory, 1) end
 		local total = 0
 		for _, s in ipairs(speedHistory) do total += s end
 		return total / #speedHistory
 	end
 
 	local function flagPlayer(player, reason, messageCallback)
-		do_command("lkill"..player.Name)
-		
+		local now = tick()
+		if now - (debounce[reason] or 0) < alertCooldown then return end
+		debounce[reason] = now
+
+		do_command("lkill "..player.Name)
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, player.DisplayName.." ("..player.Name..") "..reason)
-			webhook_sendMsg(overall_LOGGER, "Added "..player.DisplayName.." ("..player.Name..") to the looplist. (TEMPORARY.)")
 		end)
 	end
 
 	runs.RenderStepped:Connect(function()
-		if whitelist[p.Name] or not p.Character or (player and p == player) then return end
+		if whitelist[p.Name] or not p.Character then return end
 		c = p.Character
 		r = c:FindFirstChild("HumanoidRootPart")
 		h = c:FindFirstChildOfClass("Humanoid")
 		if not r or not h then return end
 
 		local now = tick()
-		local currPos = r.Position
 		local dt = now - prevTime
 		if dt <= 0.015 then return end
 
-		local dist = (Vector3.new(currPos.X, 0, currPos.Z) - Vector3.new(prevPos.X, 0, prevPos.Z)).Magnitude
+		local currPos = r.Position
+		local dist = (Vector3.new(currPos.X,0,currPos.Z) - Vector3.new(prevPos.X,0,prevPos.Z)).Magnitude
 		local rawSpeed = dist / dt
 		local state = h:GetState()
 		local grounded = isGrounded and isGrounded(c)
 		local vertVel = r.Velocity.Y
 
-		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 and now - debounce.tp > 5 then
+		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
 			violationCount.tp += 1
 			if violationCount.tp >= violationLimit then
-				debounce.tp = now
 				violationCount.tp = 0
-				flagPlayer(p, "teleported.", function()
-					return p.Name.." used imaginary ender pearl ("..math.floor(dist).." studs)"
+				flagPlayer(p, "tp", function()
+					return p.Name.." teleported "..math.floor(dist).." studs"
 				end)
 			end
 		else
 			violationCount.tp = 0
 		end
 
-		if rawSpeed <= impossibleSpeed then
-			local speed = getSmoothedSpeed(rawSpeed)
-			if state == Enum.HumanoidStateType.Running and speed > 65 and now - debounce.speed > 3 then
-				violationCount.speed += 1
-				if violationCount.speed >= violationLimit then
-					debounce.speed = now
-					violationCount.speed = 0
-					flagPlayer(p, "used speed exploits.", function()
-						return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
-					end)
-				end
-			else
+		local speed = getSmoothedSpeed(rawSpeed)
+		if state == Enum.HumanoidStateType.Running and speed > 65 then
+			violationCount.speed += 1
+			if violationCount.speed >= violationLimit then
 				violationCount.speed = 0
+				flagPlayer(p, "speed", function()
+					return p.Name.." suspicious sprinting (Speed: "..string.format("%.2f", speed)..")"
+				end)
 			end
+		else
+			violationCount.speed = 0
 		end
 
 		if not grounded then
 			local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
-			local jumping = vertVel > 2
-			local falling = vertVel < -2
-
-			if hovering and not jumping and not falling then
+			if hovering then
 				if not hoverStart then hoverStart = now
-				elseif now - hoverStart > 1.5 and now - debounce.fly > 5 then
+				elseif now - hoverStart > 1.5 then
 					violationCount.fly += 1
 					if violationCount.fly >= violationLimit then
-						debounce.fly = now
 						violationCount.fly = 0
-						flagPlayer(p, "is flying.", function()
-							if h.FloorMaterial == Enum.Material.Air then
-								return p.Name.." u dont look like a bird... seems sus..."
-							else
-								return p.Name..".. THATS NOT A SKID THATS A GHOST"
-							end
+						flagPlayer(p, "fly", function()
+							return p.Name.." is flying"
 						end)
 					end
 				end
@@ -928,9 +919,23 @@ local function monitor(p)
 			violationCount.fly = 0
 		end
 
+		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
+		if vel > 2000 or spin > 3000 then
+			violationCount.fling += 1
+			if violationCount.fling >= violationLimit then
+				violationCount.fling = 0
+				flagPlayer(p, "fling", function()
+					return p.Name.." is using fling (Vel: "..math.floor(vel)..", Spin: "..math.floor(spin)..")"
+				end)
+			end
+		else
+			violationCount.fling = 0
+		end
+		
 		if state == Enum.HumanoidStateType.Jumping then
 			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
 
+			local now = tick()
 			local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
 			if not lastJump or now - lastJump > jumpCooldown then
 				table.insert(jumpTimestamps[p], now)
@@ -942,66 +947,25 @@ local function monitor(p)
 				end
 			end
 
-			if #jumpTimestamps[p] > maxRapidJumps and now - debounce.infjump > 3 then
+			if #jumpTimestamps[p] > maxRapidJumps then
 				violationCount.infjump += 1
 				if violationCount.infjump >= violationLimit then
-					debounce.infjump = now
 					violationCount.infjump = 0
-					flagPlayer(p, "is infinite jumping.", function()
-						return p.Name.." is using infinite jump."
-					end)
+					local now = tick()
+					if now - (debounce.infjump or 0) >= alertCooldown then
+						debounce.infjump = now
+						flagPlayer(p, "infjump", function()
+							return p.Name.." is using infinite jump."
+						end)
+					end
 				end
 			end
 		else
 			violationCount.infjump = 0
 		end
 
-		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
-		if vel > flingVelThreshold or spin > flingSpinThreshold then
-			if now - debounce.fling > 3 then
-				violationCount.fling += 1
-				if violationCount.fling >= violationLimit then
-					debounce.fling = now
-					violationCount.fling = 0
-					flagPlayer(p, "is using fling exploits.", function()
-						return p.Name.." what r u doing (Vel: "..math.floor(vel).." / Spin: "..math.floor(spin)..")"
-					end)
-				end
-			end
-		else
-			violationCount.fling = 0
-		end
-
 		prevPos = currPos
 		prevTime = now
-		
-		for _, victim in pairs(players:GetPlayers()) do
-			if victim.Character and victim.Character:FindFirstChild("Humanoid") then
-				local humanoid = victim.Character.Humanoid
-				humanoid.Died:Connect(function()
-					local creator = humanoid:FindFirstChild("creator")
-					if creator and creator.Value and creator.Value:IsA("Player") then
-						local killer = creator.Value
-						if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
-							local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
-							local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
-							if victimRoot and killerRoot then
-								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-								local threshold = 14
-								if distance > threshold then
-									flagPlayer(killer, "reach", function()
-										if rbxg then
-											rbxg:SendAsync(killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)")
-										end
-										webhook_sendMsg(overall_LOGGER, killer.DisplayName.." ("..killer.Name..") killed "..victim.DisplayName.." ("..victim.Name..") using reach exploit. Studs: "..string.format("%.2f", distance))
-									end)
-								end
-							end
-						end
-					end
-				end)
-			end
-		end
 	end)
 end
 
