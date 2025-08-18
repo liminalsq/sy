@@ -83,6 +83,7 @@ local loopkilling = false
 local hiding = false
 local floating = false
 local bringing = false
+local aUnequip = true
 
 local float_part = Instance.new("Part")
 float_part.Name = "f"
@@ -273,6 +274,10 @@ task.spawn(function()
 					end
 				end
 			end
+		else
+			if aUnequip then
+				humanoid:UnequipTools()
+			end
 		end 
 	end
 end)
@@ -333,6 +338,12 @@ runs.RenderStepped:Connect(function()
 
 	if not bringing and not hiding then
 		lpos = root.CFrame
+	end
+	
+	if not bringing then
+		if char:FindFirstChildOfClass("Tool") then
+			humanoid:UnequipTools()
+		end
 	end
 
 	if floating then
@@ -531,6 +542,33 @@ local function do_command(input)
 			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
 		else
 			rbxg:SendAsync("No new targets added.")
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+		end
+		
+	elseif cmd:sub(1,10) == "silentkill" then
+		local addedPlayers = {}
+
+		for _, name in ipairs(args) do
+			local matches = findPlayersByName(name)
+			if #matches == 0 then
+				rbxg:SendAsync("Could not find: " .. name)
+				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+			else
+				for _, targetPlayer in ipairs(matches) do
+					local targetLower = targetPlayer.Name:lower()
+					if not table.find(bad_mans, targetLower) then
+						table.insert(bad_mans, targetLower)
+						table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+					end
+				end
+			end
+		end
+
+		if #addedPlayers > 0 then
+			loopkilling = true
+			print("Loopkilling: " .. table.concat(bad_mans, ", "))
+			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+		else
 			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
 
@@ -821,13 +859,12 @@ local function monitor(p)
 	local violationLimit = 3
 	local violationCount = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0, reach = {}}
 	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0}
-	local lastAlert = {}
-	local bad_mans = {}
+	local spawnGrace = 3 -- seconds to ignore checks after spawn
+	local spawnTime = tick() -- record spawn time
 
 	local flingVelThreshold, flingSpinThreshold = 2000, 3000
 	local impossibleSpeed = 80
 	local speedHistory = {}
-	local maxHistory = 5
 	local alertCooldown = 5
 	local jumpTimestamps = {}
 	local jumpCooldown = 0.25
@@ -850,12 +887,14 @@ local function monitor(p)
 		do_command("lkill "..player.Name)
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
-			webhook_sendMsg(overall_LOGGER, player.DisplayName.." ("..player.Name..") "..reason)
+			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
 		end)
 	end
 
 	runs.RenderStepped:Connect(function()
 		if whitelist[p.Name] or not p.Character then return end
+		if tick() - spawnTime < spawnGrace then return end
+
 		c = p.Character
 		r = c:FindFirstChild("HumanoidRootPart")
 		h = c:FindFirstChildOfClass("Humanoid")
@@ -877,7 +916,7 @@ local function monitor(p)
 			if violationCount.tp >= violationLimit then
 				violationCount.tp = 0
 				flagPlayer(p, "tp", function()
-					return p.Name.." teleported "..math.floor(dist).." studs"
+					return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
 				end)
 			end
 		else
@@ -890,7 +929,7 @@ local function monitor(p)
 			if violationCount.speed >= violationLimit then
 				violationCount.speed = 0
 				flagPlayer(p, "speed", function()
-					return p.Name.." suspicious sprinting (Speed: "..string.format("%.2f", speed)..")"
+					return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
 				end)
 			end
 		else
@@ -906,7 +945,7 @@ local function monitor(p)
 					if violationCount.fly >= violationLimit then
 						violationCount.fly = 0
 						flagPlayer(p, "fly", function()
-							return p.Name.." is flying"
+							return p.Name.." u dont look like a bird..."
 						end)
 					end
 				end
@@ -920,22 +959,21 @@ local function monitor(p)
 		end
 
 		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
-		if vel > 2000 or spin > 3000 then
+		if vel > flingVelThreshold or spin > flingSpinThreshold then
 			violationCount.fling += 1
 			if violationCount.fling >= violationLimit then
 				violationCount.fling = 0
 				flagPlayer(p, "fling", function()
-					return p.Name.." is using fling (Vel: "..math.floor(vel)..", Spin: "..math.floor(spin)..")"
+					return p.Name.." flinging? thats not cool (Vel: "..math.floor(vel)..", Spin: "..math.floor(spin)..")"
 				end)
 			end
 		else
 			violationCount.fling = 0
 		end
-		
+
 		if state == Enum.HumanoidStateType.Jumping then
 			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
 
-			local now = tick()
 			local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
 			if not lastJump or now - lastJump > jumpCooldown then
 				table.insert(jumpTimestamps[p], now)
@@ -951,11 +989,10 @@ local function monitor(p)
 				violationCount.infjump += 1
 				if violationCount.infjump >= violationLimit then
 					violationCount.infjump = 0
-					local now = tick()
 					if now - (debounce.infjump or 0) >= alertCooldown then
 						debounce.infjump = now
 						flagPlayer(p, "infjump", function()
-							return p.Name.." is using infinite jump."
+							return p.Name.." this game doesnt allow that..."
 						end)
 					end
 				end
@@ -966,6 +1003,42 @@ local function monitor(p)
 
 		prevPos = currPos
 		prevTime = now
+		
+		-- Reach detection
+		for _, victim in pairs(players:GetPlayers()) do
+			if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
+				local humanoid = victim.Character.Humanoid
+
+				if not humanoid:FindFirstChild("ReachCheck") then
+
+					humanoid.Died:Connect(function()
+						local creator = humanoid:FindFirstChild("creator")
+						if creator and creator.Value and creator.Value:IsA("Player") then
+							local killer = creator.Value
+							if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
+								local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
+								local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
+
+								if victimRoot and killerRoot then
+									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+									local threshold = 14
+
+									if distance > threshold then
+										local now = tick()
+										if now - (debounce.reach or 0) >= alertCooldown then
+											debounce.reach = now
+											flagPlayer(killer, "reach", function()
+												return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
+											end)
+										end
+									end
+								end
+							end
+						end
+					end)
+				end
+			end
+		end
 	end)
 end
 
@@ -991,7 +1064,7 @@ local function on_chatted(p)
 			elseif msg:lower():find("my boy") then
 				rbxg:SendAsync(">v<")
 			elseif msg:lower():find("pat") and (p.Character:WaitForChild("HumanoidRootPart").Position - root.Position).Magnitude <= 8 then
-				rbxg:SendAsync(">⏑<")
+				rbxg:SendAsync(">▽<")
 			end
 		end
 	end)
