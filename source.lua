@@ -906,33 +906,35 @@ local function monitor(p)
 		local grounded = isGrounded and isGrounded(c)
 		local vertVel = r.Velocity.Y
 
-		if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
-			if tick() - spawnTime > spawnGrace then
-				violationCount.tp += 1
-				if violationCount.tp >= violationLimit then
-					violationCount.tp = 0
-					flagPlayer(p, "tp", function()
-						return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
-					end)
+		if h.Health > 0 and h:GetState() ~= Enum.HumanoidStateType.Dead then
+			if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
+				if tick() - spawnTime > spawnGrace then
+					violationCount.tp += 1
+					if violationCount.tp >= violationLimit then
+						violationCount.tp = 0
+						flagPlayer(p, "tp", function()
+							return p.Name.." used an imaginary ender pearl. how far: "..math.floor(dist).." studs"
+						end)
+					end
 				end
+			else
+				violationCount.tp = 0
 			end
-		else
-			violationCount.tp = 0
-		end
 
-		local speed = getSmoothedSpeed(rawSpeed)
-		if state == Enum.HumanoidStateType.Running and speed > 65 then
-			if tick() - spawnTime > spawnGrace then
-				violationCount.speed += 1
-				if violationCount.speed >= violationLimit then
-					violationCount.speed = 0
-					flagPlayer(p, "speed", function()
-						return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
-					end)
+			local speed = getSmoothedSpeed(rawSpeed)
+			if state == Enum.HumanoidStateType.Running and speed > 65 then
+				if tick() - spawnTime > spawnGrace then
+					violationCount.speed += 1
+					if violationCount.speed >= violationLimit then
+						violationCount.speed = 0
+						flagPlayer(p, "speed", function()
+							return p.Name.." u cant sprint here dummy (Speed: "..string.format("%.2f", speed)..")"
+						end)
+					end
 				end
+			else
+				violationCount.speed = 0
 			end
-		else
-			violationCount.speed = 0
 		end
 
 		if not grounded then
