@@ -293,6 +293,12 @@ local killCooldowns = {}
 local lpos = root.CFrame
 
 runs.RenderStepped:Connect(function()
+	if #bad_mans == 0 then
+		loopkilling = false
+	else
+		loopkilling = true
+	end
+
 	if loopkilling then
 		local currentChar = player.Character
 		if not currentChar then return end
@@ -338,12 +344,6 @@ runs.RenderStepped:Connect(function()
 
 	if not bringing and not hiding then
 		lpos = root.CFrame
-	end
-	
-	if bringing then
-		if char:FindFirstChildOfClass("Tool") then
-			humanoid:UnequipTools()
-		end
 	end
 
 	if floating then
@@ -773,7 +773,7 @@ local function do_command(input)
 		if rbxg then rbxg:SendAsync(msg) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
-	elseif cmd == "bring" then
+	elseif cmd == "bring" and not loopkilling then
 		local rawNames = args[1] or ""
 		local names = string.split(rawNames, ",")
 		local dest
@@ -1004,7 +1004,6 @@ local function monitor(p)
 		prevPos = currPos
 		prevTime = now
 		
-		-- Reach detection
 		for _, victim in pairs(players:GetPlayers()) do
 			if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
 				local humanoid = victim.Character.Humanoid
