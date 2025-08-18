@@ -859,8 +859,8 @@ local function monitor(p)
 	local violationLimit = 3
 	local violationCount = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0, reach = {}}
 	local debounce = {tp = 0, speed = 0, fly = 0, fling = 0, infjump = 0}
-	local spawnGrace = 3 -- seconds to ignore checks after spawn
-	local spawnTime = tick() -- record spawn time
+	local spawnGrace = 3
+	local spawnTime = tick()
 
 	local flingVelThreshold, flingSpinThreshold = 2000, 3000
 	local impossibleSpeed = 80
@@ -884,7 +884,7 @@ local function monitor(p)
 		if now - (debounce[reason] or 0) < alertCooldown then return end
 		debounce[reason] = now
 
-		do_command("lkill "..player.Name)
+		do_command("silentkill "..player.Name)
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
