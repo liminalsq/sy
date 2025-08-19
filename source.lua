@@ -447,6 +447,7 @@ local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIV
 			if ct > 0.8 + player:GetNetworkPing() then
 				break
 			end
+			task.wait()
 		end
 
 		meh:ChangeState(Enum.HumanoidStateType.GettingUp)
