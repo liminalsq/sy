@@ -494,9 +494,9 @@ local function do_command(input)
 				local job = table.remove(bringQueue, 1)
 				if job then
 					local target, dest = job.target, job.dest
-					if target and target.Character then
+					if target and target.Character and dest then
 						local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
-						if theirRoot and humanoid and root then
+						if theirRoot and root and humanoid then
 							local oldGrav = workspace.Gravity
 							workspace.Gravity = 0
 
@@ -517,6 +517,11 @@ local function do_command(input)
 			end
 			isBringing = false
 		end)
+	end
+
+	local function enqueueBring(target, dest)
+		table.insert(bringQueue, {target = target, dest = dest})
+		processBringQueue()
 	end
 
 	if cmd == "fps" then
@@ -818,17 +823,14 @@ local function do_command(input)
 		end
 
 		for _, name in ipairs(names) do
-			name = name:match("^%s*(.-)%s*$") -- trim spaces
-			local target = findPlayerByName(name)
+			local target = findPlayerByName(name:match("^%s*(.-)%s*$"))
 			if target and target.Character then
-				table.insert(bringQueue, {target = target, dest = dest})
+				enqueueBring(target, dest)
 			else
-				if rbxg then rbxg:SendAsync("bring: "..name.." not found") end
+				rbxg:SendAsync("bring: "..name.." not found")
 				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target "..name.." not found")
 			end
 		end
-
-		processBringQueue()
 	
 	elseif cmd == "resetgrav" then
 		workspace.Gravity = 196.2
