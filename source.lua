@@ -511,6 +511,7 @@ local function do_command(input)
 					webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
 				end
 			end
+			task.wait()
 		end
 
 		isBringing = false
@@ -778,15 +779,11 @@ local function do_command(input)
 		if rbxg then rbxg:SendAsync(msg) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
-	elseif cmd == "bring" then
-		local target = findPlayerByName(args[1] or "")
-		if not target or not target.Character then
-			if rbxg then rbxg:SendAsync("bring: target not found") end
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target not found")
-			return
-		end
+	elseif cmd == "bring" and not loopkilling then
+		local rawNames = args[1] or ""
+		local names = string.split(rawNames, ",")
+		local dest = nil
 
-		local dest
 		if args[2] then
 			local arg2 = args[2]:lower()
 			if args[2]:match("^%-?%d+[%s,]+%-?%d+[%s,]+%-?%d+") then
@@ -815,7 +812,27 @@ local function do_command(input)
 			end
 		end
 
-		table.insert(bringQueue, {target = target, dest = dest})
+		if not dest then
+			if rbxg then 
+				pcall(function()
+					rbxg:SendAsync("where do u want me to bring u")
+				end)
+			end
+			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
+			return
+		end
+
+		for _, name in ipairs(names) do
+			name = name:match("^%s*(.-)%s*$") -- trim spaces
+			local target = findPlayerByName(name)
+			if target and target.Character then
+				table.insert(bringQueue, {target = target, dest = dest})
+			else
+				if rbxg then rbxg:SendAsync("bring: "..name.." not found") end
+				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target "..name.." not found")
+			end
+		end
+
 		processBringQueue()
 	
 	elseif cmd == "resetgrav" then
