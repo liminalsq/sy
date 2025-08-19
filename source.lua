@@ -778,7 +778,7 @@ local function do_command(input)
 		if rbxg then rbxg:SendAsync(msg) end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
 
-	elseif cmd == "bring" and not loopkilling then
+	elseif cmd == "bring" then
 		local target = findPlayerByName(args[1] or "")
 		if not target or not target.Character then
 			if rbxg then rbxg:SendAsync("bring: target not found") end
@@ -788,15 +788,31 @@ local function do_command(input)
 
 		local dest
 		if args[2] then
-			local foundDest = findPlayerByName(args[2])
-			if foundDest and foundDest.Character then
-				local theirRoot = foundDest.Character:FindFirstChild("HumanoidRootPart")
-				if theirRoot then
-					dest = theirRoot.CFrame
+			local arg2 = args[2]:lower()
+			if args[2]:match("^%-?%d+[%s,]+%-?%d+[%s,]+%-?%d+") then
+				local posStr = table.concat(args, " ")
+				local x, y, z = posStr:match("(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)[%s,]+(-?%d+%.?%d*)")
+				if x and y and z then
+					x, y, z = tonumber(x), tonumber(y), tonumber(z)
+					if x and y and z then
+						dest = Vector3.new(x, y, z)
+					end
+				end
+			elseif arg2 == "spawn" then
+				if spawnPoint and spawnPoint.Position then
+					dest = spawnPoint.Position
+				end
+			elseif arg2 == "platform1" then
+				dest = Vector3.new(-119, 250, -133)
+			else
+				local other = findPlayerByName(args[2])
+				if other and other.Character then
+					local otherRoot = other.Character:FindFirstChild("HumanoidRootPart")
+					if otherRoot then
+						dest = otherRoot.Position
+					end
 				end
 			end
-		else
-			dest = root.CFrame
 		end
 
 		table.insert(bringQueue, {target = target, dest = dest})
