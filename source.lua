@@ -896,7 +896,7 @@ local function monitor(p)
 		if now - (debounce[reason] or 0) < alertCooldown then return end
 		debounce[reason] = now
 
-		do_command("silentkill "..player.Name)
+		do_command("sy.silentkill "..player.Name)
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
