@@ -564,7 +564,6 @@ local function do_command(input)
 		for _, name in ipairs(args) do
 			local matches = findPlayersByName(name)
 			if #matches == 0 then
-				rbxg:SendAsync("Could not find: " .. name)
 				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
 			else
 				for _, targetPlayer in ipairs(matches) do
@@ -896,7 +895,7 @@ local function monitor(p)
 		if now - (debounce[reason] or 0) < alertCooldown then return end
 		debounce[reason] = now
 
-		do_command("sy.silentkill "..player.Name)
+		do_command("sy.silentkill "..player.DisplayName)
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
