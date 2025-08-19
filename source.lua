@@ -1087,26 +1087,36 @@ end
 
 local function on_chatted(p)
 	p.Chatted:Connect(function(msg)
-		webhook_logChat(p,msg)
+		webhook_logChat(p, msg)
+
+		local lowerMsg = msg:lower()
+		local hasPrefix = lowerMsg:sub(1, #prefix) == prefix
+
 		if whitelist[p.Name] then
 			if p.Name ~= player.Name then
-				do_command(msg)	
+				do_command(msg)
 			end
 		else
-			print('no')
-			--if p.Name ~= player.Name then
-			--	webhook_sendMsg(overall_LOGGER, p.Name.." non-whitelist player tried to use a command.")
-			--end
-			if math.random(1,20) == 1 then
-				rbxg:SendAsync(dummy[math.random(1,#dummy)])
+			if hasPrefix then
+				if p.Name ~= player.Name then
+					webhook_sendMsg(overall_LOGGER, p.Name.." non-whitelist player tried to use a command.")
+				end
+				rbxg:SendAsync("you are not allowed to use commands")
+			else
+				if math.random(1, 20) == 1 then
+					rbxg:SendAsync(dummy[math.random(1, #dummy)])
+				end
 			end
 		end
+
 		if p.Name == "s71pl" then
-			if msg:lower():find("spawnyellow") or msg:lower():find("son") then
+			local rootPos = root.Position
+			local hrpPos = p.Character:WaitForChild("HumanoidRootPart").Position
+			if lowerMsg:find("spawnyellow") or lowerMsg:find("son") then
 				rbxg:SendAsync("hi dad!!")
-			elseif msg:lower():find("my boy") then
+			elseif lowerMsg:find("my boy") then
 				rbxg:SendAsync(">v<")
-			elseif msg:lower():find("pat") and (p.Character:WaitForChild("HumanoidRootPart").Position - root.Position).Magnitude <= 8 then
+			elseif lowerMsg:find("pat") and (hrpPos - rootPos).Magnitude <= 8 then
 				rbxg:SendAsync(">▽<")
 			end
 		end
