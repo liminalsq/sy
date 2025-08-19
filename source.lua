@@ -511,7 +511,6 @@ local function do_command(input)
 					webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
 				end
 			end
-			task.wait()
 		end
 
 		isBringing = false
