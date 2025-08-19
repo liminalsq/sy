@@ -486,34 +486,37 @@ local function do_command(input)
 	local isBringing = false
 
 	local function processBringQueue()
-		if isBringing or #bringQueue == 0 then return end
+		if isBringing then return end
 		isBringing = true
 
-		while #bringQueue > 0 do
-			local job = table.remove(bringQueue, 1)
-			local target, dest = job.target, job.dest
+		task.spawn(function()
+			while #bringQueue > 0 do
+				local job = table.remove(bringQueue, 1)
+				if job then
+					local target, dest = job.target, job.dest
+					if target and target.Character then
+						local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
+						if theirRoot and humanoid and root then
+							local oldGrav = workspace.Gravity
+							workspace.Gravity = 0
 
-			if target and target.Character then
-				local theirRoot = target.Character:FindFirstChild("HumanoidRootPart")
-				if theirRoot and humanoid and root then
-					local oldGrav = workspace.Gravity
-					workspace.Gravity = 0
+							bringing = true
+							febring(char, target.Character, dest)
+							bringing = false
 
-					bringing = true
-					febring(char, target.Character, dest)
-					bringing = false
+							workspace.Gravity = oldGrav
+							root.Velocity = Vector3.zero
+							root.CFrame = root.CFrame
 
-					workspace.Gravity = oldGrav
-					root.Velocity = Vector3.zero
-					root.CFrame = root.CFrame
-
-					if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
-					webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
+							if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
+							webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
+						end
+					end
 				end
+				task.wait()
 			end
-		end
-
-		isBringing = false
+			isBringing = false
+		end)
 	end
 
 	if cmd == "fps" then
