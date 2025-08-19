@@ -463,16 +463,24 @@ local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIV
 	end
 end
 
+local prefix = "sy."
+
 local function do_command(input)
 	local char = player.Character or player.CharacterAdded:Wait()
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
 	local root = char:FindFirstChild("HumanoidRootPart")
 
-	local args = string.split(input, " ")
+	if not (input:lower():sub(1, #prefix) == prefix) then
+		return
+	end
+
+	local trimmedInput = input:sub(#prefix + 1)
+
+	local args = string.split(trimmedInput, " ")
 	local cmd = args[1]:lower() -- lowercase only the command
 	table.remove(args, 1) -- remove command from args
-	
-	--probably important functions
+
+	-- probably important functions
 	local bringQueue = {}
 	local isBringing = false
 
