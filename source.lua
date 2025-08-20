@@ -1170,7 +1170,7 @@ players.PlayerAdded:Connect(function(p)
 	end
 	if p.Name == "s71pl" then
 		rbxg:SendAsync("OMG!!! HI DAD!!!")
-	elseif p.Name == "TheTerminalClone" then
+	elseif p.Name == "TheTerminalClone" or p.Name == "STEVETheReal916" then
 		rbxg:SendAsync("hi terminal!1!")
 	elseif p.Name == "ColonThreeSpam" then
 		rbxg:SendAsync("hi fluffy boi!!!")
