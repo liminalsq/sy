@@ -911,179 +911,186 @@ local function monitor(p)
 		violationCount.speed = 0
 		framesSkipped = 0
 	end)
+	
+	local mon_timer = 0
 
 	runs.Heartbeat:Connect(function()
-		if whitelist[p.Name] or not p.Character then return end
-		c = p.Character
-		r = c:FindFirstChild("HumanoidRootPart")
-		h = c:FindFirstChildOfClass("Humanoid")
-		if not r or not h then return end
+		if tick() - mon_timer > 0.1 then
+			mon_timer = tick()
+			if whitelist[p.Name] or not p.Character then return end
+				if not whitelist[p.Name] then -- fallback cus sometimes the original check doesnt work
+					c = p.Character
+					r = c:FindFirstChild("HumanoidRootPart")
+					h = c:FindFirstChildOfClass("Humanoid")
+					if not r or not h then return end
 
-		local now = tick()
-		local dt = now - prevTime
-		if dt <= 0.015 then return end
+					local now = tick()
+					local dt = now - prevTime
+					if dt <= 0.015 then return end
 
-		if framesSkipped < initialFramesToSkip then
-			prevPos = r.Position
-			prevTime = now
-			framesSkipped += 1
-			return
-		end
-
-		local currPos = r.Position
-		local dist = (Vector3.new(currPos.X,0,currPos.Z) - Vector3.new(prevPos.X,0,prevPos.Z)).Magnitude
-		local rawSpeed = dist / dt
-
-		if tick() - spawnTime < spawnGrace then
-			rawSpeed = math.min(rawSpeed, 20)
-		end
-
-		local state = h:GetState()
-		local grounded = isGrounded and isGrounded(c)
-		local vertVel = r.Velocity.Y
-
-		if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
-			local sinceSpawn = tick() - spawnTime
-			local safeDt = math.max(dt, 0.02)
-			local clampedDist = math.min(dist, 20)
-			local safeSpeed = getSmoothedSpeed(clampedDist / safeDt)
-
-			if sinceSpawn > spawnGrace and dt > 0.05 then
-				if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
-					violationCount.tp += 1
-					if violationCount.tp >= violationLimit then
-						violationCount.tp = 0
-						flagPlayer(p, "tp", function()
-							return p.Name.." used an imaginary ender pearl. Distance: "..math.floor(dist).." studs"
-						end)
+					if framesSkipped < initialFramesToSkip then
+						prevPos = r.Position
+						prevTime = now
+						framesSkipped += 1
+						return
 					end
-				else
-					violationCount.tp = 0
-				end
 
-				if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
-					violationCount.speed += 1
-					if violationCount.speed >= violationLimit then
-						violationCount.speed = 0
-						flagPlayer(p, "speed", function()
-							return p.Name.." can't sprint here (Speed: "..string.format("%.2f", safeSpeed)..")"
-						end)
+					local currPos = r.Position
+					local dist = (Vector3.new(currPos.X,0,currPos.Z) - Vector3.new(prevPos.X,0,prevPos.Z)).Magnitude
+					local rawSpeed = dist / dt
+
+					if tick() - spawnTime < spawnGrace then
+						rawSpeed = math.min(rawSpeed, 20)
 					end
-				else
-					violationCount.speed = 0
-				end
-			end
-		end
 
-		if not grounded then
-			local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
-			if hovering then
-				if not hoverStart then hoverStart = tick()
-				elseif tick() - hoverStart > 1.5 then
-					violationCount.fly += 1
-					if violationCount.fly >= violationLimit then
-						violationCount.fly = 0
-						flagPlayer(p, "fly", function()
-							return p.Name.." u dont look like a bird..."
-						end)
+					local state = h:GetState()
+					local grounded = isGrounded and isGrounded(c)
+					local vertVel = r.Velocity.Y
+
+					if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
+						local sinceSpawn = tick() - spawnTime
+						local safeDt = math.max(dt, 0.02)
+						local clampedDist = math.min(dist, 20)
+						local safeSpeed = getSmoothedSpeed(clampedDist / safeDt)
+
+						if sinceSpawn > spawnGrace and dt > 0.05 then
+							if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
+								violationCount.tp += 1
+								if violationCount.tp >= violationLimit then
+									violationCount.tp = 0
+									flagPlayer(p, "tp", function()
+										return p.Name.." used an imaginary ender pearl. Distance: "..math.floor(dist).." studs"
+									end)
+								end
+							else
+								violationCount.tp = 0
+							end
+
+							if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
+								violationCount.speed += 1
+								if violationCount.speed >= violationLimit then
+									violationCount.speed = 0
+									flagPlayer(p, "speed", function()
+										return p.Name.." can't sprint here (Speed: "..string.format("%.2f", safeSpeed)..")"
+									end)
+								end
+							else
+								violationCount.speed = 0
+							end
+						end
 					end
-				end
-			else
-				hoverStart = nil
-				violationCount.fly = 0
-			end
-		else
-			hoverStart = nil
-			violationCount.fly = 0
-		end
 
-		local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
-		if vel > flingVelThreshold or spin > flingSpinThreshold then
-			violationCount.fling += 1
-			if violationCount.fling >= violationLimit then
-				violationCount.fling = 0
-				flagPlayer(p, "fling", function()
-					return p.Name.." flinging? thats not cool (Vel: "..math.floor(vel)..", Spin: "..math.floor(spin)..")"
-				end)
-			end
-		else
-			violationCount.fling = 0
-		end
-
-		if state == Enum.HumanoidStateType.Jumping then
-			if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
-			local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
-			if not lastJump or now - lastJump > jumpCooldown then
-				table.insert(jumpTimestamps[p], now)
-			end
-			for i = #jumpTimestamps[p], 1, -1 do
-				if now - jumpTimestamps[p][i] > jumpCooldown then
-					table.remove(jumpTimestamps[p], i)
-				end
-			end
-			if #jumpTimestamps[p] > maxRapidJumps then
-				violationCount.infjump += 1
-				if violationCount.infjump >= violationLimit then
-					violationCount.infjump = 0
-					if now - (debounce.infjump or 0) >= alertCooldown then
-						debounce.infjump = now
-						flagPlayer(p, "infjump", function()
-							return p.Name.." this game doesnt allow that..."
-						end)
-					end
-				end
-			end
-		else
-			violationCount.infjump = 0
-		end
-
-		prevPos = currPos
-		prevTime = now
-
-		local lastKOs = {}
-		for _, victim in pairs(players:GetPlayers()) do
-			if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
-				local humanoid = victim.Character.Humanoid
-				if not humanoid:FindFirstChild("ReachCheck") then
-					humanoid.Died:Connect(function()
-						local creator = humanoid:FindFirstChild("creator")
-						if creator and creator.Value and creator.Value:IsA("Player") then
-							local killer = creator.Value
-							if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
-								local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
-								local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
-								if victimRoot and killerRoot then
-									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-									if distance > 14 then
-										if now - (debounce.reach or 0) >= alertCooldown then
-											debounce.reach = now
-											flagPlayer(killer, "reach", function()
-												return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
-											end)
-										end
-									end
+					if not grounded then
+						local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
+						if hovering then
+							if not hoverStart then hoverStart = tick()
+							elseif tick() - hoverStart > 1.5 then
+								violationCount.fly += 1
+								if violationCount.fly >= violationLimit then
+									violationCount.fly = 0
+									flagPlayer(p, "fly", function()
+										return p.Name.." u dont look like a bird..."
+									end)
 								end
 							end
-							for _, plr in pairs(players:GetPlayers()) do
-								if plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("KOs") then
-									lastKOs[plr] = plr.leaderstats.KOs.Value
-									plr.leaderstats.KOs:GetPropertyChangedSignal("Value"):Connect(function()
-										local change = plr.leaderstats.KOs.Value - (lastKOs[plr] or 0)
-										lastKOs[plr] = plr.leaderstats.KOs.Value
-										if change >= 3 then
-											if now - (debounce.reach or 0) >= alertCooldown then
-												debounce.reach = now
-												flagPlayer(plr, "reach", function()
-													return plr.Name.." where did u get "..change.." kills at once?"
-												end)
-											end
-										end
+						else
+							hoverStart = nil
+							violationCount.fly = 0
+						end
+					else
+						hoverStart = nil
+						violationCount.fly = 0
+					end
+
+					local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
+					if vel > flingVelThreshold or spin > flingSpinThreshold then
+						violationCount.fling += 1
+						if violationCount.fling >= violationLimit then
+							violationCount.fling = 0
+							flagPlayer(p, "fling", function()
+								return p.Name.." flinging? thats not cool (Vel: "..math.floor(vel)..", Spin: "..math.floor(spin)..")"
+							end)
+						end
+					else
+						violationCount.fling = 0
+					end
+
+					if state == Enum.HumanoidStateType.Jumping then
+						if not jumpTimestamps[p] then jumpTimestamps[p] = {} end
+						local lastJump = jumpTimestamps[p][#jumpTimestamps[p]]
+						if not lastJump or now - lastJump > jumpCooldown then
+							table.insert(jumpTimestamps[p], now)
+						end
+						for i = #jumpTimestamps[p], 1, -1 do
+							if now - jumpTimestamps[p][i] > jumpCooldown then
+								table.remove(jumpTimestamps[p], i)
+							end
+						end
+						if #jumpTimestamps[p] > maxRapidJumps then
+							violationCount.infjump += 1
+							if violationCount.infjump >= violationLimit then
+								violationCount.infjump = 0
+								if now - (debounce.infjump or 0) >= alertCooldown then
+									debounce.infjump = now
+									flagPlayer(p, "infjump", function()
+										return p.Name.." this game doesnt allow that..."
 									end)
 								end
 							end
 						end
-					end)
-				end
+					else
+						violationCount.infjump = 0
+					end
+
+					prevPos = currPos
+					prevTime = now
+
+					local lastKOs = {}
+					for _, victim in pairs(players:GetPlayers()) do
+						if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
+							local humanoid = victim.Character.Humanoid
+							if not humanoid:FindFirstChild("ReachCheck") then
+								humanoid.Died:Connect(function()
+									local creator = humanoid:FindFirstChild("creator")
+									if creator and creator.Value and creator.Value:IsA("Player") then
+										local killer = creator.Value
+										if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
+											local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
+											local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
+											if victimRoot and killerRoot then
+												local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+												if distance > 14 then
+													if now - (debounce.reach or 0) >= alertCooldown then
+														debounce.reach = now
+														flagPlayer(killer, "reach. Who? "..victim.Name.." ("..victim.DisplayName..")", function()
+															return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
+														end)
+													end
+												end
+											end
+										end
+										for _, plr in pairs(players:GetPlayers()) do
+											if plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("KOs") then
+												lastKOs[plr] = plr.leaderstats.KOs.Value
+												plr.leaderstats.KOs:GetPropertyChangedSignal("Value"):Connect(function()
+													local change = plr.leaderstats.KOs.Value - (lastKOs[plr] or 0)
+													lastKOs[plr] = plr.leaderstats.KOs.Value
+													if change >= 3 then
+														if now - (debounce.reach or 0) >= alertCooldown then
+															debounce.reach = now
+															flagPlayer(plr, "reach. Fallback and backup function detected suspicious rise in KOs.", function()
+																return plr.Name.." where did u get "..change.." kills at once?"
+															end)
+														end
+													end
+												end)
+											end
+										end
+									end
+								end)
+							end
+						end
+					end
 			end
 		end
 	end)
