@@ -987,24 +987,25 @@ local function monitor(p)
 						end
 					end
 
-				if not grounded then
+				if not grounded and (state ~= Enum.HumanoidStateType.Freefall and state ~= Enum.HumanoidStateType.PlatformStanding) then
 					local vertVel = r.Velocity.Y
 					local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
-
-					if hovering and state ~= Enum.HumanoidStateType.Freefall and state == Enum.HumanoidStateType.PlatformStanding --[[anti false alarm]] then
+					
+					if hovering then
 						local cam = workspace.CurrentCamera
-						local lookDir = (cam.CFrame.LookVector).Unit
-						local charDir = (r.CFrame.LookVector).Unit
-
+						local lookDir = cam.CFrame.LookVector.Unit
+						local charDir = r.CFrame.LookVector.Unit
 						local dot = lookDir:Dot(charDir)
-						if math.abs(dot) < 0.5 then
-							if not hoverStart then hoverStart = tick()
-							elseif tick() - hoverStart > 1.5 then
+
+						if math.abs(dot) < 0.3 then
+							if not hoverStart then
+								hoverStart = tick()
+							elseif tick() - hoverStart > 2.0 then
 								violationCount.fly += 1
 								if violationCount.fly >= violationLimit then
 									violationCount.fly = 0
 									flagPlayer(p, "fly", function()
-										return p.Name.." ur flying, but where are ur wings?"
+										return p.Name.." ur flying, but where r ur wings"
 									end)
 								end
 							end
