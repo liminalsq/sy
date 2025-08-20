@@ -195,8 +195,6 @@ local fps = 0
 local frameCount = 0
 local elapsedTime = 0
 
-print("FPS function")
-
 runs.RenderStepped:Connect(function(dt)
 	frameCount += 1
 	elapsedTime += dt
@@ -206,8 +204,6 @@ runs.RenderStepped:Connect(function(dt)
 		elapsedTime = 0
 	end
 end)
-
-print("find tool and handle function")
 
 local function find_handle(tool)
 	if tool and tool:IsA("Tool") then
@@ -240,8 +236,6 @@ local function find_tool(char)
 	return nil
 end
 
-print("respawn handler")
-
 player.CharacterAdded:Connect(function(c)
 	char = c
 	humanoid = char:WaitForChild("Humanoid")
@@ -267,8 +261,6 @@ player.CharacterAdded:Connect(function(c)
 	end)
 end)
 
-print("while loop, loopkill equip logic")
-
 task.spawn(function()
 	while wait(0.9) do
 		if loopkilling then
@@ -291,8 +283,6 @@ task.spawn(function()
 	end
 end)
 
-print("kill function")
-
 local function kill(toolHandle, targetHumanoidRootPart)
 	firetouchinterest(toolHandle, targetHumanoidRootPart, 0)
 	firetouchinterest(toolHandle, targetHumanoidRootPart, 1)
@@ -300,8 +290,6 @@ end
 
 local killCooldowns = {}
 local lpos = root.CFrame
-
-print("looplist logic i guess")
 
 runs.Heartbeat:Connect(function()
 	if humanoid.Health > 0 or humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
@@ -364,8 +352,6 @@ runs.Heartbeat:Connect(function()
 	end
 end)
 
-print("find players functions")
-
 local function findPlayerByName(nameLower)
 	for _, plr in ipairs(game.Players:GetPlayers()) do
 		local nameLowered = plr.Name:lower()
@@ -390,8 +376,6 @@ local function findPlayersByName(query)
 	end
 	return matches
 end
-
-print("bring")
 
 local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
 	tries = tries or 1
@@ -479,8 +463,6 @@ local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIV
 		warn("[febring] Error:", err)
 	end
 end
-
-print("commands")
 
 local prefix = "sy."
 
@@ -861,8 +843,6 @@ local function do_command(input)
 	end
 end
 
-print("monitoring")
-
 local function isGrounded(char)
 	local root = char:FindFirstChild("HumanoidRootPart")
 	if not root then return false end
@@ -1123,11 +1103,8 @@ local function monitor(p)
 	end)
 end
 
-print("on chatted function")
-
 local function on_chatted(p : Player)
-	print("getting chats")
-	p.Chatted:Connect(function(msg)
+	textCh.MessageReceived:Connect(function(msg) --update, lets see
 		print("player chatted")
 		webhook_logChat(p, msg)
 
@@ -1163,12 +1140,9 @@ local function on_chatted(p : Player)
 	end)
 end
 
-print("players handling")
-
 players.PlayerAdded:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") joined.")
 	on_chatted(p)
-	print("on_chatted works")
 	if p ~= player or p.Name ~= player.Name then
 		monitor(p)
 	end
@@ -1195,8 +1169,6 @@ for i, v in pairs(players:GetPlayers()) do
 		rbxg:SendAsync("hi fluffy boi!!!")
 	end
 end
-
-print("player leave handling")
 
 players.PlayerRemoving:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") left.")
