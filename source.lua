@@ -1103,22 +1103,25 @@ local function monitor(p)
 	end)
 end
 
-local function on_chatted(p : Player)
-	textCh.MessageReceived:Connect(function(msg) --update, lets see
-		print("player chatted")
-		webhook_logChat(p, msg)
+local function on_chatted()
+	textCh.MessageReceived:Connect(function(message)
+		local sender = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
+		if not sender then return end
+
+		local msg = message.Text
+		webhook_logChat(sender, msg)
 
 		local lowerMsg = msg:lower()
 		local hasPrefix = lowerMsg:sub(1, #prefix) == prefix
 
-		if whitelist[p.Name] then
-			if p.Name ~= player.Name then
+		if whitelist[sender.Name] then
+			if sender.Name ~= player.Name then
 				do_command(msg)
 			end
 		else
 			if hasPrefix then
-				if p.Name ~= player.Name then
-					webhook_sendMsg(overall_LOGGER, p.Name.." ("..p.DisplayName..") non-whitelist player tried to use a command.")
+				if sender.Name ~= player.Name then
+					webhook_sendMsg(overall_LOGGER, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
 				end
 				if math.random(1, 20) == 1 then
 					rbxg:SendAsync(dummy[math.random(1, #dummy)])
@@ -1126,14 +1129,14 @@ local function on_chatted(p : Player)
 			end
 		end
 
-		if p.Name == "s71pl" then
+		if sender.Name == "s71pl" then
 			local rootPos = root.Position
-			local hrpPos = p.Character:WaitForChild("HumanoidRootPart").Position
+			local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
 			if lowerMsg:find("spawnyellow") or lowerMsg:find("son") then
 				rbxg:SendAsync("hi dad!!")
 			elseif lowerMsg:find("my boy") then
 				rbxg:SendAsync(">v<")
-			elseif lowerMsg:find("pat") and (hrpPos - rootPos).Magnitude <= 8 then
+			elseif lowerMsg:find("pat") and hrp and (hrp.Position - rootPos).Magnitude <= 8 then
 				rbxg:SendAsync(">▽<")
 			end
 		end
