@@ -1126,6 +1126,7 @@ end
 print("on chatted function")
 
 local function on_chatted(p : Player)
+	print("getting chats")
 	p.Chatted:Connect(function(msg)
 		print("player chatted")
 		webhook_logChat(p, msg)
