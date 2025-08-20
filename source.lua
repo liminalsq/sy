@@ -987,16 +987,24 @@ local function monitor(p)
 						end
 					end
 
-					if not grounded then
-						local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
-						if hovering then
+				if not grounded then
+					local vertVel = r.Velocity.Y
+					local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
+
+					if hovering then
+						local cam = workspace.CurrentCamera
+						local lookDir = (cam.CFrame.LookVector).Unit
+						local charDir = (r.CFrame.LookVector).Unit
+
+						local dot = lookDir:Dot(charDir)
+						if math.abs(dot) < 0.5 then
 							if not hoverStart then hoverStart = tick()
 							elseif tick() - hoverStart > 1.5 then
 								violationCount.fly += 1
 								if violationCount.fly >= violationLimit then
 									violationCount.fly = 0
 									flagPlayer(p, "fly", function()
-										return p.Name.." u dont look like a bird..."
+										return p.Name.." ur flying, but where are ur wings?"
 									end)
 								end
 							end
@@ -1008,6 +1016,7 @@ local function monitor(p)
 						hoverStart = nil
 						violationCount.fly = 0
 					end
+				end
 
 					local vel, spin = r.Velocity.Magnitude, r.RotVelocity.Magnitude
 					if vel > flingVelThreshold or spin > flingSpinThreshold then
