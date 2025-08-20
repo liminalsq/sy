@@ -1078,7 +1078,7 @@ local function monitor(p)
 												if distance > 14 then
 													if now - (debounce.reach or 0) >= alertCooldown then
 														debounce.reach = now
-														flagPlayer(killer, "reach. Who? "..victim.Name.." ("..victim.DisplayName..")", function()
+													flagPlayer(killer, "reach. Who? "..victim.Name.." ("..victim.DisplayName..") at "..string.format("%.2f", distance).." studs.", function()
 															return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
 														end)
 													end
