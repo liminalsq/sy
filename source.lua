@@ -891,16 +891,23 @@ local function monitor(p)
 	end
 
 	local function flagPlayer(player, reason, messageCallback)
+		if whitelist[player.Name] then return end 
+		if table.find(bad_mans, player.Name:lower()) then return end 
+
 		local now = tick()
 		if now - (debounce[reason] or 0) < alertCooldown then return end
 		debounce[reason] = now
 
+		table.insert(bad_mans, player.Name:lower())
+
 		do_command("sy.silentkill "..player.DisplayName)
+
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
 		end)
 	end
+
 
 	p.CharacterAdded:Connect(function(c)
 		local r = c:WaitForChild("HumanoidRootPart")
