@@ -1105,8 +1105,6 @@ local function on_chatted(p)
 				if p.Name ~= player.Name then
 					webhook_sendMsg(overall_LOGGER, p.Name.." non-whitelist player tried to use a command.")
 				end
-				rbxg:SendAsync("you are not allowed to use commands")
-			else
 				if math.random(1, 20) == 1 then
 					rbxg:SendAsync(dummy[math.random(1, #dummy)])
 				end
