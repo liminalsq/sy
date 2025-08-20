@@ -1125,8 +1125,9 @@ end
 
 print("on chatted function")
 
-local function on_chatted(p)
+local function on_chatted(p : Player)
 	p.Chatted:Connect(function(msg)
+		print("player chatted")
 		webhook_logChat(p, msg)
 
 		local lowerMsg = msg:lower()
@@ -1166,6 +1167,7 @@ print("players handling")
 players.PlayerAdded:Connect(function(p)
 	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") joined.")
 	on_chatted(p)
+	print("on_chatted works")
 	if p ~= player or p.Name ~= player.Name then
 		monitor(p)
 	end
@@ -1180,6 +1182,7 @@ end)
 
 for i, v in pairs(players:GetPlayers()) do
 	on_chatted(v)
+	print("on_chatted works")
 	if v ~= player or v.Name ~= player.Name then
 		monitor(v)
 	end
