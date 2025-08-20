@@ -80,7 +80,7 @@ local humanoid = char:FindFirstChildOfClass("Humanoid")
 local root = char:FindFirstChild("HumanoidRootPart")
 
 local loopkilling = false
-local hiding = false
+local hiding = true --why not lol
 local floating = false
 local bringing = false
 local aUnequip = true
