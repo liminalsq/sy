@@ -284,71 +284,71 @@ task.spawn(function()
 end)
 
 local function kill(toolHandle, targetHumanoidRootPart)
-	pcall(function()
-		firetouchinterest(toolHandle, targetHumanoidRootPart, 0)
-		firetouchinterest(toolHandle, targetHumanoidRootPart, 1)
-	end)
+	firetouchinterest(toolHandle, targetHumanoidRootPart, 0)
+	firetouchinterest(toolHandle, targetHumanoidRootPart, 1)
 end
 
 local killCooldowns = {}
 local lpos = root.CFrame
 
 runs.Heartbeat:Connect(function()
-	if loopkilling then
-		local looplisted_preset = false
+	if humanoid.Health > 0 or humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
+		if loopkilling then
+			local looplisted_preset = false
 
-		for i = #bad_mans, 1, -1 do
-			local targetName = bad_mans[i]
-			local targetPlayer
+			for i = #bad_mans, 1, -1 do
+				local targetName = bad_mans[i]
+				local targetPlayer
 
-			for _, p in ipairs(players:GetPlayers()) do
-				if p.Name:lower() == targetName or p.DisplayName:lower() == targetName then
-					targetPlayer = p
-					break
+				for _, p in ipairs(players:GetPlayers()) do
+					if p.Name:lower() == targetName or p.DisplayName:lower() == targetName then
+						targetPlayer = p
+						break
+					end
 				end
-			end
 
-			if targetPlayer and targetPlayer.Character then
-				looplisted_preset = true
-				local targetHumanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-				local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+				if targetPlayer and targetPlayer.Character then
+					looplisted_preset = true
+					local targetHumanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+					local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
 
-				if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
-					local tool = find_tool(char)
-					local handle = tool and find_handle(tool)
+					if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
+						local tool = find_tool(char)
+						local handle = tool and find_handle(tool)
 
-					if tool and handle then
-						tool:Activate()
-						kill(handle, targetRoot)
+						if tool and handle then
+							tool:Activate()
+							kill(handle, targetRoot)
+						end
 					end
 				end
 			end
-		end
 
-		if not looplisted_preset then
-			loopkilling = false
-		end
-	end
-
-	if hiding then
-		if root then
-			if not bringing then
-				root.CFrame = CFrame.new(0, -65536, 65536)
+			if not looplisted_preset then
+				loopkilling = false
 			end
 		end
-	end
 
-	if not bringing and not hiding then
-		lpos = root.CFrame
-	end
-
-	if floating then
-		float_part.Parent = workspace
-		if root then
-			float_part.Position = root.Position + Vector3.new(0, -3.5, 0)
+		if hiding then
+			if root then
+				if not bringing then
+					root.CFrame = CFrame.new(0, -65536, 65536)
+				end
+			end
 		end
-	else
-		float_part.Parent = repstor
+
+		if not bringing and not hiding then
+			lpos = root.CFrame
+		end
+
+		if floating then
+			float_part.Parent = workspace
+			if root then
+				float_part.Position = root.Position + Vector3.new(0, -3.5, 0)
+			end
+		else
+			float_part.Parent = repstor
+		end
 	end
 end)
 
