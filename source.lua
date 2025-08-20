@@ -1103,12 +1103,21 @@ local function monitor(p)
 	end)
 end
 
+local lastSentMessage = {}
+
 local function on_chatted()
 	textCh.MessageReceived:Connect(function(message)
 		local sender = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
 		if not sender then return end
 
 		local msg = message.Text
+		if not msg or msg == "" then return end
+
+		if lastSentMessage[sender.UserId] == msg then
+			return
+		end
+		lastSentMessage[sender.UserId] = msg
+
 		webhook_logChat(sender, msg)
 
 		local lowerMsg = msg:lower()
