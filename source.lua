@@ -80,7 +80,7 @@ local humanoid = char:FindFirstChildOfClass("Humanoid")
 local root = char:FindFirstChild("HumanoidRootPart")
 
 local loopkilling = false
-local hiding = true --why not lol
+local hiding = false
 local floating = false
 local bringing = false
 local aUnequip = true
@@ -1102,6 +1102,8 @@ local function monitor(p)
 		end
 	end)
 end
+
+hiding = true -- idk just set it like this cus commands wont work if "local hiding = true"
 
 local function on_chatted(p)
 	p.Chatted:Connect(function(msg)
