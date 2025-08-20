@@ -1103,8 +1103,6 @@ local function monitor(p)
 	end)
 end
 
---hiding = true -- idk just set it like this cus commands wont work if "local hiding = true"
-
 local function on_chatted(p)
 	p.Chatted:Connect(function(msg)
 		webhook_logChat(p, msg)
