@@ -991,7 +991,7 @@ local function monitor(p)
 					local vertVel = r.Velocity.Y
 					local hovering = math.abs(vertVel) < 1 and rawSpeed > 3
 
-					if hovering and state ~= Enum.HumanoidStateType.Freefall or state ~= Enum.HumanoidStateType.PlatformStanding --[[anti false alarm]] then
+					if hovering and state ~= Enum.HumanoidStateType.Freefall and state == Enum.HumanoidStateType.PlatformStanding --[[anti false alarm]] then
 						local cam = workspace.CurrentCamera
 						local lookDir = (cam.CFrame.LookVector).Unit
 						local charDir = (r.CFrame.LookVector).Unit
