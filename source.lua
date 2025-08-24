@@ -951,7 +951,7 @@ local function monitor(p)
 		if tick() - mon_timer > 0.1 then
 			mon_timer = tick()
 			if whitelist[p.Name] or not p.Character then return end
-				if not whitelist[p.Name] then -- fallback cus sometimes the original check doesnt work
+				if not whitelist[p.Name] or p.Name ~= player.Name or p ~= player then -- fallback cus sometimes the original check doesnt work
 					c = p.Character
 					r = c:FindFirstChild("HumanoidRootPart")
 					h = c:FindFirstChildOfClass("Humanoid")
@@ -1091,56 +1091,105 @@ local function monitor(p)
 
 					prevPos = currPos
 					prevTime = now
+			end
+			
+		end
+	end)
+	players.PlayerAdded:Connect(function(plr)
+		plr.CharacterAdded:Connect(function(char)
+			local humanoid = char:WaitForChild("Humanoid", 10)
+			if humanoid then
+				humanoid.Died:Connect(function()
+					local creator = humanoid:FindFirstChild("creator")
+					if creator and creator.Value and creator.Value:IsA("Player") then
+						local killer = creator.Value
+						local victimRoot = char:FindFirstChild("HumanoidRootPart")
+						local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
 
-					local lastKOs = {}
-					for _, victim in pairs(players:GetPlayers()) do
-						if victim ~= p and victim.Character and victim.Character:FindFirstChild("Humanoid") then
-							local humanoid = victim.Character.Humanoid
-							if not humanoid:FindFirstChild("ReachCheck") then
-								humanoid.Died:Connect(function()
-									local creator = humanoid:FindFirstChild("creator")
-									if creator and creator.Value and creator.Value:IsA("Player") then
-										local killer = creator.Value
-										if killer.Character and killer.Character:FindFirstChild("HumanoidRootPart") then
-											local victimRoot = victim.Character:FindFirstChild("HumanoidRootPart")
-											local killerRoot = killer.Character:FindFirstChild("HumanoidRootPart")
-											if victimRoot and killerRoot then
-												local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-												if distance > 14 then
-													if now - (debounce.reach or 0) >= alertCooldown then
-														debounce.reach = now
-													flagPlayer(killer, "reach. Who? "..victim.Name.." ("..victim.DisplayName..") at "..string.format("%.2f", distance).." studs.", function()
-															return killer.Name.." reached "..victim.Name.." ("..string.format("%.2f", distance).." studs)"
-														end)
-													end
-												end
-											end
-										end
-										for _, plr in pairs(players:GetPlayers()) do
-											if plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("KOs") then
-												lastKOs[plr] = plr.leaderstats.KOs.Value
-												plr.leaderstats.KOs:GetPropertyChangedSignal("Value"):Connect(function()
-													local change = plr.leaderstats.KOs.Value - (lastKOs[plr] or 0)
-													lastKOs[plr] = plr.leaderstats.KOs.Value
-													if change >= 3 then
-														if now - (debounce.reach or 0) >= alertCooldown then
-															debounce.reach = now
-															flagPlayer(plr, "reach. Fallback and backup function detected suspicious rise in KOs.", function()
-																return plr.Name.." where did u get "..change.." kills at once?"
-															end)
-														end
-													end
-												end)
-											end
-										end
-									end
-								end)
+						if victimRoot and killerRoot then
+							local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+							if distance > 14 then
+								if tick() - (debounce.reach or 0) >= alertCooldown then
+									debounce.reach = tick()
+									flagPlayer(killer, "reach", function()
+										return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
+									end)
+								end
 							end
 						end
 					end
+				end)
 			end
-		end
+		end)
+
+		plr:WaitForChild("leaderstats")
+		local koStat = plr.leaderstats:WaitForChild("KOs")
+		local lastKOs = koStat.Value
+		koStat:GetPropertyChangedSignal("Value"):Connect(function()
+			local newKOs = koStat.Value
+			local change = newKOs - lastKOs
+			lastKOs = newKOs
+			if change >= 3 then
+				if tick() - (debounce.reach or 0) >= alertCooldown then
+					debounce.reach = tick()
+					flagPlayer(plr, "reach", function()
+						return plr.Name.." where did u get "..change.." kills at once?"
+					end)
+				end
+			end
+		end)
 	end)
+	for _, plr in pairs(game.Players:GetPlayers()) do
+		for _, plr in ipairs(game.Players:GetPlayers()) do
+			local function connectCharacter(char)
+				local humanoid = char:WaitForChild("Humanoid", 10)
+				if humanoid then
+					humanoid.Died:Connect(function()
+						local creator = humanoid:FindFirstChild("creator")
+						if creator and creator.Value and creator.Value:IsA("Player") then
+							local killer = creator.Value
+							local victimRoot = char:FindFirstChild("HumanoidRootPart")
+							local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
+
+							if victimRoot and killerRoot then
+								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+								if distance > 14 then
+									if tick() - (debounce.reach or 0) >= alertCooldown then
+										debounce.reach = tick()
+										flagPlayer(killer, "reach", function()
+											return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
+										end)
+									end
+								end
+							end
+						end
+					end)
+				end
+			end
+
+			if plr.Character then
+				connectCharacter(plr.Character)
+			end
+			plr.CharacterAdded:Connect(connectCharacter)
+
+			plr:WaitForChild("leaderstats")
+			local koStat = plr.leaderstats:WaitForChild("KOs")
+			local lastKOs = koStat.Value
+			koStat:GetPropertyChangedSignal("Value"):Connect(function()
+				local newKOs = koStat.Value
+				local change = newKOs - lastKOs
+				lastKOs = newKOs
+				if change >= 3 then
+					if tick() - (debounce.reach or 0) >= alertCooldown then
+						debounce.reach = tick()
+						flagPlayer(plr, "reach", function()
+							return plr.Name.." where did u get "..change.." kills at once?"
+						end)
+					end
+				end
+			end)
+		end
+	end
 end
 
 local lastSentMessage = {}
