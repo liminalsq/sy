@@ -954,14 +954,15 @@ local function monitor(p)
 					local grounded = isGrounded and isGrounded(c)
 					local vertVel = r.Velocity.Y
 
-					if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
-						local sinceSpawn = tick() - spawnTime
-						local safeDt = math.max(dt, 0.02)
-						local clampedDist = math.min(dist, 20)
-						local safeSpeed = getSmoothedSpeed(clampedDist / safeDt)
+				if h.Health > 0 and state ~= Enum.HumanoidStateType.Dead then
+					local sinceSpawn = tick() - spawnTime
+					local safeDt = math.max(dt, 0.02)
+					local clampedDist = math.min(dist, 20)
+					local safeSpeed = getSmoothedSpeed(clampedDist / safeDt)
 
-						if sinceSpawn > spawnGrace and dt > 0.05 then
-							if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
+					if sinceSpawn > spawnGrace and dt > 0.05 then
+						if state ~= Enum.HumanoidStateType.Running and dist > 50 and rawSpeed > 10 then
+							--if not h.PlatformStand then
 								violationCount.tp += 1
 								if violationCount.tp >= violationLimit then
 									violationCount.tp = 0
@@ -969,11 +970,13 @@ local function monitor(p)
 										return p.Name.." used an imaginary ender pearl. Distance: "..math.floor(dist).." studs"
 									end)
 								end
-							else
-								violationCount.tp = 0
-							end
+							--end
+						else
+							violationCount.tp = 0
+						end
 
-							if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
+						if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
+							if not h.PlatformStand then
 								violationCount.speed += 1
 								if violationCount.speed >= violationLimit then
 									violationCount.speed = 0
@@ -981,11 +984,12 @@ local function monitor(p)
 										return p.Name.." can't sprint here (Speed: "..string.format("%.2f", safeSpeed)..")"
 									end)
 								end
-							else
-								violationCount.speed = 0
 							end
+						else
+							violationCount.speed = 0
 						end
 					end
+				end
 
 				if not grounded and (state ~= Enum.HumanoidStateType.Freefall and state ~= Enum.HumanoidStateType.PlatformStanding) then
 					local vertVel = r.Velocity.Y
