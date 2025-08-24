@@ -553,10 +553,10 @@ local function do_command(input)
 		if #addedPlayers > 0 then
 			loopkilling = true
 			print("Loopkilling: " .. table.concat(bad_mans, ", "))
-			rbxg:SendAsync("Ur cooked: " .. table.concat(addedPlayers, ", "))
+			rbxg:SendAsync("ur cooked " .. table.concat(addedPlayers, ", "))
 			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
 		else
-			rbxg:SendAsync("No new targets added.")
+			rbxg:SendAsync("no new targets added")
 			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
 		
@@ -590,7 +590,11 @@ local function do_command(input)
 		loopkilling = false
 		rbxg:SendAsync("stopped: lkill")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", stopped loopkill.")
-
+		
+	elseif cmd == "looplist" then
+		local list = table.concat(bad_mans, ", ")
+		rbxg:SendAsync("targets: " .. list)
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", currently looplisted: "..list)
 	elseif cmd == "cleartargets" then
 		bad_mans = {}
 		rbxg:SendAsync("cleared list of bad mans!!")
