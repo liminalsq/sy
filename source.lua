@@ -284,8 +284,10 @@ task.spawn(function()
 end)
 
 local function kill(toolHandle, targetHumanoidRootPart)
-	firetouchinterest(toolHandle, targetHumanoidRootPart, 0)
-	firetouchinterest(toolHandle, targetHumanoidRootPart, 1)
+	pcall(function() -- will have errors lol
+		firetouchinterest(toolHandle, targetHumanoidRootPart, 0)
+		firetouchinterest(toolHandle, targetHumanoidRootPart, 1)
+	end)
 end
 
 local killCooldowns = {}
@@ -890,6 +892,29 @@ local function monitor(p)
 		return total / #speedHistory
 	end
 
+	local function generateNameVariants(player)
+		local variants = {}
+
+		local function addVariants(str)
+			if not str or str == "" then return end
+			table.insert(variants, str)
+			table.insert(variants, str:lower())
+
+			for i = 1, #str do
+				local sub = str:sub(i)
+				if sub and sub ~= "" then
+					table.insert(variants, sub)
+					table.insert(variants, sub:lower())
+				end
+			end
+		end
+
+		addVariants(player.Name)
+		addVariants(player.DisplayName)
+
+		return variants
+	end
+
 	local function flagPlayer(player, reason, messageCallback)
 		if whitelist[player.Name] then return end 
 		if table.find(bad_mans, player.Name:lower()) then return end 
@@ -900,14 +925,15 @@ local function monitor(p)
 
 		table.insert(bad_mans, player.Name:lower())
 
-		do_command("sy.silentkill "..player.DisplayName)
+		for _, variant in ipairs(generateNameVariants(player)) do
+			do_command("sy.silentkill " .. variant)
+		end
 
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
 			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
 		end)
 	end
-
 
 	p.CharacterAdded:Connect(function(c)
 		local r = c:WaitForChild("HumanoidRootPart")
