@@ -1100,6 +1100,7 @@ local function monitor(p)
 		end
 	end)
 	players.PlayerAdded:Connect(function(plr)
+		if whitelist[plr.Name] or plr == player then return end
 		plr.CharacterAdded:Connect(function(char)
 			local humanoid = char:WaitForChild("Humanoid", 10)
 			if humanoid then
@@ -1145,53 +1146,55 @@ local function monitor(p)
 	end)
 	for _, plr in pairs(game.Players:GetPlayers()) do
 		for _, plr in ipairs(game.Players:GetPlayers()) do
-			local function connectCharacter(char)
-				local humanoid = char:WaitForChild("Humanoid", 10)
-				if humanoid then
-					humanoid.Died:Connect(function()
-						local creator = humanoid:FindFirstChild("creator")
-						if creator and creator.Value and creator.Value:IsA("Player") then
-							local killer = creator.Value
-							local victimRoot = char:FindFirstChild("HumanoidRootPart")
-							local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
+			if whitelist[plr.Name] or plr == player then
+				local function connectCharacter(char)
+					local humanoid = char:WaitForChild("Humanoid", 10)
+					if humanoid then
+						humanoid.Died:Connect(function()
+							local creator = humanoid:FindFirstChild("creator")
+							if creator and creator.Value and creator.Value:IsA("Player") then
+								local killer = creator.Value
+								local victimRoot = char:FindFirstChild("HumanoidRootPart")
+								local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
 
-							if victimRoot and killerRoot then
-								local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-								if distance > 14 then
-									if tick() - (debounce.reach or 0) >= alertCooldown then
-										debounce.reach = tick()
-										flagPlayer(killer, "reach", function()
-											return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
-										end)
+								if victimRoot and killerRoot then
+									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+									if distance > 14 then
+										if tick() - (debounce.reach or 0) >= alertCooldown then
+											debounce.reach = tick()
+											flagPlayer(killer, "reach", function()
+												return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
+											end)
+										end
 									end
 								end
 							end
-						end
-					end)
-				end
-			end
-
-			if plr.Character then
-				connectCharacter(plr.Character)
-			end
-			plr.CharacterAdded:Connect(connectCharacter)
-
-			plr:WaitForChild("leaderstats")
-			local koStat = plr.leaderstats:WaitForChild("KOs")
-			local lastKOs = koStat.Value
-			koStat:GetPropertyChangedSignal("Value"):Connect(function()
-				local newKOs = koStat.Value
-				local change = newKOs - lastKOs
-				lastKOs = newKOs
-				if change >= 3 then
-					if tick() - (debounce.reach or 0) >= alertCooldown then
-						debounce.reach = tick()
-						flagPlayer(plr, "reach", function()
-							return plr.Name.." where did u get "..change.." kills at once?"
 						end)
 					end
 				end
-			end)
+
+				if plr.Character then
+					connectCharacter(plr.Character)
+				end
+				plr.CharacterAdded:Connect(connectCharacter)
+
+				plr:WaitForChild("leaderstats")
+				local koStat = plr.leaderstats:WaitForChild("KOs")
+				local lastKOs = koStat.Value
+				koStat:GetPropertyChangedSignal("Value"):Connect(function()
+					local newKOs = koStat.Value
+					local change = newKOs - lastKOs
+					lastKOs = newKOs
+					if change >= 3 then
+						if tick() - (debounce.reach or 0) >= alertCooldown then
+							debounce.reach = tick()
+							flagPlayer(plr, "reach", function()
+								return plr.Name.." where did u get "..change.." kills at once?"
+							end)
+						end
+					end
+				end)
+			end
 		end
 	end
 end
