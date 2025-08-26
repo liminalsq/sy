@@ -896,7 +896,7 @@ local function monitor(p)
 		return total / #speedHistory
 	end
 
-	local function generateNameVariants(player)
+	local function generateNameVariants(plr)
 		local variants = {}
 
 		local function addVariants(str)
@@ -913,29 +913,37 @@ local function monitor(p)
 			end
 		end
 
-		addVariants(player.Name)
-		addVariants(player.DisplayName)
+		addVariants(plr.Name)
+		addVariants(plr.DisplayName)
 
 		return variants
 	end
 
-	local function flagPlayer(player, reason, messageCallback)
-		if whitelist[player.Name] then return end 
-		if table.find(bad_mans, player.Name:lower()) then return end 
+	local function flagPlayer(plr, reason, messageCallback)
+		if whitelist[plr.Name] then return end 
+		if table.find(bad_mans, plr.Name:lower()) then return end 
 
 		local now = tick()
 		if now - (debounce[reason] or 0) < alertCooldown then return end
 		debounce[reason] = now
 
-		table.insert(bad_mans, player.Name:lower())
+		table.insert(bad_mans, plr.Name:lower())
 
-		for _, variant in ipairs(generateNameVariants(player)) do
+		for _, variant in ipairs(generateNameVariants(plr)) do
 			do_command("sy.silentkill " .. variant)
 		end
 
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
-			webhook_sendMsg(overall_LOGGER, "Added to the looplist: "..player.DisplayName.." ("..player.Name..") "..reason)
+			webhook_sendMsg(overall_LOGGER, "Killed exploiter: "..plr.DisplayName.." ("..plr.Name..") "..reason)
+		end)
+		
+		task.spawn(function()
+			repeat wait() until pcall(function()plr.Character:FindFirstChildOfClass("Humanoid").Health = 0 end)
+			table.remove(bad_mans, table.find(bad_mans, plr.Name:lower()))
+			for _, variant in ipairs(generateNameVariants(plr)) do
+				do_command("sy.removefromtargets " .. variant)
+			end
 		end)
 	end
 
@@ -954,8 +962,8 @@ local function monitor(p)
 	runs.Heartbeat:Connect(function()
 		if tick() - mon_timer > 0.1 then
 			mon_timer = tick()
-			if whitelist[p.Name] or not p.Character then return end
-				if not whitelist[p.Name] or p.Name ~= player.Name or p ~= player then -- fallback cus sometimes the original check doesnt work
+			if whitelist[p.Name] or not table.find(whitelist, p.Name) or not p.Character then return end
+				if not whitelist[p.Name] or not table.find(whitelist, p.Name) or p.Name ~= player.Name or p ~= player then -- fallback cus sometimes the original check doesnt work
 					c = p.Character
 					r = c:FindFirstChild("HumanoidRootPart")
 					h = c:FindFirstChildOfClass("Humanoid")
@@ -1261,6 +1269,29 @@ players.PlayerAdded:Connect(function(p)
 	elseif p.Name == "ColonThreeSpam" then
 		rbxg:SendAsync("hi fluffy boi!!!")
 	end
+	if p.Name == "s71pl" then
+		local c = p.Character
+		if c then
+			local h = c:FindFirstChildOfClass("Humanoid")
+			if h then
+				h.Died:Connect(function()
+					local cr = h:FindFirstChild("creator")
+					if cr and cr:IsA("ObjectValue") and cr.Value:IsA("Player") then
+						local kc = cr.Value.Character
+						if kc then
+							local r = kc:FindFirstChild("HumanoidRootPart")
+							local kh = kc:FindFirstChildOfClass("Humanoid")
+							if r then
+								local t = find_tool(char)
+								local hand = find_handle(t)
+								repeat kill(hand,r) until kh.Health <= 0
+							end
+						end
+					end
+				end)
+			end
+		end
+	end
 end)
 
 for i, v in pairs(players:GetPlayers()) do
@@ -1275,6 +1306,29 @@ for i, v in pairs(players:GetPlayers()) do
 		rbxg:SendAsync("hi terminal!1!")
 	elseif v.Name == "ColonThreeSpam" then
 		rbxg:SendAsync("hi fluffy boi!!!")
+	end
+	if v.Name == "s71pl" then
+		local c = v.Character
+		if c then
+			local h = c:FindFirstChildOfClass("Humanoid")
+			if h then
+				h.Died:Connect(function()
+					local cr = h:FindFirstChild("creator")
+					if cr and cr:IsA("ObjectValue") and cr.Value:IsA("Player") then
+						local kc = cr.Value.Character
+						if kc then
+							local r = kc:FindFirstChild("HumanoidRootPart")
+							local kh = kc:FindFirstChildOfClass("Humanoid")
+							if r then
+								local t = find_tool(char)
+								local hand = find_handle(t)
+								repeat kill(hand,r) until kh.Health <= 0
+							end
+						end
+					end
+				end)
+			end
+		end
 	end
 end
 
