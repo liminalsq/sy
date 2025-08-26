@@ -111,7 +111,7 @@ local whitelist = {
 	['EriBunnyXD'] = true,
 	['BorrowGoal'] = true,
 	['JeremysCherryl'] = true,
-	['STEVETheReal916'] = true,
+	--['STEVETheReal916'] = true,
 }
 local confusion = {
 	"whaaaa???",
