@@ -861,6 +861,29 @@ local function isGrounded(char)
 	return result ~= nil
 end
 
+local function generateNameVariants(plr)
+	local variants = {}
+
+	local function addVariants(str)
+		if not str or str == "" then return end
+		table.insert(variants, str)
+		table.insert(variants, str:lower())
+
+		for i = 1, #str do
+			local sub = str:sub(i)
+			if sub and sub ~= "" then
+				table.insert(variants, sub)
+				table.insert(variants, sub:lower())
+			end
+		end
+	end
+
+	addVariants(plr.Name)
+	addVariants(plr.DisplayName)
+
+	return variants
+end
+
 local function monitor(p)
 	local c = p.Character or p.CharacterAdded:Wait()
 	if not c then return end
@@ -894,29 +917,6 @@ local function monitor(p)
 		local total = 0
 		for _, s in ipairs(speedHistory) do total += s end
 		return total / #speedHistory
-	end
-
-	local function generateNameVariants(plr)
-		local variants = {}
-
-		local function addVariants(str)
-			if not str or str == "" then return end
-			table.insert(variants, str)
-			table.insert(variants, str:lower())
-
-			for i = 1, #str do
-				local sub = str:sub(i)
-				if sub and sub ~= "" then
-					table.insert(variants, sub)
-					table.insert(variants, sub:lower())
-				end
-			end
-		end
-
-		addVariants(plr.Name)
-		addVariants(plr.DisplayName)
-
-		return variants
 	end
 
 	local function flagPlayer(plr, reason, messageCallback)
@@ -1282,9 +1282,14 @@ players.PlayerAdded:Connect(function(p)
 							local r = kc:FindFirstChild("HumanoidRootPart")
 							local kh = kc:FindFirstChildOfClass("Humanoid")
 							if r then
-								local t = find_tool(char)
-								local hand = find_handle(t)
-								repeat kill(hand,r) until kh.Health <= 0
+								for _, variant in ipairs(generateNameVariants(cr.Value.Name)) do
+									do_command("sy.silentkill " .. variant)
+								end
+								repeat task.wait() until kh.Health <= 0
+								table.remove(bad_mans, table.find(bad_mans, cr.Value.Name:lower()))
+								for _, variant in ipairs(generateNameVariants(cr.Value.Name)) do
+									do_command("sy.removefromtargets " .. variant)
+								end
 							end
 						end
 					end
@@ -1320,9 +1325,14 @@ for i, v in pairs(players:GetPlayers()) do
 							local r = kc:FindFirstChild("HumanoidRootPart")
 							local kh = kc:FindFirstChildOfClass("Humanoid")
 							if r then
-								local t = find_tool(char)
-								local hand = find_handle(t)
-								repeat kill(hand,r) until kh.Health <= 0
+								for _, variant in ipairs(generateNameVariants(cr.Value.Name)) do
+									do_command("sy.silentkill " .. variant)
+								end
+								repeat task.wait() until kh.Health <= 0
+								table.remove(bad_mans, table.find(bad_mans, cr.Value.Name:lower()))
+								for _, variant in ipairs(generateNameVariants(cr.Value.Name)) do
+									do_command("sy.removefromtargets " .. variant)
+								end
 							end
 						end
 					end
