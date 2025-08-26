@@ -266,6 +266,16 @@ player.CharacterAdded:Connect(function(c)
 			end
 		end
 	end 
+	
+	if char:FindFirstChild("Animate") then
+		char.Animate:Remove()
+	end
+
+	if humanoid then
+		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+			track:Stop(0)
+		end
+	end
 
 	humanoid.Died:Once(function()
 		--rbxg:SendAsync(death[math.random(1,#death)])
