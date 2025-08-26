@@ -79,6 +79,16 @@ local char = (player.Character or player.CharacterAdded:Wait())
 local humanoid = char:FindFirstChildOfClass("Humanoid")
 local root = char:FindFirstChild("HumanoidRootPart")
 
+if char:FindFirstChild("Animate") then
+	char.Animate:Remove()
+end
+
+if humanoid then
+	for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+		track:Stop(0)
+	end
+end
+
 local loopkilling = false
 local hiding = true
 local floating = false
@@ -258,7 +268,7 @@ player.CharacterAdded:Connect(function(c)
 	end 
 
 	humanoid.Died:Once(function()
-		rbxg:SendAsync(death[math.random(1,#death)])
+		--rbxg:SendAsync(death[math.random(1,#death)])
 	end)
 end)
 
