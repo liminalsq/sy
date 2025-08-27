@@ -139,12 +139,16 @@ local function RemoveAnims(character)
 	end
 end
 
+local fakeChar = nil
+
 if hiding then
 	local CharFake = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Player.UserId), Enum.HumanoidRigType.R6)
 	CharFake.Name = "FFFF00"
 	CharFake:WaitForChild("Animate"):Destroy()
 	CharFake.Parent = workspace
 	CharFake:PivotTo(char:GetPivot())
+	
+	fakeChar = CharFake
 
 	local Mouse = Player:GetMouse()
 
@@ -218,6 +222,7 @@ if hiding then
 	local function StepReanimate()
 		-- yes the code is now stable kinda
 		if Player.Character ~= CharFake then return end
+		CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
 		charRoot.Velocity = Vector3.zero
 		charRoot.RotVelocity = Vector3.zero
 		for _,v in pairs(char:GetDescendants()) do
@@ -288,7 +293,7 @@ local CharacterAnimations = {
 	cgirls = loadstring(game:HttpGet("https://raw.githubusercontent.com/liminalsq/SpawnYellowEmotes/refs/heads/main/CaliforniaGirls.lua"))
 }
 
-local function anim(I, animName) -- ALSO STEVE/TERMINAL CODE SNIPPET
+local function anim(char, animName) -- ALSO STEVE/TERMINAL CODE SNIPPET
 	local ROOT_POSITION = Vector3.new(0, 65536, 0)
 	local CHAR_POSITION = Vector3.new(0, 255, 0)
 
@@ -388,7 +393,7 @@ local function anim(I, animName) -- ALSO STEVE/TERMINAL CODE SNIPPET
 		end
 		ckf = ckf.Poses or {}
 		if I.Character ~= nil then
-			local Char = I.Character
+			local Char = char
 			local Root = Char:FindFirstChild("HumanoidRootPart")
 			if Root ~= nil then
 				Root.CFrame = CFrame.new(ROOT_POSITION)
@@ -594,6 +599,8 @@ player.CharacterAdded:Connect(function(c)
 			track:Stop(0)
 		end
 	end
+	
+	anim(fakeChar, "cgirls")
 
 	humanoid.Died:Once(function()
 		--rbxg:SendAsync(death[math.random(1,#death)])
@@ -1197,7 +1204,7 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd)
 	elseif cmd:sub(6) == "emote" then
 		local emoteName = args[1]
-		anim(player, emoteName)
+		anim(fakeChar, emoteName)
 		rbxg:SendAsync("emoting! >v<")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", emoting: "..emoteName)
 	else
