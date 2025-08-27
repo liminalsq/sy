@@ -79,15 +79,15 @@ local char = (player.Character or player.CharacterAdded:Wait())
 local humanoid = char:FindFirstChildOfClass("Humanoid")
 local root = char:FindFirstChild("HumanoidRootPart")
 
-if char:FindFirstChild("Animate") then
-	char.Animate:Remove()
-end
+--if char:FindFirstChild("Animate") then
+--	char.Animate:Remove()
+--end
 
-if humanoid then
-	for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
-		track:Stop(0)
-	end
-end
+--if humanoid then
+--	for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+--		track:Stop(0)
+--	end
+--end
 
 local loopkilling = false
 local hiding = true
@@ -590,15 +590,15 @@ player.CharacterAdded:Connect(function(c)
 		end
 	end 
 	
-	if char:FindFirstChild("Animate") then
-		char.Animate:Remove()
-	end
+	--if char:FindFirstChild("Animate") then
+	--	char.Animate:Remove()
+	--end
 
-	if humanoid then
-		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
-			track:Stop(0)
-		end
-	end
+	--if humanoid then
+	--	for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+	--		track:Stop(0)
+	--	end
+	--end
 	
 	anim(fakeChar, "cgirls")
 
