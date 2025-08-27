@@ -95,6 +95,324 @@ local floating = false
 local bringing = false
 local aUnequip = true
 
+--FAKE CHAR SNIPPET, FROM TERMINAL/STEVE. MODDED
+if not game.IsLoaded then
+	game.Loaded:Wait()
+end
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+local function ChildAddedWithATwist(inst, func)
+	inst.ChildAdded:Connect(func)
+	for _,v in pairs(inst:GetChildren()) do
+		func(v)
+	end
+end
+local function DescendantAddedWithATwist(inst, func)
+	inst.DescendantAdded:Connect(func)
+	for _,v in pairs(inst:GetDescendants()) do
+		func(v)
+	end
+end
+
+local function RemoveAnims(character)
+	if character == nil then
+		return
+	end
+	local sc = character:WaitForChild("Animate")
+	if sc then
+		sc:Destroy()
+	end
+	local humanoid = character:WaitForChild("Humanoid")
+	for _,v in pairs(humanoid:GetPlayingAnimationTracks()) do
+		v:Stop(0)
+		v:Destroy()
+	end
+	sc = humanoid:FindFirstChildWhichIsA("Animator")
+	if sc then
+		for _,v in pairs(sc:GetPlayingAnimationTracks()) do
+			v:Stop(0)
+			v:Destroy()
+		end
+		sc:Destroy()
+	end
+end
+
+if hiding then
+	local CharFake = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Player.UserId), Enum.HumanoidRigType.R6)
+	CharFake.Name = "FFFF00"
+	CharFake:WaitForChild("Animate"):Destroy()
+	CharFake.Parent = workspace
+	CharFake:PivotTo(char:GetPivot())
+
+	local Mouse = Player:GetMouse()
+
+	local charHum = char:WaitForChild("Humanoid")
+	local CharFakeHum = CharFake:WaitForChild("Humanoid")
+	local charTorso = char:WaitForChild("Torso")
+	local CharFakeTorso = CharFake:WaitForChild("Torso")
+	local charRoot = char:WaitForChild("HumanoidRootPart")
+	local CharFakeRoot = CharFake:WaitForChild("HumanoidRootPart")
+
+	CharFakeHum.RequiresNeck = false
+	CharFakeHum:SetStateEnabled(15, false)
+	CharFakeHum.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+
+	CharFakeRoot.Anchored = true
+
+	local Animate = char:WaitForChild("Animate"):Clone()
+	Animate.Parent = CharFake
+
+	local function OnCharacter(character)
+		if character == nil then return end
+		if character == CharFake then return end
+		if character == char then return end
+		RemoveAnims(character)
+		task.wait(0.2)
+		charHum = character:WaitForChild("Humanoid")
+		--charHum:ChangeState(Enum.HumanoidStateType.Physics)
+		charHum.PlatformStand = true
+		charHum.AutoRotate = false
+		charTorso = character:WaitForChild("Torso")
+		charRoot = character:WaitForChild("HumanoidRootPart")
+		DescendantAddedWithATwist(character, function(v)
+			if v:IsA("BasePart") then
+				v.Transparency = 1
+			end
+			if v:IsA("ParticleEmitter") or v:IsA("Decal") then
+				task.wait()
+				v:Destroy()
+			end
+			if v:IsA("LocalScript") then
+				v.Disabled = true
+				task.wait()
+				v:Destroy()
+			end
+		end)
+		char = character
+		char.Parent = CharFake
+		Player.Character = CharFake
+		workspace.CurrentCamera.CameraSubject = CharFakeHum
+		Animate.Disabled = true
+		task.wait()
+		Animate.Disabled = false
+		CharFakeRoot.Anchored = false
+	end
+	char:BreakJoints()
+	Player.CharacterAdded:Connect(OnCharacter)
+
+	local function WaitForRespawn()
+		return Player.CharacterAdded:Wait()
+	end
+
+	local function RCA6DToCFrame(motor, tarpart, refpart)
+		local rel = refpart.CFrame:Inverse() * tarpart.CFrame
+		local delta = motor.C0:Inverse() * rel * motor.C1
+		local axis, angle = delta:ToAxisAngle()
+		local newangle = axis * angle
+		sethiddenproperty(motor, "ReplicateCurrentOffset6D", delta.Position)
+		sethiddenproperty(motor, "ReplicateCurrentAngle6D", newangle)
+	end
+
+	local function StepReanimate()
+		-- yes the code is now stable kinda
+		if Player.Character ~= CharFake then return end
+		charRoot.Velocity = Vector3.zero
+		charRoot.RotVelocity = Vector3.zero
+		for _,v in pairs(char:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = false
+				v.CanTouch = false
+				v.Massless = true
+			end
+			if v:IsA("Motor6D") and v.Parent.Parent == char then
+				v.MaxVelocity = 9e9
+				local RefPart0, TarPart0 = v.Part0, v.Part1
+				local RefPart1, TarPart1 = CharFake[RefPart0.Name], CharFake[TarPart0.Name]
+				local Rel = TarPart1.CFrame:Inverse() * RefPart1.CFrame
+				local pitch, yaw, _ = Rel:ToEulerAnglesXYZ()
+				local angle = 0
+				if v.Name == "Neck" then
+					angle = -yaw
+				elseif v.Name == "Left Shoulder" or v.Name == "Left Hip" then
+					angle = pitch
+				elseif v.Name == "Right Shoulder" or v.Name == "Right Hip" then
+					angle = -pitch
+				end
+				v:SetDesiredAngle(angle)
+				v.MaxVelocity = 9e9
+				if v.Name == "RootJoint" then
+					RCA6DToCFrame(v, TarPart1, TarPart0)
+				else
+					RCA6DToCFrame(v, TarPart1, RefPart1)
+				end
+			end
+		end
+	end
+
+	runs.Heartbeat:Connect(StepReanimate)
+	runs.Stepped:Connect(function()
+		for _,player in pairs(Players:GetPlayers()) do
+			if player ~= Player and player.Character then
+				for _, v in pairs(player.Character:GetDescendants()) do
+					if v:IsA("BasePart") then
+						v.CanCollide = false
+					end
+				end
+			end
+		end
+	end)
+	local seatdebounce = {}
+	CharFakeHum.Touched:Connect(function(t)
+		if t:IsA("Seat") and seatdebounce[t] == nil then
+			seatdebounce[t] = true
+			local sw = Instance.new("Weld", t)
+			sw.Name = "SeatWeld"
+			sw.Part0 = t
+			sw.Part1 = CharFakeRoot
+			sw.C0 = CFrame.new(0, t.Size.Y / 2, 0, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+			sw.C1 = CFrame.new(0, -1.5, 0, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+			CharFakeHum.Sit = true
+			CharFakeHum.Jumping:Wait()
+			sw:Destroy()
+			CharFakeHum.Sit = false
+			task.wait(3)
+			seatdebounce[t] = nil
+		end 
+	end)
+end
+--CLOSE SNIPPET, NEED SOME READABILITY
+
+local CharacterAnimations = {
+	cgirls = loadstring(game:HttpGet("https://raw.githubusercontent.com/liminalsq/SpawnYellowEmotes/refs/heads/main/CaliforniaGirls.lua"))
+}
+
+local function anim(I, animName) -- ALSO STEVE/TERMINAL CODE SNIPPET
+	local ROOT_POSITION = Vector3.new(0, 65536, 0)
+	local CHAR_POSITION = Vector3.new(0, 255, 0)
+
+	local function SetMotor6DOffset(motor, trans)
+		motor.MaxVelocity = 9e9
+		motor:SetDesiredAngle(math.random() * math.pi)
+		local axis, angle = trans:ToAxisAngle()
+		pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", trans.Position)
+		pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", axis * angle)
+	end
+
+	local CharacterAnimation = {
+		Name = "",
+		Time = 0,
+		Keyframes = {},
+	}
+	local CharacterAnimationTime = 0
+	local function LoadAnimation()
+		if animName == CharacterAnimation.Name then return end
+		local limbnames = {"Torso", "Head", "Left Arm", "Right Arm", "Left Leg", "Right Leg"}
+		local CharacterAnimationData = CharacterAnimations[animName]
+		if CharacterAnimationData == nil then return end
+		local ilikeit = {
+			Name = animName,
+			Time = CharacterAnimationData.Time,
+			Keyframes = {},
+		}
+		for t=0, CharacterAnimationData.Time, 1 / 30 do
+			local kft = {
+				Time = t, Poses = {} 
+			}
+			for _,name in pairs(limbnames) do
+				local k1, k2, t1, t2 = nil, nil, -math.huge, math.huge
+				for _,k in pairs(CharacterAnimationData.Keyframes) do
+					local po = nil
+					for _,p in pairs(k.Poses) do
+						if p.Name == name and p.Weight > 0 then
+							po = p
+						end
+					end
+					if po ~= nil then
+						if t1 < k.Time and k.Time <= t then
+							k1 = po
+							t1 = k.Time
+						end
+						if t2 > k.Time and k.Time > t then
+							k2 = po
+							t2 = k.Time
+						end
+					end
+				end
+				local cf = CFrame.identity
+				if k1 ~= nil then
+					if k2 ~= nil then
+						local a = (t - t1) / (t2 - t1)
+						local es = k1.EasingStyle
+						if es == "Constant" then
+							a = 0
+						else
+							if es == "CubicV2" then
+								es = "Cubic"
+							end
+							a = tween:GetValue(
+								a,
+								Enum.EasingStyle[es],
+								Enum.EasingDirection[k1.EasingDirection]
+							)
+						end
+						cf = k1.CFrame:Lerp(k2.CFrame, a)
+					else
+						cf = k1.CFrame
+					end
+				else
+					if k2 ~= nil then
+						cf = k2.CFrame
+					end
+				end
+				kft.Poses[name] = cf
+			end
+			table.insert(ilikeit.Keyframes, kft)
+		end
+		CharacterAnimationData = nil -- remove reference
+		table.sort(ilikeit.Keyframes, function(a, b)
+			return a.Time < b.Time
+		end)
+		CharacterAnimation = ilikeit
+	end
+
+	LoadAnimation()
+	while true do
+		local dt = task.wait()
+		CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
+		local ckf = {}
+		for i=1, #CharacterAnimation.Keyframes do
+			ckf = CharacterAnimation.Keyframes[i]
+			if ckf.Time > CharacterAnimationTime then break end
+		end
+		ckf = ckf.Poses or {}
+		if I.Character ~= nil then
+			local Char = I.Character
+			local Root = Char:FindFirstChild("HumanoidRootPart")
+			if Root ~= nil then
+				Root.CFrame = CFrame.new(ROOT_POSITION)
+				Root.Velocity = Vector3.zero
+				Root.RotVelocity = Vector3.zero
+			end
+			for _,v in pairs(Char:GetDescendants()) do
+				if v:IsA("BasePart") then
+					v.CanCollide = false
+					v.CanTouch = v.Name == "Handle"
+					v.Massless = true
+				end
+				if v:IsA("Motor6D") and v.Part1 ~= nil then
+					local cf = ckf[v.Part1.Name] or CFrame.identity
+					if v.Name == "RootJoint" then
+						cf += CHAR_POSITION - ROOT_POSITION
+					end
+					SetMotor6DOffset(v, cf)
+				end
+			end
+		end
+	end
+end
+
 local float_part = Instance.new("Part")
 float_part.Name = "f"
 float_part.Anchored = true
@@ -747,13 +1065,13 @@ local function do_command(input)
 		teleportServ:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", MANUAL RE-EXECUTE REQUIRED.")
 
-	elseif cmd == "hide" then
-		rbxg:SendAsync("you cant find me now!!!")
+	elseif cmd == "fake" then
+		rbxg:SendAsync("dad look! no name!")
 		hiding = true
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hid SpawnYellow.")
 
-	elseif cmd == "unhide" then
-		rbxg:SendAsync("alright you win")
+	elseif cmd == "real" then
+		rbxg:SendAsync("im back to normal!!")
 		hiding = false
 		if root then
 			root.Velocity = Vector3.new(0,0,0)
@@ -877,6 +1195,11 @@ local function do_command(input)
 		workspace.Gravity = 196.2
 		if rbxg then rbxg:SendAsync("reset gravity") end
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd)
+	elseif cmd:sub(6) == "emote" then
+		local emoteName = args[1]
+		anim(player, emoteName)
+		rbxg:SendAsync("emoting! >v<")
+		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", emoting: "..emoteName)
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
@@ -1138,64 +1461,109 @@ local function monitor(p)
 					end
 
 					prevPos = currPos
-				prevTime = now
-				
-				for _, plr in pairs(game.Players:GetPlayers()) do
-					for _, plr in ipairs(game.Players:GetPlayers()) do
-						if whitelist[plr.Name] or plr == player then
-							local function connectCharacter(char)
-								local humanoid = char:WaitForChild("Humanoid", 10)
-								if humanoid then
-									humanoid.Died:Connect(function()
-										local creator = humanoid:FindFirstChild("creator")
-										if creator and creator.Value and creator.Value:IsA("Player") then
-											local killer = creator.Value
-											local victimRoot = char:FindFirstChild("HumanoidRootPart")
-											local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
+					prevTime = now
+			end
+			
+		end
+	end)
+	players.PlayerAdded:Connect(function(plr)
+		if whitelist[plr.Name] or plr == player then return end
+		plr.CharacterAdded:Connect(function(char)
+			local humanoid = char:WaitForChild("Humanoid", 10)
+			if humanoid then
+				humanoid.Died:Connect(function()
+					local creator = humanoid:FindFirstChild("creator")
+					if creator and creator.Value and creator.Value:IsA("Player") then
+						local killer = creator.Value
+						local victimRoot = char:FindFirstChild("HumanoidRootPart")
+						local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
 
-											if victimRoot and killerRoot then
-												local distance = (victimRoot.Position - killerRoot.Position).Magnitude
-												if distance > 14 then
-													if tick() - (debounce.reach or 0) >= alertCooldown then
-														debounce.reach = tick()
-														flagPlayer(killer, "reach", function()
-															return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
-														end)
-													end
-												end
-											end
-										end
+						if victimRoot and killerRoot then
+							local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+							if distance > 14 then
+								if tick() - (debounce.reach or 0) >= alertCooldown then
+									debounce.reach = tick()
+									flagPlayer(killer, "reach", function()
+										return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
 									end)
 								end
 							end
+						end
+					end
+				end)
+			end
+		end)
 
-							if plr.Character then
-								connectCharacter(plr.Character)
-							end
-							plr.CharacterAdded:Connect(connectCharacter)
+		plr:WaitForChild("leaderstats")
+		local koStat = plr.leaderstats:WaitForChild("KOs")
+		local lastKOs = koStat.Value
+		koStat:GetPropertyChangedSignal("Value"):Connect(function()
+			local newKOs = koStat.Value
+			local change = newKOs - lastKOs
+			lastKOs = newKOs
+			if change >= 3 then
+				if tick() - (debounce.reach or 0) >= alertCooldown then
+					debounce.reach = tick()
+					flagPlayer(plr, "reach", function()
+						return plr.Name.." where did u get "..change.." kills at once?"
+					end)
+				end
+			end
+		end)
+	end)
+	for _, plr in pairs(game.Players:GetPlayers()) do
+		for _, plr in ipairs(game.Players:GetPlayers()) do
+			if whitelist[plr.Name] or plr == player then
+				local function connectCharacter(char)
+					local humanoid = char:WaitForChild("Humanoid", 10)
+					if humanoid then
+						humanoid.Died:Connect(function()
+							local creator = humanoid:FindFirstChild("creator")
+							if creator and creator.Value and creator.Value:IsA("Player") then
+								local killer = creator.Value
+								local victimRoot = char:FindFirstChild("HumanoidRootPart")
+								local killerRoot = killer.Character and killer.Character:FindFirstChild("HumanoidRootPart")
 
-							plr:WaitForChild("leaderstats")
-							local koStat = plr.leaderstats:WaitForChild("KOs")
-							local lastKOs = koStat.Value
-							koStat:GetPropertyChangedSignal("Value"):Connect(function()
-								local newKOs = koStat.Value
-								local change = newKOs - lastKOs
-								lastKOs = newKOs
-								if change >= 3 then
-									if tick() - (debounce.reach or 0) >= alertCooldown then
-										debounce.reach = tick()
-										flagPlayer(plr, "reach", function()
-											return plr.Name.." where did u get "..change.." kills at once?"
-										end)
+								if victimRoot and killerRoot then
+									local distance = (victimRoot.Position - killerRoot.Position).Magnitude
+									if distance > 14 then
+										if tick() - (debounce.reach or 0) >= alertCooldown then
+											debounce.reach = tick()
+											flagPlayer(killer, "reach", function()
+												return killer.Name.." reached "..plr.Name.." ("..string.format("%.2f", distance).." studs)"
+											end)
+										end
 									end
 								end
+							end
+						end)
+					end
+				end
+
+				if plr.Character then
+					connectCharacter(plr.Character)
+				end
+				plr.CharacterAdded:Connect(connectCharacter)
+
+				plr:WaitForChild("leaderstats")
+				local koStat = plr.leaderstats:WaitForChild("KOs")
+				local lastKOs = koStat.Value
+				koStat:GetPropertyChangedSignal("Value"):Connect(function()
+					local newKOs = koStat.Value
+					local change = newKOs - lastKOs
+					lastKOs = newKOs
+					if change >= 3 then
+						if tick() - (debounce.reach or 0) >= alertCooldown then
+							debounce.reach = tick()
+							flagPlayer(plr, "reach", function()
+								return plr.Name.." where did u get "..change.." kills at once?"
 							end)
 						end
 					end
-				end
+				end)
 			end
 		end
-	end)
+	end
 end
 
 local lastSentMessage = {}
