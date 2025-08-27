@@ -141,7 +141,6 @@ end
 
 local fakeChar = nil
 
-if hiding then
 	local CharFake = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Player.UserId), Enum.HumanoidRigType.R6)
 	CharFake.Name = "FFFF00"
 	CharFake:WaitForChild("Animate"):Destroy()
@@ -286,7 +285,6 @@ if hiding then
 			seatdebounce[t] = nil
 		end 
 	end)
-end
 --CLOSE SNIPPET, NEED SOME READABILITY
 
 local CharacterAnimations = {
