@@ -330,19 +330,34 @@ runs.Heartbeat:Connect(function()
 					end
 				end
 
-				if targetPlayer and targetPlayer.Character then
+				if targetPlayer then
 					looplisted_preset = true
-					local targetHumanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
-					local targetRoot = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
 
-					if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
-						local tool = find_tool(char)
-						local handle = tool and find_handle(tool)
+					local function handleChar(char)
+						local targetHumanoid = char:FindFirstChildOfClass("Humanoid")
+						local targetRoot = char:FindFirstChild("HumanoidRootPart")
 
-						if tool and handle then
-							tool:Activate()
-							kill(handle, targetRoot)
+						if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
+							local tool = find_tool(char)
+							local handle = tool and find_handle(tool)
+
+							if tool and handle then
+								tool:Activate()
+								kill(handle, targetRoot)
+							end
 						end
+					end
+
+					if targetPlayer.Character then
+						handleChar(targetPlayer.Character)
+					end
+
+					if not targetPlayer.CharacterAdded:FindFirstChild("loopkilled") then
+						local conn = targetPlayer.CharacterAdded:Connect(function(newChar)
+							task.wait(0.5)
+							handleChar(newChar)
+						end)
+						conn.Name = "loopkilled"
 					end
 				end
 			end
