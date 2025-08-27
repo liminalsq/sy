@@ -598,7 +598,7 @@ player.CharacterAdded:Connect(function(c)
 	--	end
 	--end
 	
-	anim(fakeChar, "cgirls")
+	anim(char, "cgirls")
 
 	humanoid.Died:Once(function()
 		--rbxg:SendAsync(death[math.random(1,#death)])
@@ -1202,7 +1202,7 @@ local function do_command(input)
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd)
 	elseif cmd:sub(6) == "emote" then
 		local emoteName = args[1]
-		anim(fakeChar, emoteName)
+		anim(char, emoteName)
 		rbxg:SendAsync("emoting! >v<")
 		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", emoting: "..emoteName)
 	else
