@@ -675,12 +675,15 @@ runs.Heartbeat:Connect(function()
 						handleChar(targetPlayer.Character)
 					end
 
-					if not targetPlayer.CharacterAdded:FindFirstChild("loopkilled") then
-						local conn = targetPlayer.CharacterAdded:Connect(function(newChar)
+					if not targetPlayer:FindFirstChild("LoopkillConn") then
+						local tag = Instance.new("BoolValue")
+						tag.Name = "LoopkillConn"
+						tag.Parent = targetPlayer
+
+						targetPlayer.CharacterAdded:Connect(function(newChar)
 							task.wait(0.5)
 							handleChar(newChar)
 						end)
-						conn.Name = "loopkilled"
 					end
 				end
 			end
