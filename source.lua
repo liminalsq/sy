@@ -53,14 +53,21 @@ local function webhook_logChat(player, message)
 	})
 end
 
-local function webhook_sendMsg(webhook, msg)
-	requestFunction({
-		Url = webhook,
-		Method = "POST",
-		Headers = {["Content-Type"] = "application/json"},
-		Body = httpsService:JSONEncode({["content"] = msg})
-	})
+local function webhook_sendMsg(webhooks, msg)
+	if typeof(webhooks) == "string" then
+		webhooks = {webhooks}
+	end
+
+	for _, url in ipairs(webhooks) do
+		requestFunction({
+			Url = url,
+			Method = "POST",
+			Headers = {["Content-Type"] = "application/json"},
+			Body = httpsService:JSONEncode({["content"] = msg})
+		})
+	end
 end
+
 
 local channels = textCh:WaitForChild("TextChannels")
 local rbxg = channels:WaitForChild("RBXGeneral")
@@ -84,6 +91,31 @@ local hiding = true
 local floating = false
 local bringing = false
 local aUnequip = true
+local autoRe = false
+local autoThres = 3
+
+local function generateNameVariants(plr)
+	local variants = {}
+
+	local function addVariants(str)
+		if not str or str == "" then return end
+		table.insert(variants, str)
+		table.insert(variants, str:lower())
+
+		for i = 1, #str do
+			local sub = str:sub(i)
+			if sub and sub ~= "" then
+				table.insert(variants, sub)
+				table.insert(variants, sub:lower())
+			end
+		end
+	end
+
+	addVariants(plr.Name)
+	addVariants(plr.DisplayName)
+
+	return variants
+end
 
 --FAKE CHAR SNIPPET, FROM TERMINAL/STEVE. MODDED
 if not game.IsLoaded then
@@ -568,43 +600,6 @@ local function find_tool(char)
 	return nil
 end
 
-player.CharacterAdded:Connect(function(c)
-	char = c
-	humanoid = char:WaitForChild("Humanoid")
-	root = char:WaitForChild("HumanoidRootPart")
-
-	if spawnPoint then
-		root.CFrame = spawnPoint
-	end
-
-	if loopkilling then
-		local tool = find_tool(char)
-		if tool then
-			local handle = find_handle(tool)
-			if handle then
-				wait(0.9)
-				humanoid:EquipTool(tool)
-			end
-		end
-	end 
-	
-	if char:FindFirstChild("Animate") then
-		char.Animate:Remove()
-	end
-
-	if humanoid then
-		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
-			track:Stop(0)
-		end
-	end
-	
-	anim(char, "cgirls")
-
-	humanoid.Died:Once(function()
-		--rbxg:SendAsync(death[math.random(1,#death)])
-	end)
-end)
-
 task.spawn(function()
 	while wait(0.9) do
 		if loopkilling then
@@ -676,14 +671,17 @@ runs.Heartbeat:Connect(function()
 					end
 
 					if not targetPlayer:FindFirstChild("LoopkillConn") then
-						local tag = Instance.new("BoolValue")
-						tag.Name = "LoopkillConn"
-						tag.Parent = targetPlayer
+						local connTag = Instance.new("ObjectValue")
+						connTag.Name = "LoopkillConn"
+						connTag.Parent = targetPlayer
 
-						targetPlayer.CharacterAdded:Connect(function(newChar)
+						local conn
+						conn = targetPlayer.CharacterAdded:Connect(function(newChar)
 							task.wait(0.5)
 							handleChar(newChar)
 						end)
+
+						connTag.Value = conn
 					end
 				end
 			end
@@ -873,7 +871,7 @@ local function do_command(input)
 							root.CFrame = root.CFrame
 
 							if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
-							webhook_sendMsg(overall_LOGGER, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
+							webhook_sendMsg({{overall_LOGGER, webhook}, webhook}, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
 						end
 					end
 				end
@@ -891,7 +889,7 @@ local function do_command(input)
 	if cmd == "fps" then
 		print(fps)
 		rbxg:SendAsync("FPS: "..tostring(fps))
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", FPS: "..tostring(fps))
+		webhook_sendMsg({{overall_LOGGER, webhook}, webhook}, "Used command: "..cmd..", FPS: "..tostring(fps))
 
 	elseif cmd:sub(1,5) == "lkill" then
 		local addedPlayers = {}
@@ -900,7 +898,7 @@ local function do_command(input)
 			local matches = findPlayersByName(name)
 			if #matches == 0 then
 				rbxg:SendAsync("Could not find: " .. name)
-				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", failed to find player: " .. name)
 			else
 				for _, targetPlayer in ipairs(matches) do
 					local targetLower = targetPlayer.Name:lower()
@@ -916,10 +914,10 @@ local function do_command(input)
 			loopkilling = true
 			print("Loopkilling: " .. table.concat(bad_mans, ", "))
 			rbxg:SendAsync("ur cooked " .. table.concat(addedPlayers, ", "))
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
 		else
 			rbxg:SendAsync("no new targets added")
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
 		
 	elseif cmd:sub(1,10) == "silentkill" then
@@ -928,7 +926,7 @@ local function do_command(input)
 		for _, name in ipairs(args) do
 			local matches = findPlayersByName(name)
 			if #matches == 0 then
-				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", failed to find player: " .. name)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", failed to find player: " .. name)
 			else
 				for _, targetPlayer in ipairs(matches) do
 					local targetLower = targetPlayer.Name:lower()
@@ -943,24 +941,24 @@ local function do_command(input)
 		if #addedPlayers > 0 then
 			loopkilling = true
 			print("Loopkilling: " .. table.concat(bad_mans, ", "))
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
 		else
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", no new loopkill targets added.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
 
 	elseif cmd == "stoplkill" then
 		loopkilling = false
 		rbxg:SendAsync("stopped: lkill")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", stopped loopkill.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", stopped loopkill.")
 		
 	elseif cmd == "looplist" then
 		local list = table.concat(bad_mans, ", ")
 		rbxg:SendAsync("targets: " .. list)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", currently looplisted: "..list)
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", currently looplisted: "..list)
 	elseif cmd == "cleartargets" then
 		bad_mans = {}
 		rbxg:SendAsync("cleared list of bad mans!!")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", cleared looplist.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", cleared looplist.")
 
 	elseif cmd:sub(1,18) == "removefromtargets" then
 		local removedPlayers = {}
@@ -968,7 +966,7 @@ local function do_command(input)
 		for _, name in ipairs(args) do
 			local matches = findPlayersByName(name)
 			if #matches == 0 then
-				webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", could not find: '" .. name .. "' in looplist.")
 			else
 				for _, targetPlayer in ipairs(matches) do
 					local idx = table.find(bad_mans, targetPlayer.Name:lower())
@@ -981,13 +979,13 @@ local function do_command(input)
 		end
 
 		if #removedPlayers > 0 then
-			webhook_sendMsg(overall_LOGGER, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed: " .. table.concat(removedPlayers, ", ") .. " from the looplist.")
 		end
 
 	elseif cmd == "die" or cmd == "reset" then
 		if humanoid then humanoid.Health = 0 end
 		rbxg:SendAsync("resetting")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", resetted.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", resetted.")
 
 	elseif cmd == "goto" then
 		local x, y, z
@@ -1008,10 +1006,10 @@ local function do_command(input)
 				floating = false
 				root.Velocity = Vector3.new(0,0,0)
 				rbxg:SendAsync("went to "..x..", "..y..", "..z)
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", succesfully went to: "..x..", "..y..", "..z)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", succesfully went to: "..x..", "..y..", "..z)
 			else
 				rbxg:SendAsync("where")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find coordinates.")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", couldn't find coordinates.")
 			end
 		else
 			rbxg:SendAsync("Usage: goto x,y,z  OR  goto x y z")
@@ -1023,7 +1021,7 @@ local function do_command(input)
 
 		if not root then
 			rbxg:SendAsync("u dont have a root lol")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find commander's root.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", couldn't find commander's root.")
 			return
 		end
 
@@ -1033,14 +1031,14 @@ local function do_command(input)
 				root.CFrame = targetRoot.CFrame
 				root.Velocity = Vector3.new(0,0,0)
 				rbxg:SendAsync("successfully went to "..targetPlayer.DisplayName.." ("..targetPlayer.Name..")")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", successfully went to target.")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", successfully went to target.")
 			else
 				rbxg:SendAsync("player has no root part, strange")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", player has no rootpart.")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", player has no rootpart.")
 			end
 		else
 			rbxg:SendAsync("couldnt find player :pensive:")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find player.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", couldn't find player.")
 		end
 
 	elseif cmd == "setspawn" then
@@ -1054,29 +1052,29 @@ local function do_command(input)
 			if x and y and z then
 				spawnPoint = CFrame.new(x, y, z)
 				rbxg:SendAsync("i will now spawn at: "..x..", "..y..", "..z)
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", successfully set spawn to: "..x..", "..y..", "..z)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", successfully set spawn to: "..x..", "..y..", "..z)
 			else
 				rbxg:SendAsync("invalid coordinates :(((")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find/invalid coordinates.")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", couldn't find/invalid coordinates.")
 			end
 		elseif root then
 			spawnPoint = root.CFrame
 			rbxg:SendAsync("set spawn to my location")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", set spawn to current location.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", set spawn to current location.")
 		else
 			rbxg:SendAsync("i cant find root")
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", couldn't find root.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", couldn't find root.")
 		end
 
 	elseif cmd == "rejoin" then
 		rbxg:SendAsync("rejoining...")
 		teleportServ:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", MANUAL RE-EXECUTE REQUIRED.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", MANUAL RE-EXECUTE REQUIRED.")
 
 	elseif cmd == "fake" then
 		rbxg:SendAsync("dad look! no name!")
 		hiding = true
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", hid SpawnYellow.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", hid SpawnYellow.")
 
 	elseif cmd == "real" then
 		rbxg:SendAsync("im back to normal!!")
@@ -1085,43 +1083,43 @@ local function do_command(input)
 			root.Velocity = Vector3.new(0,0,0)
 			root.CFrame = lpos
 		end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unhid SpawnYellow.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", unhid SpawnYellow.")
 
 	elseif cmd == "float" then
 		rbxg:SendAsync("floating")
 		floating = true
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", floating.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", floating.")
 
 	elseif cmd == "unfloat" then
 		rbxg:SendAsync("unfloating")
 		floating = false
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", unfloated.")
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", unfloated.")
 
 	elseif cmd == "gameid" then
 		print("gameId: "..tostring(game.PlaceId))
 		if rbxg then pcall(function() rbxg:SendAsync("gameId: "..tostring(game.PlaceId)) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: ".."gameId: "..tostring(game.PlaceId)..", ".."gameId: "..tostring(game.PlaceId))
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: ".."gameId: "..tostring(game.PlaceId)..", ".."gameId: "..tostring(game.PlaceId))
 
 	elseif cmd == "jobid" then
 		print("jobId: "..tostring(game.JobId))
 		if rbxg then pcall(function() rbxg:SendAsync("jobId: "..tostring(game.JobId)) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."jobId: "..tostring(game.JobId))
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."jobId: "..tostring(game.JobId))
 
 	elseif cmd == "creatorid" then
 		print("creatorId: "..tostring(game.CreatorId))
 		if rbxg then pcall(function() rbxg:SendAsync("creatorId: "..tostring(game.CreatorId)) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."creatorId: "..tostring(game.CreatorId))
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."creatorId: "..tostring(game.CreatorId))
 
 	elseif cmd == "servertype" then
 		local typeStr = (game:GetService("RunService"):IsStudio() and "Studio" or "Game")
 		print("serverType: "..typeStr)
 		if rbxg then pcall(function() rbxg:SendAsync("serverType: "..typeStr) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverType: "..typeStr)
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."serverType: "..typeStr)
 
 	elseif cmd == "servertime" then
 		print("serverTime: "..tostring(tick()))
 		if rbxg then pcall(function() rbxg:SendAsync("serverTime: "..tostring(tick())) end) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverTime: "..tostring(tick()))
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."serverTime: "..tostring(tick()))
 
 	elseif cmd == "serverhop" then
 		local servers = {}
@@ -1139,9 +1137,9 @@ local function do_command(input)
 		if #servers > 0 then
 			local server = servers[math.random(1, #servers)]
 			teleportServ:TeleportToPlaceInstance(game.PlaceId, server, player)
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverhop successful. New Server Instance/Job Id: "..server)
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."serverhop successful. New Server Instance/Job Id: "..server)
 		else
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", ".."serverhop unsuccessful. Couldn't find a server or server was full.")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", ".."serverhop unsuccessful. Couldn't find a server or server was full.")
 		end
 
 	elseif cmd == "ping" or cmd == "latency" then
@@ -1151,7 +1149,7 @@ local function do_command(input)
 		local msg = "Ping: "..ms.."ms"
 		print(msg)
 		if rbxg then rbxg:SendAsync(msg) end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", "..msg)
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", "..msg)
 
 	elseif cmd == "bring" and not loopkilling then
 		local rawNames = args[1] or ""
@@ -1185,7 +1183,7 @@ local function do_command(input)
 
 		if not dest then
 			if rbxg then rbxg:SendAsync("where do u want me to bring u") end
-			webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", no destination found")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", no destination found")
 			return
 		end
 
@@ -1195,19 +1193,70 @@ local function do_command(input)
 				enqueueBring(target, dest)
 			else
 				rbxg:SendAsync("bring: "..name.." not found")
-				webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", target "..name.." not found")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", target "..name.." not found")
 			end
 		end
 	
 	elseif cmd == "resetgrav" then
 		workspace.Gravity = 196.2
 		if rbxg then rbxg:SendAsync("reset gravity") end
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd)
-	elseif cmd:sub(6) == "emote" then
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd)
+	elseif cmd:sub(5) == "emote" then
 		local emoteName = args[1]
 		anim(char, emoteName)
 		rbxg:SendAsync("emoting! >v<")
-		webhook_sendMsg(overall_LOGGER, "Used command: "..cmd..", emoting: "..emoteName)
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", emoting: "..emoteName)
+	elseif cmd == "autoReset" or cmd == "autore" then
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", auto resetting when loopkilling.")
+		autoR = true
+	elseif cmd == "unautoReset" or cmd == "unautore" then
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", auto reset disabled.")
+		autoR = false
+	elseif cmd == "resetThres" then
+		autoThres = tonumber(args[1]) or autoThres
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", new threshold: "..autoThres)
+	elseif cmd:sub(4) == "kill" or cmd:sub(8) == "tempkill" then
+		local addedPlayers = {}
+
+		for _, name in ipairs(args) do
+			local matches = findPlayersByName(name)
+			if #matches == 0 then
+				rbxg:SendAsync("Could not find: " .. name)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", failed to find player: " .. name)
+			else
+				for _, targetPlayer in ipairs(matches) do
+					local targetLower = targetPlayer.Name:lower()
+					if not table.find(bad_mans, targetLower) then
+						table.insert(bad_mans, targetLower)
+						table.insert(addedPlayers, targetPlayer.DisplayName .. " (" .. targetPlayer.Name .. ")")
+
+						if targetPlayer.Character then
+							local humanoid = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+							if humanoid then
+								humanoid.Died:Connect(function()
+									for i, v in ipairs(bad_mans) do
+										if v == targetLower then
+											table.remove(bad_mans, i)
+											break
+										end
+									end
+								end)
+							end
+						end
+					end
+				end
+			end
+		end
+
+		if #addedPlayers > 0 then
+			loopkilling = true
+			print("Loopkilling: " .. table.concat(bad_mans, ", "))
+			rbxg:SendAsync("ur cooked " .. table.concat(addedPlayers, ", "))
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added: " .. table.concat(addedPlayers, ", ") .. " to loopkill list.")
+		else
+			rbxg:SendAsync("no new targets added")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new loopkill targets added.")
+		end
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
@@ -1215,6 +1264,85 @@ local function do_command(input)
 		end
 	end
 end
+
+player.CharacterAdded:Connect(function(c)
+	char = c
+	humanoid = char:WaitForChild("Humanoid")
+	root = char:WaitForChild("HumanoidRootPart")
+
+	if spawnPoint then
+		root.CFrame = spawnPoint
+	end
+
+	if loopkilling then
+		local tool = find_tool(char)
+		if tool then
+			local handle = find_handle(tool)
+			if handle then
+				wait(0.9)
+				humanoid:EquipTool(tool)
+			end
+		end
+	end 
+
+	if char:FindFirstChild("Animate") then
+		char.Animate:Remove()
+	end
+
+	if humanoid then
+		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+			track:Stop(0)
+		end
+	end
+
+	anim(char, "cgirls")
+
+	humanoid.Died:Once(function()
+		if math.random(1,20) == 1 then
+			rbxg:SendAsync(death[math.random(1,#death)])
+		end
+		local creator = humanoid:FindFirstChild("creator")
+		if creator and creator:IsA("ObjectValue") then
+			local plr = creator.Value
+			if plr:IsA("Player") then
+				local char = plr.Character
+				if char then
+					local ro = char:FindFirstChild("HumanoidRootPart")
+					if ro then
+						local distance = (ro.Position - root.Position).Magnitude
+						if distance <= 14 then
+							if whitelist[plr.Name] then return end 
+							if table.find(bad_mans, plr.Name:lower()) then return end 
+
+							table.insert(bad_mans, plr.Name:lower())
+
+							for _, variant in ipairs(generateNameVariants(plr)) do
+								do_command("sy.silentkill " .. variant)
+							end
+
+							pcall(function()
+								if rbxg then rbxg:SendAsync("hey... how did u kill me?") end
+								webhook_sendMsg(overall_LOGGER, "Killed exploiter: "..plr.DisplayName.." ("..plr.Name..") ".."reaching.")
+								webhook_sendMsg(webhook, "Killed: "..plr.DisplayName.." ("..plr.Name..") ".."killed me in the void. Possible reacher.")
+							end)
+
+							task.spawn(function()
+								repeat wait() until pcall(function()plr.Character:FindFirstChildOfClass("Humanoid").Health = 0 end)
+								table.remove(bad_mans, table.find(bad_mans, plr.Name:lower()))
+								for _, variant in ipairs(generateNameVariants(plr)) do
+									do_command("sy.removefromtargets " .. variant)
+								end
+							end)
+							if not hiding then
+								
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
+end)
 
 local function isGrounded(char)
 	local root = char:FindFirstChild("HumanoidRootPart")
@@ -1226,29 +1354,6 @@ local function isGrounded(char)
 	params.FilterType = Enum.RaycastFilterType.Blacklist
 	local result = workspace:Raycast(rayOrigin, rayDirection, params)
 	return result ~= nil
-end
-
-local function generateNameVariants(plr)
-	local variants = {}
-
-	local function addVariants(str)
-		if not str or str == "" then return end
-		table.insert(variants, str)
-		table.insert(variants, str:lower())
-
-		for i = 1, #str do
-			local sub = str:sub(i)
-			if sub and sub ~= "" then
-				table.insert(variants, sub)
-				table.insert(variants, sub:lower())
-			end
-		end
-	end
-
-	addVariants(plr.Name)
-	addVariants(plr.DisplayName)
-
-	return variants
 end
 
 local function monitor(p)
@@ -1302,7 +1407,7 @@ local function monitor(p)
 
 		pcall(function()
 			if rbxg then rbxg:SendAsync(messageCallback()) end
-			webhook_sendMsg(overall_LOGGER, "Killed exploiter: "..plr.DisplayName.." ("..plr.Name..") "..reason)
+			webhook_sendMsg({overall_LOGGER, webhook}, "Killed exploiter: "..plr.DisplayName.." ("..plr.Name..") "..reason)
 		end)
 		
 		task.spawn(function()
@@ -1380,7 +1485,7 @@ local function monitor(p)
 							violationCount.tp = 0
 						end
 
-						if state == Enum.HumanoidStateType.Running and safeSpeed > 65 then
+						if state == Enum.HumanoidStateType.Running and safeSpeed > 45 and humanoid.WalkSpeed > 45 then
 							if not h.PlatformStand then
 								violationCount.speed += 1
 								if violationCount.speed >= violationLimit then
@@ -1601,7 +1706,8 @@ local function on_chatted()
 		else
 			if hasPrefix then
 				if sender.Name ~= player.Name then
-					webhook_sendMsg(overall_LOGGER, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
+					webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
+					webhook_sendMsg(webhook, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
 				end
 				if math.random(1, 20) == 1 then
 					rbxg:SendAsync(dummy[math.random(1, #dummy)])
@@ -1624,7 +1730,8 @@ local function on_chatted()
 end
 
 players.PlayerAdded:Connect(function(p)
-	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") joined.")
+	webhook_sendMsg({overall_LOGGER, webhook}, p.DisplayName.."("..p.Name..") joined.")
+	webhook_sendMsg(webhook, p.DisplayName.."("..p.Name..") joined.")
 	on_chatted(p)
 	if p ~= player or p.Name ~= player.Name then
 		monitor(p)
@@ -1679,7 +1786,7 @@ for i, v in pairs(players:GetPlayers()) do
 	elseif v.Name == "ColonThreeSpam" then
 		rbxg:SendAsync("hi fluffy boi!!!")
 	end
-	if v.Name == "s71pl" then
+	if v.Name == "s71pl" or v.Name == "STEVETheReal916" or v.Name == "TheTerminalClone" then
 		local c = v.Character
 		if c then
 			local h = c:FindFirstChildOfClass("Humanoid")
@@ -1687,6 +1794,7 @@ for i, v in pairs(players:GetPlayers()) do
 				h.Died:Connect(function()
 					local cr = h:FindFirstChild("creator")
 					if cr and cr:IsA("ObjectValue") and cr.Value:IsA("Player") then
+						webhook_sendMsg({overall_LOGGER, webhook}, cr.Value.Name.." killed administrator: "..v.DisplayName.." ("..v.Name..").")
 						local kc = cr.Value.Character
 						if kc then
 							local r = kc:FindFirstChild("HumanoidRootPart")
@@ -1707,8 +1815,28 @@ for i, v in pairs(players:GetPlayers()) do
 			end
 		end
 	end
+	local ch = v.Character
+	if ch then
+		local hu = ch:FindFirstChildOfClass("Humanoid")
+		if hu then
+			hu.Died:Connect(function()
+				local cre = hu:FindFirstChild("creator")
+				if cre and cre:IsA("ObjectValue") and cre.Value:IsA("Player") then
+					local chr = cre.Value.Character
+					if chr then
+						local ro = chr:FindFirstChild("HumanoidRootPart")
+						if ro then
+							local distance = (ro.Position - root.Position).Magnitude
+							webhook_sendMsg({overall_LOGGER, webhook}, cre.Value.Name.." ("..cre.Value.DisplayName..") killed "..v.Name.." ("..v.DisplayName..") at "..tostring(distance).." ("..tostring(math.floor(distance))..")")
+						end
+					end
+				end
+			end)
+		end
+	end
 end
 
 players.PlayerRemoving:Connect(function(p)
-	webhook_sendMsg(overall_LOGGER, p.DisplayName.."("..p.Name..") left.")
+	webhook_sendMsg({overall_LOGGER, webhook}, p.DisplayName.."("..p.Name..") left.")
+	webhook_sendMsg(webhook, p.DisplayName.."("..p.Name..") left.")
 end)
