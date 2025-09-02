@@ -475,6 +475,7 @@ local whitelist = {
 	['BorrowGoal'] = true,
 	['JeremysCherryl'] = true,
 	['STEVETheReal916'] = true,
+	['TMKOC63'] = true
 }
 local confusion = {
 	"whaaaa???",
