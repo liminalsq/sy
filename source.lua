@@ -1771,6 +1771,26 @@ players.PlayerAdded:Connect(function(p)
 			end
 		end
 	end
+    local ch = p.Character
+	if ch then 
+		local h = ch:FindFirstChildOfClass("Humanoid")
+        local r = ch:FindFirstChild("HumanoidRootPart")
+		if h then
+			h.Died:Connect(function()	
+				local cre = h:FindFirstChild("creator")
+				if cre and cre:IsA("ObjectValue") and cre.Value then
+					local char = cre.Value.Character
+					if char then
+                       local ro = char:FindFirstChild("HumanoidRootPart")
+						if ro and r then
+                           local distance = (r.Position - ro.Position).Magnitude
+						   webhook_sendMsg({overall_LOGGER, webhook}, cre.Value.Name.." ("..cre.Value.DisplayName..") killed "..p.Name.." ("..p.DisplayName..") at "..tostring(distance).." ("..tostring(math.floor(distance))..")")
+						end
+					end
+				end
+			end)
+		end
+	end
 end)
 
 for i, v in pairs(players:GetPlayers()) do
