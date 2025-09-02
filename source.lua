@@ -348,7 +348,7 @@ local function anim(char, animName) -- ALSO STEVE/TERMINAL CODE SNIPPET
 		if CharacterAnimationData == nil then return end
 		local ilikeit = {
 			Name = animName,
-			Time = CharacterAnimationData.Time,
+			Time = CharacterAnimationData.Time or 0,
 			Keyframes = {},
 		}
 		for t=0, CharacterAnimationData.Time, 1 / 30 do
