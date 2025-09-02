@@ -662,6 +662,11 @@ runs.Heartbeat:Connect(function()
 
 							if tool and handle then
 								tool:Activate()
+								task.delay(0.1, function()
+									if tool.Parent == char then
+										tool:Activate()
+									end
+								end)
 								kill(handle, targetRoot)
 							end
 						end
@@ -1719,13 +1724,17 @@ local function on_chatted()
 		if sender.Name == "s71pl" then
 			local rootPos = root.Position
 			local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
-			if lowerMsg:find("spawnyellow") or lowerMsg:find("son") then
+			if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
 				rbxg:SendAsync("hi dad!!")
 			elseif lowerMsg:find("my boy") then
 				rbxg:SendAsync(">v<")
 			elseif lowerMsg:find("pat") and hrp and (hrp.Position - rootPos).Magnitude <= 8 then
 				rbxg:SendAsync(">▽<")
 			end
+		end
+
+		if lowerMsg:find("hi") and lowerMsg:find("spawnyellow") then
+			rbxg:SendAsync("hii!")
 		end
 	end)
 end
