@@ -1270,6 +1270,47 @@ local function do_command(input)
 			rbxg:SendAsync("no new targets added")
 			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new loopkill targets added.")
 		end
+	elseif cmd:sub(9, 17):lower() == "blacklist" then
+		local args = {}
+		for word in cmd:sub(19):gmatch("%S+") do
+			table.insert(args, word)
+		end
+
+		local action = args[1] and args[1]:lower() or ""
+		local targetName = args[2] and args[2]:lower()
+
+		if action == "add" and targetName then
+			if not table.find(blacklist, targetName) then
+				table.insert(blacklist, targetName)
+				writefile("blacklist.txt", table.concat(blacklist, "\n"))
+				rbxg:SendAsync("added to blacklist: " .. targetName)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added new loopkill target: " .. targetName)
+			else
+				rbxg:SendAsync("no new ppl added")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new loopkill targets added.")
+			end
+
+		elseif action == "remove" and targetName then
+			local index = table.find(blacklist, targetName)
+			if index then
+				table.remove(blacklist, index)
+				writefile("blacklist.txt", table.concat(blacklist, "\n"))
+				rbxg:SendAsync("removed from blacklist: " .. targetName)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed loopkill target: " .. targetName)
+			else
+				rbxg:SendAsync("none have been removed")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", target not found in blacklist.")
+			end
+
+		elseif action == "list" then
+			local listString = "blacklisted: " .. table.concat(blacklist, ", ")
+			rbxg:SendAsync(listString)
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", current blacklist: " .. listString)
+
+		else
+			rbxg:SendAsync("Usage: blacklist add|remove|list <player>")
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", invalid blacklist usage.")
+		end
 	else
 		print("command not found")
 		if math.random(1,15) == 1 then
