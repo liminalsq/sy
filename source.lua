@@ -477,6 +477,13 @@ local whitelist = {
 	['STEVETheReal916'] = true,
 	['TMKOC63'] = true
 }
+
+local blacklist = {
+	['Dollmyaccdisabled686'] = true
+}
+
+local exclude = {}
+
 local confusion = {
 	"whaaaa???",
 	"huh",
@@ -633,25 +640,22 @@ end
 local killCooldowns = {}
 local lpos = root.CFrame
 
+local resTimer = 0
+
 runs.Heartbeat:Connect(function()
 	if humanoid.Health > 0 or humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
 		if loopkilling then
-			local looplisted_preset = false
+			local targets = {}
 
-			for i = #bad_mans, 1, -1 do
-				local targetName = bad_mans[i]
-				local targetPlayer
+			for _, name in ipairs(blacklist) do
+				targets[name:lower()] = true
+			end
+			for _, name in ipairs(bad_mans) do
+				targets[name:lower()] = true
+			end
 
-				for _, p in ipairs(players:GetPlayers()) do
-					if p.Name:lower() == targetName or p.DisplayName:lower() == targetName then
-						targetPlayer = p
-						break
-					end
-				end
-
-				if targetPlayer then
-					looplisted_preset = true
-
+			for _, p in ipairs(players:GetPlayers()) do
+				if targets[p.Name:lower()] or targets[p.DisplayName:lower()] then
 					local function handleChar(targetChar)
 						local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
 						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
@@ -671,21 +675,25 @@ runs.Heartbeat:Connect(function()
 									tool:Activate()
 								end
 								kill(tool:FindFirstChild("Handle"), targetRoot)
+
+								if autoRe then
+									humanoid.Health = 0
+								end
 							end
 						end
 					end
-					
-					if targetPlayer.Character then
-						handleChar(targetPlayer.Character)
+
+					if p.Character then
+						handleChar(p.Character)
 					end
 
-					if not targetPlayer:FindFirstChild("LoopkillConn") then
+					if not p:FindFirstChild("LoopkillConn") then
 						local connTag = Instance.new("ObjectValue")
 						connTag.Name = "LoopkillConn"
-						connTag.Parent = targetPlayer
+						connTag.Parent = p
 
 						local conn
-						conn = targetPlayer.CharacterAdded:Connect(function(newChar)
+						conn = p.CharacterAdded:Connect(function(newChar)
 							task.wait(0.5)
 							handleChar(newChar)
 						end)
@@ -693,10 +701,6 @@ runs.Heartbeat:Connect(function()
 						connTag.Value = conn
 					end
 				end
-			end
-
-			if not looplisted_preset then
-				loopkilling = false
 			end
 		end
 
