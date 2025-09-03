@@ -1226,17 +1226,8 @@ local function do_command(input)
 		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", auto reset disabled.")
 		autoR = false
 	elseif cmd == "resetThres" then
-		if args[1] then
-			local newVal = tonumber(args[1])
-			if newVal then
-				autoThres = newVal
-				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", new threshold: " .. autoThres)
-			else
-				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", invalid value: " .. args[1])
-			end
-		else
-			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no value provided for threshold.")
-		end
+		autoThres = tonumber(args[1]) or autoThres
+		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", new threshold: "..tostring(autoThres))
 	elseif cmd:sub(4) == "kill" or cmd:sub(8) == "tempkill" then
 		local addedPlayers = {}
 
