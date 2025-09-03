@@ -657,18 +657,22 @@ runs.Heartbeat:Connect(function()
 						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
 
 						if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
-							local tool = find_tool(char) or find_tool(player.Backpack)
-							local handle = tool and find_handle(tool)
+							local tool = find_tool(char)
+							if not tool then
+								tool = find_tool(player.Backpack)
+							end
 
+							local handle = tool and find_handle(tool)
 							if tool and handle then
-								if tool.Parent ~= char then
+								if tool.Parent == player.Backpack then
 									humanoid:EquipTool(tool)
-									repeat task.wait() until not tool.Parent or tool.Parent == char
+									repeat task.wait() until tool.Parent == char or not tool.Parent
 								end
 
 								if tool.Parent == char then
 									for i = 1,3 do
 										tool:Activate()
+										task.wait(0.1)
 									end
 									kill(handle, targetRoot)
 								end
