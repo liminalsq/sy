@@ -644,7 +644,7 @@ local resTimer = 0
 
 runs.Heartbeat:Connect(function()
 	if humanoid.Health > 0 or humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
-		if loopkilling then
+		if humanoid.Health > 0 and loopkilling then
 			local targets = {}
 
 			for _, name in ipairs(blacklist) do
@@ -655,31 +655,41 @@ runs.Heartbeat:Connect(function()
 			end
 
 			for _, p in ipairs(players:GetPlayers()) do
-				if targets[p.Name:lower()] or targets[p.DisplayName:lower()] then
+				local pname = p.Name:lower()
+				local dname = p.DisplayName:lower()
+
+				if targets[pname] or targets[dname] then
 					local function handleChar(targetChar)
 						local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
 						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
 
-						if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
+						if targetHumanoid and targetHumanoid.Health > 0 then
 							local tool = char:FindFirstChildOfClass("Tool")
 							if not tool then
 								tool = player.Backpack:FindFirstChildOfClass("Tool")
 								if tool then
 									humanoid:EquipTool(tool)
-									return
+									task.wait(0.1)
 								end
 							end
 
-							if tool and tool.Parent == char then
+							if tool and tool.Parent == char and targetRoot then
 								for i = 1,3 do
 									tool:Activate()
-								end
-								kill(tool:FindFirstChild("Handle"), targetRoot)
-
-								if autoRe then
-									humanoid.Health = 0
+									task.wait(0.05)
 								end
 							end
+
+							if targetRoot then
+								kill(tool:FindFirstChild("Handle"), targetRoot)
+							end
+						end
+					end
+
+					if autoRe and char and humanoid and humanoid.Parent then
+						if tick() - resTimer > autoThres then
+							resTimer = tick()
+							humanoid.Health = 0
 						end
 					end
 
@@ -694,7 +704,7 @@ runs.Heartbeat:Connect(function()
 
 						local conn
 						conn = p.CharacterAdded:Connect(function(newChar)
-							task.wait(0.5)
+							task.wait(0.1)
 							handleChar(newChar)
 						end)
 
