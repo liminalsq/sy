@@ -652,9 +652,9 @@ runs.Heartbeat:Connect(function()
 				if targetPlayer then
 					looplisted_preset = true
 
-					local function handleChar(char)
-						local targetHumanoid = char:FindFirstChildOfClass("Humanoid")
-						local targetRoot = char:FindFirstChild("HumanoidRootPart")
+					local function handleChar(targetChar)
+						local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
+						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
 
 						if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
 							local tool = find_tool(char) or find_tool(player.Backpack)
