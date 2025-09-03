@@ -1226,8 +1226,17 @@ local function do_command(input)
 		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", auto reset disabled.")
 		autoR = false
 	elseif cmd == "resetThres" then
-		autoThres = tonumber(args[1]) or autoThres
-		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", new threshold: "..autoThres)
+		if args[1] then
+			local newVal = tonumber(args[1])
+			if newVal then
+				autoThres = newVal
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", new threshold: " .. autoThres)
+			else
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", invalid value: " .. args[1])
+			end
+		else
+			webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no value provided for threshold.")
+		end
 	elseif cmd:sub(4) == "kill" or cmd:sub(8) == "tempkill" then
 		local addedPlayers = {}
 
@@ -1488,7 +1497,7 @@ local function monitor(p)
 	runs.Heartbeat:Connect(function()
 		if tick() - mon_timer > 0.1 then
 			mon_timer = tick()
-			if whitelist[p.Name] or not table.find(whitelist, p.Name) or not p.Character then return end
+			if whitelist[p.Name] or exclude[p.Name] or not table.find(whitelist, p.Name) or not table.find(exclude, p.Name) or not p.Character then return end
 			if not whitelist[p.Name] or not table.find(whitelist, p.Name) or p.Name ~= player.Name or p ~= player then -- fallback cus sometimes the original check doesnt work
 				c = p.Character
 				r = c:FindFirstChild("HumanoidRootPart")
