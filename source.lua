@@ -243,7 +243,7 @@ end
 local function StepReanimate()
 	-- yes the code is now stable kinda
 	if Player.Character ~= CharFake then return end
-	CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
+	--CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
 	charRoot.Velocity = Vector3.zero
 	charRoot.RotVelocity = Vector3.zero
 	for _,v in pairs(char:GetDescendants()) do
