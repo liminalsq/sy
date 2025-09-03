@@ -644,7 +644,7 @@ local resTimer = 0
 
 local connections = {}
 
-runservice.Heartbeat:Connect(function()
+runs.Heartbeat:Connect(function()
 	if humanoid.Health > 0 and loopkilling then
 		local targets = {}
 		for _, name in ipairs(blacklist) do
