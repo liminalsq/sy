@@ -243,7 +243,7 @@ end
 local function StepReanimate()
 	-- yes the code is now stable kinda
 	if Player.Character ~= CharFake then return end
-	--CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
+	CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
 	charRoot.Velocity = Vector3.zero
 	charRoot.RotVelocity = Vector3.zero
 	for _,v in pairs(char:GetDescendants()) do
@@ -645,77 +645,75 @@ local resTimer = 0
 local connections = {}
 
 runs.Heartbeat:Connect(function()
-	if humanoid.Health > 0 and loopkilling then
-		local targets = {}
-		for _, name in ipairs(blacklist) do
-			targets[name:lower()] = true
-		end
-		for _, name in ipairs(bad_mans) do
-			targets[name:lower()] = true
-		end
+	if humanoid.Health > 0 then
+		if loopkilling then
+			local targets = {}
+			for _, name in ipairs(blacklist) do
+				targets[name:lower()] = true
+			end
+			for _, name in ipairs(bad_mans) do
+				targets[name:lower()] = true
+			end
 
-		for _, p in ipairs(players:GetPlayers()) do
-			local pname = p.Name:lower()
-			local dname = p.DisplayName:lower()
+			for _, p in ipairs(players:GetPlayers()) do
+				local pname = p.Name:lower()
+				local dname = p.DisplayName:lower()
 
-			if targets[pname] or targets[dname] then
-				local function handleChar(targetChar)
-					local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
-					local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
+				if targets[pname] or targets[dname] then
+					local function handleChar(targetChar)
+						local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
+						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
 
-					if targetHumanoid and targetHumanoid.Health > 0 then
-						local tool = char:FindFirstChildOfClass("Tool")
-						if not tool then
-							tool = player.Backpack:FindFirstChildOfClass("Tool")
-							if tool then
-								humanoid:EquipTool(tool)
-								task.wait(0.1)
+						if targetHumanoid and targetHumanoid.Health > 0 then
+							local tool = char:FindFirstChildOfClass("Tool")
+							if not tool then
+								tool = player.Backpack:FindFirstChildOfClass("Tool")
+								if tool then
+									humanoid:EquipTool(tool)
+									task.wait(0.1)
+								end
 							end
-						end
 
-						if tool and tool.Parent == char and targetRoot then
-							for i = 1,3 do
-								tool:Activate()
+							if tool and tool.Parent == char and targetRoot then
+								for i = 1,3 do
+									tool:Activate()
+								end
 							end
-						end
 
-						kill(tool:FindFirstChild("Handle"), targetRoot)
+							kill(tool:FindFirstChild("Handle"), targetRoot)
+						end
+					end
+
+					if p.Character then
+						handleChar(p.Character)
+					end
+
+					if not p:FindFirstChild("LoopkillConn") then
+						local connTag = Instance.new("BoolValue")
+						connTag.Name = "LoopkillConn"
+						connTag.Parent = p
+						connTag.Value = true
+
+						local conn = p.CharacterAdded:Connect(function(newChar)
+							task.wait(0.1)
+							handleChar(newChar)
+						end)
+
+						connections[p] = conn
 					end
 				end
+			end
 
-				if p.Character then
-					handleChar(p.Character)
-				end
-
-				if autoRe and char and humanoid and humanoid.Parent then
-					if tick() - resTimer > autoThres then
-						resTimer = tick()
-						humanoid.Health = 0
-					end
-				end
-
-				if not p:FindFirstChild("LoopkillConn") then
-					local connTag = Instance.new("BoolValue")
-					connTag.Name = "LoopkillConn"
-					connTag.Parent = p
-					connTag.Value = true
-
-					local conn = p.CharacterAdded:Connect(function(newChar)
-						task.wait(0.1)
-						handleChar(newChar)
-					end)
-
-					connections[p] = conn
+			if autoRe and char and humanoid and humanoid.Parent then
+				if tick() - resTimer > autoThres then
+					resTimer = tick()
+					humanoid.Health = 0
 				end
 			end
 		end
 
-		if hiding then
-			if root then
-				if not bringing then
-					root.CFrame = CFrame.new(0, -65536, 65536)
-				end
-			end
+		if hiding and root and not bringing then
+			root.CFrame = CFrame.new(0, -65536, 65536)
 		end
 
 		if not bringing and not hiding then
