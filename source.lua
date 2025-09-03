@@ -894,7 +894,7 @@ local function do_command(input)
 							root.CFrame = root.CFrame
 
 							if rbxg then rbxg:SendAsync("brought: "..target.Name.." to "..tostring(dest)) end
-							webhook_sendMsg({{overall_LOGGER, webhook}, webhook}, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
+							webhook_sendMsg({overall_LOGGER, webhook}, "Used command: bring, brought "..target.Name.." ("..target.DisplayName..")")
 						end
 					end
 				end
