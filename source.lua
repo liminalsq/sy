@@ -1321,7 +1321,7 @@ local function do_command(input)
 		elseif action == "remove" and inputName ~= "" then
 			local target
 			for name, disp in pairs(blacklist) do
-				if name:lower() == inputName:lower() or disp:lower() == inputName:lower() then
+				if name:lower():find(inputName:lower(), 1, true) or disp:lower():find(inputName:lower(), 1, true) then
 					target = name
 					break
 				end
@@ -1338,7 +1338,6 @@ local function do_command(input)
 			else
 				rbxg:SendAsync("not in blacklist: " .. inputName)
 			end
-
 		elseif action == "list" then
 			local names = {}
 			for name, disp in pairs(blacklist) do
