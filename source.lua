@@ -1320,6 +1320,11 @@ local function do_command(input)
 
 			if not blacklist[finalName] then
 				blacklist[finalName] = displayName
+
+				if not table.find(bad_mans, finalName) then
+					table.insert(bad_mans, finalName)
+				end
+
 				local names = {}
 				for name, disp in pairs(blacklist) do
 					table.insert(names, name .. " (" .. tostring(disp) .. ")")
@@ -1341,6 +1346,13 @@ local function do_command(input)
 
 			if target then
 				blacklist[target] = nil
+
+				for i = #bad_mans, 1, -1 do
+					if bad_mans[i] == target then
+						table.remove(bad_mans, i)
+					end
+				end
+
 				local names = {}
 				for name, disp in pairs(blacklist) do
 					table.insert(names, name .. " (" .. tostring(disp) .. ")")
@@ -1350,6 +1362,7 @@ local function do_command(input)
 			else
 				rbxg:SendAsync("not in blacklist: " .. inputName)
 			end
+
 		elseif action == "list" then
 			local names = {}
 			for name, disp in pairs(blacklist) do
