@@ -1310,7 +1310,7 @@ local function do_command(input)
 				blacklist[finalName] = displayName
 				local names = {}
 				for name, disp in pairs(blacklist) do
-					table.insert(names, name .. " (" .. (disp or name) .. ")")
+					table.insert(names, name .. " (" .. tostring(disp) .. ")")
 				end
 				writefile("blacklist.txt", table.concat(names, "\n"))
 				rbxg:SendAsync("added to blacklist: " .. finalName .. " (" .. displayName .. ")")
@@ -1319,22 +1319,22 @@ local function do_command(input)
 			end
 
 		elseif action == "remove" and inputName ~= "" then
-			local foundKey
-			for name, _ in pairs(blacklist) do
-				if name:lower() == inputName:lower() then
-					foundKey = name
+			local target
+			for name, disp in pairs(blacklist) do
+				if name:lower() == inputName:lower() or disp:lower() == inputName:lower() then
+					target = name
 					break
 				end
 			end
 
-			if foundKey then
-				blacklist[foundKey] = nil
+			if target then
+				blacklist[target] = nil
 				local names = {}
 				for name, disp in pairs(blacklist) do
-					table.insert(names, name .. " (" .. (disp or name) .. ")")
+					table.insert(names, name .. " (" .. tostring(disp) .. ")")
 				end
 				writefile("blacklist.txt", table.concat(names, "\n"))
-				rbxg:SendAsync("removed from blacklist: " .. foundKey)
+				rbxg:SendAsync("removed from blacklist: " .. target)
 			else
 				rbxg:SendAsync("not in blacklist: " .. inputName)
 			end
@@ -1342,7 +1342,7 @@ local function do_command(input)
 		elseif action == "list" then
 			local names = {}
 			for name, disp in pairs(blacklist) do
-				table.insert(names, name .. " (" .. (disp or name) .. ")")
+				table.insert(names, name .. " (" .. tostring(disp) .. ")")
 			end
 			local listString = "blacklisted: " .. table.concat(names, ", ")
 			rbxg:SendAsync(listString)
