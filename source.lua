@@ -91,7 +91,7 @@ local hiding = true
 local floating = false
 local bringing = false
 local aUnequip = true
-local autoRe = true
+local autoR = true
 local autoThres = 3
 
 local function generateNameVariants(plr)
@@ -714,7 +714,7 @@ runs.Heartbeat:Connect(function()
 				end
 			end
 
-			if autoRe and char and humanoid and humanoid.Parent then
+			if autoR and char and humanoid and humanoid.Parent then
 				if tick() - resTimer > autoThres then
 					resTimer = tick()
 					humanoid.Health = 0
