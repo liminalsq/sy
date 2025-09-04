@@ -489,6 +489,9 @@ if isfile("blacklist.txt") then
 	end
 end
 
+for name in pairs(blacklist) do
+	table.insert(bad_mans, name:lower())
+end
 
 local exclude = {}
 
@@ -653,7 +656,7 @@ local resTimer = 0
 local connections = {}
 
 runs.Heartbeat:Connect(function()
-	if humanoid.Health > 0 then
+	if humanoid and humanoid.Health > 0 then
 		if loopkilling then
 			local targets = {}
 
@@ -671,26 +674,23 @@ runs.Heartbeat:Connect(function()
 
 				if targets[pname] or targets[dname] then
 					local function handleChar(targetChar)
+						if not targetChar then return end
 						local targetHumanoid = targetChar:FindFirstChildOfClass("Humanoid")
 						local targetRoot = targetChar:FindFirstChild("HumanoidRootPart")
 
-						if targetHumanoid and targetHumanoid.Health > 0 then
-							local tool = char:FindFirstChildOfClass("Tool")
-							if not tool then
-								tool = player.Backpack:FindFirstChildOfClass("Tool")
-								if tool then
-									humanoid:EquipTool(tool)
-									task.wait(0.1)
-								end
+						if targetHumanoid and targetHumanoid.Health > 0 and targetRoot then
+							local tool = char:FindFirstChildOfClass("Tool") or player.Backpack:FindFirstChildOfClass("Tool")
+							if tool and tool.Parent ~= char then
+								humanoid:EquipTool(tool)
+								task.wait(0.1)
 							end
 
-							if tool and tool.Parent == char and targetRoot then
+							if tool and tool.Parent == char then
 								for i = 1,3 do
 									tool:Activate()
 								end
+								kill(tool:FindFirstChild("Handle"), targetRoot)
 							end
-
-							kill(tool:FindFirstChild("Handle"), targetRoot)
 						end
 					end
 
@@ -715,7 +715,12 @@ runs.Heartbeat:Connect(function()
 			end
 
 			if autoR and char and humanoid and humanoid.Parent then
-				if tick() - resTimer > autoThres then
+				if not resTimer then
+					resTimer = tick()
+				end
+
+				local elapsed = tick() - resTimer
+				if elapsed >= autoThres then
 					resTimer = tick()
 					humanoid.Health = 0
 				end
@@ -983,8 +988,15 @@ local function do_command(input)
 		rbxg:SendAsync("targets: " .. list)
 		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", currently looplisted: "..list)
 	elseif cmd == "cleartargets" then
-		bad_mans = {}
-		rbxg:SendAsync("cleared list of bad mans!!")
+		local newBadMans = {}
+		for _, name in ipairs(bad_mans) do
+			if blacklist[name] then
+				table.insert(newBadMans, name)
+			end
+		end
+		bad_mans = newBadMans
+
+		rbxg:SendAsync("cleared list of bad mans")
 		webhook_sendMsg({overall_LOGGER, webhook}, "Used command: "..cmd..", cleared looplist.")
 
 	elseif cmd:sub(1,18) == "removefromtargets" then
