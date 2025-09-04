@@ -1286,18 +1286,19 @@ local function do_command(input)
 		end
 	elseif cmd:sub(1,9):lower() == "blacklist" then
 		local action = args[1] and args[1]:lower() or ""
-		local targetName = args[2] and args[2] or ""
+		local rawName = args[2] and args[2] or ""
 
-		if action == "add" and targetName ~= "" then
-			local foundPlayer
+		if action == "add" and rawName ~= "" then
+			local finalName
+
 			for _, p in ipairs(players:GetPlayers()) do
-				if p.Name:lower() == targetName:lower() or p.DisplayName:lower() == targetName:lower() then
-					foundPlayer = p
+				if p.Name:lower() == rawName:lower() or p.DisplayName:lower() == rawName:lower() then
+					finalName = p.Name:lower()
 					break
 				end
 			end
 
-			local finalName = foundPlayer and foundPlayer.Name:lower() or targetName:lower()
+			finalName = finalName or rawName:lower()
 
 			if not blacklist[finalName] then
 				blacklist[finalName] = true
@@ -1313,19 +1314,19 @@ local function do_command(input)
 				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new targets added.")
 			end
 
-		elseif action == "remove" and targetName ~= "" then
-			targetName = targetName:lower()
-			if blacklist[targetName] then
-				blacklist[targetName] = nil
+		elseif action == "remove" and rawName ~= "" then
+			local nameToRemove = rawName:lower()
+			if blacklist[nameToRemove] then
+				blacklist[nameToRemove] = nil
 				local names = {}
 				for name in pairs(blacklist) do
 					table.insert(names, name)
 				end
 				writefile("blacklist.txt", table.concat(names, "\n"))
-				rbxg:SendAsync("removed from blacklist: " .. targetName)
-				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed from blacklist: " .. targetName)
+				rbxg:SendAsync("removed from blacklist: " .. nameToRemove)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed from blacklist: " .. nameToRemove)
 			else
-				rbxg:SendAsync("not in blacklist: " .. targetName)
+				rbxg:SendAsync("not in blacklist: " .. nameToRemove)
 				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", target not found in blacklist.")
 			end
 
