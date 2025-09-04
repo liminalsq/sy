@@ -1290,50 +1290,53 @@ local function do_command(input)
 
 		if action == "add" and rawName ~= "" then
 			local finalName
+			local displayName
 
 			for _, p in ipairs(players:GetPlayers()) do
 				if p.Name:lower() == rawName:lower() or p.DisplayName:lower() == rawName:lower() then
 					finalName = p.Name:lower()
+					displayName = p.DisplayName
 					break
 				end
 			end
 
 			finalName = finalName or rawName:lower()
+			displayName = displayName or rawName
 
 			if not blacklist[finalName] then
-				blacklist[finalName] = true
+				blacklist[finalName] = {display = displayName}
 				local names = {}
-				for name in pairs(blacklist) do
-					table.insert(names, name)
+				for name, info in pairs(blacklist) do
+					table.insert(names, name .. " (" .. info.display .. ")")
 				end
 				writefile("blacklist.txt", table.concat(names, "\n"))
-				rbxg:SendAsync("added to blacklist: " .. finalName)
-				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added new blacklist target: " .. finalName)
+				rbxg:SendAsync("added to blacklist: " .. finalName .. " (" .. displayName .. ")")
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", added new blacklist target: " .. finalName .. " (" .. displayName .. ")")
 			else
-				rbxg:SendAsync("already blacklisted: " .. finalName)
+				rbxg:SendAsync("already blacklisted: " .. finalName .. " (" .. displayName .. ")")
 				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", no new targets added.")
 			end
 
 		elseif action == "remove" and rawName ~= "" then
-			local nameToRemove = rawName:lower()
-			if blacklist[nameToRemove] then
-				blacklist[nameToRemove] = nil
+			local target = rawName:lower()
+			if blacklist[target] then
+				blacklist[target] = nil
 				local names = {}
-				for name in pairs(blacklist) do
-					table.insert(names, name)
+				for name, info in pairs(blacklist) do
+					table.insert(names, name .. " (" .. info.display .. ")")
 				end
 				writefile("blacklist.txt", table.concat(names, "\n"))
-				rbxg:SendAsync("removed from blacklist: " .. nameToRemove)
-				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed from blacklist: " .. nameToRemove)
+				rbxg:SendAsync("removed from blacklist: " .. target)
+				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", removed from blacklist: " .. target)
 			else
-				rbxg:SendAsync("not in blacklist: " .. nameToRemove)
+				rbxg:SendAsync("not in blacklist: " .. target)
 				webhook_sendMsg({overall_LOGGER, webhook}, "Used command: " .. cmd .. ", target not found in blacklist.")
 			end
 
 		elseif action == "list" then
 			local names = {}
-			for name in pairs(blacklist) do
-				table.insert(names, name)
+			for name, info in pairs(blacklist) do
+				table.insert(names, name .. " (" .. info.display .. ")")
 			end
 			local listString = "blacklisted: " .. table.concat(names, ", ")
 			rbxg:SendAsync(listString)
