@@ -1846,7 +1846,7 @@ local function on_chatted()
 
 		if lowerMsg:find("hi") and lowerMsg:find("spawnyellow") then
 			rbxg:SendAsync("hii!")
-		elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("ur") or (lowerMsg:find("u") and lowerMsg:find("r"))) and (lowerMsg:find("stupid") or lowerMsg:find("dumb") or lowerMsg:find("stoopid")) then
+		elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("ur") or (lowerMsg:find("u") and lowerMsg:find("r"))) and (lowerMsg:match("stupid$") or lowerMsg:match("dumb$") or lowerMsg:match("stoopid$")) then
 			local nah = {
 				"no u",
 				"nah",
