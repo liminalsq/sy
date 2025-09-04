@@ -657,17 +657,35 @@ local connections = {}
 
 runs.Heartbeat:Connect(function()
 	if humanoid and humanoid.Health > 0 then
+		local hasTargets = false
+		local targets = {}
+
+		for name, _ in pairs(blacklist) do
+			targets[name:lower()] = true
+		end
+		for _, name in ipairs(bad_mans) do
+			targets[name:lower()] = true
+		end
+
+		for _, p in ipairs(players:GetPlayers()) do
+			local pname = p.Name:lower()
+			local dname = p.DisplayName:lower()
+			if targets[pname] or targets[dname] then
+				hasTargets = true
+				break
+			end
+		end
+
+		if not hasTargets then
+			loopkilling = false
+			for p, conn in pairs(connections) do
+				if conn then conn:Disconnect() end
+			end
+			connections = {}
+			return
+		end
+
 		if loopkilling then
-			local targets = {}
-
-			for name, _ in pairs(blacklist) do
-				targets[name:lower()] = true
-			end
-
-			for _, name in ipairs(bad_mans) do
-				targets[name:lower()] = true
-			end
-
 			for _, p in ipairs(players:GetPlayers()) do
 				local pname = p.Name:lower()
 				local dname = p.DisplayName:lower()
@@ -705,12 +723,26 @@ runs.Heartbeat:Connect(function()
 						connTag.Value = true
 
 						local conn = p.CharacterAdded:Connect(function(newChar)
+							newChar:SetAttribute("lastrespawn", tick())
 							task.wait(0.1)
 							handleChar(newChar)
 						end)
 
 						connections[p] = conn
 					end
+				end
+			end
+
+			if autoR then
+				local lastRespawn = char:GetAttribute("lastrespawn")
+				if not lastRespawn then
+					char:SetAttribute("lastrespawn", tick())
+					lastRespawn = tick()
+				end
+
+				if tick() - lastRespawn >= autoThres then
+					humanoid.Health = 0
+					char:SetAttribute("lastrespawn", tick())
 				end
 			end
 
