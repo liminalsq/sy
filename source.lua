@@ -117,198 +117,6 @@ local function generateNameVariants(plr)
 	return variants
 end
 
---FAKE CHAR SNIPPET, FROM TERMINAL/STEVE. MODDED
-if not game.IsLoaded then
-	game.Loaded:Wait()
-end
-
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-
-local function ChildAddedWithATwist(inst, func)
-	inst.ChildAdded:Connect(func)
-	for _,v in pairs(inst:GetChildren()) do
-		func(v)
-	end
-end
-local function DescendantAddedWithATwist(inst, func)
-	inst.DescendantAdded:Connect(func)
-	for _,v in pairs(inst:GetDescendants()) do
-		func(v)
-	end
-end
-
-local function RemoveAnims(character)
-	if character == nil then
-		return
-	end
-	local sc = character:WaitForChild("Animate")
-	if sc then
-		sc:Destroy()
-	end
-	local humanoid = character:WaitForChild("Humanoid")
-	for _,v in pairs(humanoid:GetPlayingAnimationTracks()) do
-		v:Stop(0)
-		v:Destroy()
-	end
-	sc = humanoid:FindFirstChildWhichIsA("Animator")
-	if sc then
-		for _,v in pairs(sc:GetPlayingAnimationTracks()) do
-			v:Stop(0)
-			v:Destroy()
-		end
-		sc:Destroy()
-	end
-end
-
-local fakeChar = nil
-
-local CharFake = Players:CreateHumanoidModelFromDescription(Players:GetHumanoidDescriptionFromUserId(Player.UserId), Enum.HumanoidRigType.R6)
-CharFake.Name = "FFFF00"
-CharFake:WaitForChild("Animate"):Destroy()
-CharFake.Parent = workspace
-CharFake:PivotTo(char:GetPivot())
-
-fakeChar = CharFake
-
-local Mouse = Player:GetMouse()
-
-local charHum = char:WaitForChild("Humanoid")
-local CharFakeHum = CharFake:WaitForChild("Humanoid")
-local charTorso = char:WaitForChild("Torso")
-local CharFakeTorso = CharFake:WaitForChild("Torso")
-local charRoot = char:WaitForChild("HumanoidRootPart")
-local CharFakeRoot = CharFake:WaitForChild("HumanoidRootPart")
-
-CharFakeHum.RequiresNeck = false
-CharFakeHum:SetStateEnabled(15, false)
-CharFakeHum.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-
-CharFakeRoot.Anchored = true
-
-local Animate = char:WaitForChild("Animate"):Clone()
-Animate.Parent = CharFake
-
-local function OnCharacter(character)
-	if character == nil then return end
-	if character == CharFake then return end
-	if character == char then return end
-	RemoveAnims(character)
-	task.wait(0.2)
-	charHum = character:WaitForChild("Humanoid")
-	--charHum:ChangeState(Enum.HumanoidStateType.Physics)
-	charHum.PlatformStand = true
-	charHum.AutoRotate = false
-	charTorso = character:WaitForChild("Torso")
-	charRoot = character:WaitForChild("HumanoidRootPart")
-	DescendantAddedWithATwist(character, function(v)
-		if v:IsA("BasePart") then
-			v.Transparency = 1
-		end
-		if v:IsA("ParticleEmitter") or v:IsA("Decal") then
-			task.wait()
-			v:Destroy()
-		end
-		if v:IsA("LocalScript") then
-			v.Disabled = true
-			task.wait()
-			v:Destroy()
-		end
-	end)
-	char = character
-	char.Parent = CharFake
-	Player.Character = CharFake
-	workspace.CurrentCamera.CameraSubject = CharFakeHum
-	Animate.Disabled = true
-	task.wait()
-	Animate.Disabled = false
-	CharFakeRoot.Anchored = false
-end
-char:BreakJoints()
-Player.CharacterAdded:Connect(OnCharacter)
-
-local function WaitForRespawn()
-	return Player.CharacterAdded:Wait()
-end
-
-local function RCA6DToCFrame(motor, tarpart, refpart)
-	local rel = refpart.CFrame:Inverse() * tarpart.CFrame
-	local delta = motor.C0:Inverse() * rel * motor.C1
-	local axis, angle = delta:ToAxisAngle()
-	local newangle = axis * angle
-	sethiddenproperty(motor, "ReplicateCurrentOffset6D", delta.Position)
-	sethiddenproperty(motor, "ReplicateCurrentAngle6D", newangle)
-end
-
-local function StepReanimate()
-	-- yes the code is now stable kinda
-	if Player.Character ~= CharFake then return end
-	CharRealRoot.CFrame = CFrame.new(0, -65536, 65536) + Vector3.new(0, 0, math.random(1, 2) / 326.19)
-	charRoot.Velocity = Vector3.zero
-	charRoot.RotVelocity = Vector3.zero
-	for _,v in pairs(char:GetDescendants()) do
-		if v:IsA("BasePart") then
-			v.CanCollide = false
-			v.CanTouch = false
-			v.Massless = true
-		end
-		if v:IsA("Motor6D") and v.Parent.Parent == char then
-			v.MaxVelocity = 9e9
-			local RefPart0, TarPart0 = v.Part0, v.Part1
-			local RefPart1, TarPart1 = CharFake[RefPart0.Name], CharFake[TarPart0.Name]
-			local Rel = TarPart1.CFrame:Inverse() * RefPart1.CFrame
-			local pitch, yaw, _ = Rel:ToEulerAnglesXYZ()
-			local angle = 0
-			if v.Name == "Neck" then
-				angle = -yaw
-			elseif v.Name == "Left Shoulder" or v.Name == "Left Hip" then
-				angle = pitch
-			elseif v.Name == "Right Shoulder" or v.Name == "Right Hip" then
-				angle = -pitch
-			end
-			v:SetDesiredAngle(angle)
-			v.MaxVelocity = 9e9
-			if v.Name == "RootJoint" then
-				RCA6DToCFrame(v, TarPart1, TarPart0)
-			else
-				RCA6DToCFrame(v, TarPart1, RefPart1)
-			end
-		end
-	end
-end
-
-runs.Heartbeat:Connect(StepReanimate)
-runs.Stepped:Connect(function()
-	for _,player in pairs(Players:GetPlayers()) do
-		if player ~= Player and player.Character then
-			for _, v in pairs(player.Character:GetDescendants()) do
-				if v:IsA("BasePart") then
-					v.CanCollide = false
-				end
-			end
-		end
-	end
-end)
-local seatdebounce = {}
-CharFakeHum.Touched:Connect(function(t)
-	if t:IsA("Seat") and seatdebounce[t] == nil then
-		seatdebounce[t] = true
-		local sw = Instance.new("Weld", t)
-		sw.Name = "SeatWeld"
-		sw.Part0 = t
-		sw.Part1 = CharFakeRoot
-		sw.C0 = CFrame.new(0, t.Size.Y / 2, 0, 1, 0, 0, 0, 0, 1, 0, -1, 0)
-		sw.C1 = CFrame.new(0, -1.5, 0, 1, 0, 0, 0, 0, 1, 0, -1, 0)
-		CharFakeHum.Sit = true
-		CharFakeHum.Jumping:Wait()
-		sw:Destroy()
-		CharFakeHum.Sit = false
-		task.wait(3)
-		seatdebounce[t] = nil
-	end 
-end)
---CLOSE SNIPPET, NEED SOME READABILITY
-
 if char:FindFirstChild("Animate") then
 	char.Animate:Remove()
 end
@@ -1470,7 +1278,7 @@ player.CharacterAdded:Connect(function(c)
 							end
 
 							pcall(function()
-								if rbxg then rbxg:SendAsync("hey... how did u kill me?") end
+								if rbxg then rbxg:SendAsync("hey... how why did u kill me?") end
 								webhook_sendMsg(overall_LOGGER, "Killed exploiter: "..plr.DisplayName.." ("..plr.Name..") ".."reaching.")
 								webhook_sendMsg(webhook, "Killed: "..plr.DisplayName.." ("..plr.Name..") ".."killed me in the void. Possible reacher.")
 							end)
@@ -1889,6 +1697,25 @@ local function on_chatted()
 				"atleast i have a brain"
 			}
 			rbxg:SendAsync(nah[math.random(1,#nah)])
+        elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("r") and lowerMsg:find("bot")) then
+            rbxg:SendAsync("maybe... :3")
+        elseif lowerMsg:find("who") and lowerMsg:find("loop") and lowerMsg:find("me") then
+            if blacklist[sender.Name] or table.find(blacklist, sender.Name) or bad_mans[sender.Name] or table.find(blacklist, sender.Name) then
+                rbxg:SendAsync("me xd")
+            end
+		elseif lowerMsg:find("trash") and lowerMsg:find("bot") and sender.Name == 'Dollmyaccdisabled686' then
+			local maskid = {
+				"ofc the one using chatgpt to write scripts for him",
+				"'hey chatgpt make me a kill all script that uses firetouchinterest and autoreset' ah",
+				"stfu maskid 😹😹😹",
+				"thats why u got stepdad 😹😹😹",
+				"everyone point and laugh at maskid",
+				"everyone clown on maskid",
+				"i took this from ur webcam: 🤡",
+				"sy bau SKID 💔💔",
+				"matrash 💔💔💔"
+			}
+			rbxg:SendAsync(maskid[math.random(1,#maskid)])
 		end
 	end)
 end
@@ -2013,6 +1840,15 @@ for i, v in pairs(players:GetPlayers()) do
 						if ro2 and ro then
 							local distance = (ro.Position - ro2.Position).Magnitude
 							webhook_sendMsg({overall_LOGGER, webhook}, cre.Value.Name.." ("..cre.Value.DisplayName..") killed "..v.Name.." ("..v.DisplayName..") at "..tostring(distance).." ("..tostring(math.floor(distance))..")")
+                            if distance > 14 then
+                                rbxg:SendAsync("FROM FALLBACK: detected reach")
+                                webhook_sendMsg({overall_LOGGER, webhook}, cre.Value.Name.." ("..cre.Value.DisplayName..") reached "..v.Name.." ("..v.DisplayName..") at "..tostring(distance)" ("..tostring(math.floor(distance))..") "..(whitelist[cre.Value.Name] and ("Legit" or "Skid")))
+                                if not whitelist[cre.Value.Name] or not table.find(whitelist, cre.Value.Name) then
+                                    for _, variant in ipairs(generateNameVariants(cre.Value)) do
+                            			do_command("sy.tempkill " .. variant)
+		                            end
+                                end
+                            end
 						end
 					end
 				end
