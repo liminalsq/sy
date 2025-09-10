@@ -567,7 +567,7 @@ runs.Heartbeat:Connect(function()
 			end
 		end
 
-		if hiding and root and not bringing then
+		if hiding and root then
 			root.CFrame = CFrame.new(0, -65536, 65536)
 		end
 
@@ -1244,6 +1244,10 @@ player.CharacterAdded:Connect(function(c)
 
 	if char:FindFirstChild("Animate") then
 		char.Animate:Remove()
+	end
+
+	if hiding and root then
+			root.CFrame = CFrame.new(0, -65536, 65536)
 	end
 
 	if humanoid then
