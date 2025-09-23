@@ -786,7 +786,7 @@ local function monitor(p)
 		if vel > 4000 or rotVel > 4000 then
 			if last_reports.fling + 5 < tick() then
 				last_reports.fling = tick()
-				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel)
+				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
 				rbxGeneral:SendAsync(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
 				docmd(autoCmd, "sy.kill "..p.Name)
 			end
