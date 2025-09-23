@@ -620,19 +620,18 @@ local function docmd(p,cmd)
 		return
 	end
 	local out = parse(cmd)
-		if not out.cmd then return end
+	if not out.cmd then return end
 
-		local commandFunc = commands[out.cmd:lower()]
-		if commandFunc then
-			local success, err = pcall(function()
-				commandFunc(p, table.unpack(out.args))
-			end)
-			if not success then
-				warn("[command error] " .. err)
-			end
-		else
-			warn("not a command: ", out.cmd)
+	local commandFunc = commands[out.cmd:lower()]
+	if commandFunc then
+		local success, err = pcall(function()
+			commandFunc(p, table.unpack(out.args))
+		end)
+		if not success then
+			warn("[command error] " .. err)
 		end
+	else
+		warn("not a command: ", out.cmd)
 	end
 end
 
