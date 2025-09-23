@@ -756,7 +756,7 @@ local function monitor(p)
 	end
 
 	players.PlayerAdded:Connect(function(plr)
-		if plr then continue end
+		if not plr then return end
 		local vchar = plr.Character
 		if not vchar then return end
 		local vroot = vchar:FindFirstChild("HumanoidRootPart")
