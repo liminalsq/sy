@@ -42,7 +42,7 @@ local function webhook_logChat(player, message)
 		Url = chat_LOGGER,
 		Method = "POST",
 		Headers = {["Content-Type"] = "application/json"},
-		Body = httpsService:JSONEncode(payload)
+		Body = httpServ:JSONEncode(payload)
 	})
 end
 
@@ -56,7 +56,7 @@ local function webhook_sendMsg(webhooks, msg)
 			Url = url,
 			Method = "POST",
 			Headers = {["Content-Type"] = "application/json"},
-			Body = httpsService:JSONEncode({["content"] = msg})
+			Body = httpServ:JSONEncode({["content"] = msg})
 		})
 	end		
 end
