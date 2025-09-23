@@ -985,10 +985,104 @@ local function GetTool(name)
 end
 local ToolName = "Sword"
 
+local CharacterAnimations = {}
+task.spawn(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/liminalsq/sy/refs/heads/main/animations.lua"))()
+	CharacterAnimations = _G._TerminalDance
+	_G._TerminalDance = nil
+end)
+local CharacterAnimation = {
+	Name = "",
+	Time = 0,
+	Keyframes = {},
+}
+local CharacterAnimationTime = 0
+local function LoadAnimation(animName)
+	if animName == CharacterAnimation.Name then return end
+	local limbnames = {"Torso", "Head", "Left Arm", "Right Arm", "Left Leg", "Right Leg"}
+	local CharacterAnimationData = CharacterAnimations[animName]
+	if CharacterAnimationData == nil then return end
+	local ilikeit = {
+		Name = animName,
+		Time = CharacterAnimationData.Time,
+		Keyframes = {},
+	}
+	local FPS = 30
+	for f=0, math.round(CharacterAnimationData.Time * FPS) do
+		local t = f / FPS
+		local kft = {
+			Time = t, Poses = {} 
+		}
+		for _,name in pairs(limbnames) do
+			local k1, k2, t1, t2 = nil, nil, -math.huge, math.huge
+			for _,k in pairs(CharacterAnimationData.Keyframes) do
+				local po = nil
+				for _,p in pairs(k.Poses) do
+					if p.Name == name and p.Weight > 0 then
+						po = p
+					end
+				end
+				if po ~= nil then
+					if t1 < k.Time and k.Time <= t then
+						k1 = po
+						t1 = k.Time
+					end
+					if t2 > k.Time and k.Time > t then
+						k2 = po
+						t2 = k.Time
+					end
+				end
+			end
+			local cf = CFrame.identity
+			if k1 ~= nil then
+				if k2 ~= nil then
+					local a = (t - t1) / (t2 - t1)
+					local es = k1.EasingStyle
+					if es == "Constant" then
+						a = 0
+					else
+						if es == "CubicV2" then
+							es = "Cubic"
+						end
+						a = TS:GetValue(
+							a,
+							Enum.EasingStyle[es],
+							Enum.EasingDirection[k1.EasingDirection]
+						)
+					end
+					cf = k1.CFrame:Lerp(k2.CFrame, a)
+				else
+					cf = k1.CFrame
+				end
+			else
+				if k2 ~= nil then
+					cf = k2.CFrame
+				end
+			end
+			kft.Poses[name] = cf
+		end
+		table.insert(ilikeit.Keyframes, kft)
+	end
+	CharacterAnimationData = nil -- remove reference
+	table.sort(ilikeit.Keyframes, function(a, b)
+		return a.Time < b.Time
+	end)
+	CharacterAnimation = ilikeit
+	CharacterAnimationTime = 0
+end
+
 local _hide = false
 local last = CFrame.identity
 while true do
-	task.wait()
+	local dt = task.wait()
+	LoadAnimation("CaliforniaGirls")
+	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
+	local ckf = {}
+	for i=1, #CharacterAnimation.Keyframes do
+		ckf = CharacterAnimation.Keyframes[i]
+		if ckf.Time > CharacterAnimationTime then break end
+	end
+	ckf = ckf.Poses or {}
 	local loopkillmode = false
 	local targets = {}
 	for _, plr in pairs(Players:GetPlayers()) do
@@ -1018,6 +1112,9 @@ while true do
 				end
 			end
 			local limbs = {}
+			for k,v in pairs(ckf) do
+				limbs[k] = v
+			end
 			if hide then
 				root.CFrame = CFrame.new(0, -65536, -65536)
 				root.Velocity = Vector3.zero
@@ -1025,8 +1122,13 @@ while true do
 			end
 			for _,v in pairs(char:GetDescendants()) do
 				if v:IsA("Motor6D") then
-					local transform = limbs[v.Part1.Name] or CFrame.identity
-					SetMotor6DTransform(v, transform)
+					local cf = limbs[v.Part1.Name] or CFrame.identity
+					if hide and v.Name == "RootJoint" then
+						local offset = root.CFrame:Inverse() * last
+						offset = v.C0:Inverse() * offset * v.C1
+						cf = offset * cf
+					end
+					SetMotor6DTransform(v, cf)
 				end
 			end
 			if bringparams ~= nil then
