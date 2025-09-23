@@ -1116,6 +1116,11 @@ while true do
 			for k,v in pairs(ckf) do
 				limbs[k] = v
 			end
+			for _,v in pairs(hum:GetPlayingAnimationTracks()) do
+				v:Stop(0)
+			end
+			hum.AutoRotate = false
+			hum:ChangeState(Enum.HumanoidStateType.Physics)
 			if hide then
 				root.CFrame = CFrame.new(0, -65536, -65536)
 				root.Velocity = Vector3.zero
