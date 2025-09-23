@@ -611,9 +611,11 @@ cmds.unhide = function(plr)
     hide = false
 end
 
-while runservice.Heartbeat:Wait() do
-    root.CFrame = hide and CFrame.new(0,-65536,65536)
-end
+task.spawn(function()
+    while runservice.Heartbeat:Wait() do
+        root.CFrame = hide and CFrame.new(0,-65536,65536)
+    end
+end)
 
 local function docmd(p,cmd)
 	if not whitelist[p.Name] or (typeof(p) == string and p ~= autoCmd) then
@@ -926,35 +928,7 @@ local function on_chatted()
 	end)
 end
 
-players.PlayerAdded:Connect(function(p)
-	webhook_sendMsg({overall_LOGGER, webhook}, p.DisplayName.."("..p.Name..") joined.")
-	on_chatted(p)
-	if p ~= player or p.Name ~= player.Name then
-		monitor(p)
-	end
-	if p.Name == "s71pl" then
-		rbxGeneral:SendAsync("OMG!!! HI DAD!!!")
-	elseif p.Name == "TheTerminalClone" or p.Name == "STEVETheReal916" then
-		rbxGeneral:SendAsync("hi terminal!1!")
-	elseif p.Name == "ColonThreeSpam" then
-		rbxGeneral:SendAsync("hi fluffy boi!!!")
-	end
-	if p.Name == "s71pl" or p.Name == "TheTerminalClone" or p.Name == "STEVETheReal916" or p.Name == "ColonThreeSpam" then
-		local char = p.Character
-		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		local root = char and char:FindFirstChild("HumanoidRootPart")
-		if char and hum and root then
-			hum.Died:Connect(function()
-				local creator = hum:FindFirstChild("creator")
-				if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
-					webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", p.Name.."("..p.DisplayName..")"))
-				end
-			end)
-		end
-	end
-end)
-
-for i, v in pairs(players:GetPlayers()) do
+local function player_added(v)
 	on_chatted(v)
 	if v ~= player or v.Name ~= player.Name then
 		monitor(v)
@@ -979,6 +953,11 @@ for i, v in pairs(players:GetPlayers()) do
 			end)
 		end
 	end
+end
+
+players.PlayerAdded:Connect(player_added)
+for i, v in pairs(players:GetPlayers()) do
+	task.spawn(player_added, v)
 end
 
 players.PlayerRemoving:Connect(function(p)
