@@ -135,15 +135,7 @@ BlacklistAdd(3258602407) -- fuck this maskid guy :3
 
 local function IsLooplisted(plr)
 	if table.find(blacklist, plr.UserId) == nil then
-		if not looplist[plr.UserId] then
-			return false
-		else
-			if whitelist[plr.Name] then
-				looplist[plr.UserId] = nil
-				return false
-			end
-			return true
-		end
+		return not not looplist[plr.UserId]
 	else
 		if whitelist[plr.Name] then
 			BlacklistDel(plr.UserId)
@@ -461,8 +453,8 @@ end
 
 cmds.fps = function(_)
 	local fps = 1 / RunService.RenderStepped:Wait()
-	webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current fps is %d"):format("SpawnYellow", num))
-	ChatSafeFunc(("%s fps is %d"):format("me", num))
+	webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current fps is %d"):format("SpawnYellow", fps))
+	ChatSafeFunc(("%s fps is %d"):format("me", fps))
 end
 
 cmds.ping = function(_)
