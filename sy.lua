@@ -66,7 +66,7 @@ local rbxGeneral = textChat:WaitForChild("TextChannels"):WaitForChild("RBXGenera
 local bringing = false
 local bring = nil
 local looping = false
-local hide = false
+local hide = true
 
 local last = nil
 
@@ -513,13 +513,17 @@ cmds.bring = function(plr, target, x, y, z)
     febring(plr, target, vect3)
 end
 
-cmds.tp = function(plr, target, vect3)
-    if vect3 == "platform1" then
+cmds.tp = function(plr, target, x, y, z)
+    local vect3
+
+    if x == "platform1" then
         vect3 = Vector3.new(-119, 250, -133)
-    elseif type(vect3) == "number" then
-        vect3 = Vector3.new(vect3, select(2, ...), select(3, ...))
+    elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
+        vect3 = Vector3.new(x, y, z)
+    elseif typeof(x) == "Vector3" then
+        vect3 = x
     else
-        vect3 = vect3 or middle.Position
+        vect3 = middle.Position
     end
 
     local char = target.Character
@@ -600,11 +604,11 @@ cmds.unblacklist = function(plr, ...)
 end
 
 cmds.hide = function(plr)
-    hide = not hide or true
+    hide = true
 end
 
 cmds.unhide = function(plr)
-    hide = not hide or false
+    hide = false
 end
 
 while runservice.Heartbeat:Wait() do
