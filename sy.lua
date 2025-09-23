@@ -1,31 +1,30 @@
 --[[
 
-:3
+SpawnYellow rewrite :3
 
 ]]
 
+local DEBUG_MODE = true
+local function debug(...)
+	if DEBUG_MODE then warn("[sy]", ...) end
+end
+
 local Workspace = workspace --joke variable, ofc im still gonna use workspace
 
-local players = game:GetService("Players")
-local runservice = game:GetService("RunService")
-local textChat = game:GetService("TextChatService")
-local tpServ = game:GetService("TeleportService")
-local httpServ = game:GetService("HttpService")
-local repStor = game:GetService("ReplicatedStorage")
-local stats = game:GetService("Stats")
-
-local autoCmd = "script"
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TextChatService = game:GetService("TextChatService")
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StatsService = game:GetService("Stats")
 
 local webhook = "https://discord.com/api/webhooks/1405673325057019924/vgKZQv0O34Z7kQED-oVbAhFtHZPZtXTuOOjIQA27jCUxuWQBNBQtf9XZNaQXyYPaQ9TK"
 
 local overall_LOGGER = "https://discord.com/api/webhooks/1405674967521169672/6_BjCSepRZNgyhneJbwcYeSmAuin5UF-L7qj8pmgS6zFwSpvqqVXyOBOVbxf23bMBvGi"
 local chat_LOGGER = "https://discord.com/api/webhooks/1405676439008837753/Q9Ev9eeqLyBz4remCGrn0hTI41pwzuSurElMIZBPGgfJfJNRi74MFbGrc5Ju1xLxZAyB"
 
-local requestFunction =
-	(syn and syn.request) or
-	(http_request) or
-	(request) or
-	(fluxus and fluxus.request)
+local requestFunction = http_request or request
 
 local function webhook_logChat(player, message)
 	local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
@@ -42,7 +41,7 @@ local function webhook_logChat(player, message)
 		Url = chat_LOGGER,
 		Method = "POST",
 		Headers = {["Content-Type"] = "application/json"},
-		Body = httpServ:JSONEncode(payload)
+		Body = HttpService:JSONEncode(payload)
 	})
 end
 
@@ -56,32 +55,27 @@ local function webhook_sendMsg(webhooks, msg)
 			Url = url,
 			Method = "POST",
 			Headers = {["Content-Type"] = "application/json"},
-			Body = httpServ:JSONEncode({["content"] = msg})
+			Body = HttpService:JSONEncode({["content"] = msg})
 		})
 	end		
 end
 
-local rbxGeneral = textChat:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+local function ChatSafeFunc(msg)
+	pcall(function()
+		RBXGeneral:SendAsync(msg)
+	end)
+end
 
 local bringing = false
-local bring = nil
-local looping = false
+local bringparams = nil
 local hide = true
 
-local last = nil
+local middle = CFrame.new(0, 255, 0)
 
-local middle = CFrame.new(0,255,0)
+workspace.FallenPartsDestroyHeight = 0/0
 
-workspace.FallenPartsDestroyHeight = NaN or 0/0
-
-local player = players.LocalPlayer
-local char = player.Character or player.CharacterAdded:Wait()
-local root = char:FindFirstChild("HumanoidRootPart")
-local humanoid = char:FindFirstChildOfClass("Humanoid")
-
-last = root.CFrame
-
-repeat task.wait() until root and humanoid
+local Son = Players.LocalPlayer
 
 local whitelist = {
 	['ColonThreeSpam'] = true,
@@ -107,39 +101,61 @@ local whitelist = {
 local exclude = {}
 
 local looplist = {}
+local blacklist = {}
 
-local blacklist = {
-	['Dollmyaccdisabled686'] = true --fuck this guy :D
-}
-
-local fps = 0
-local frameCount = 0
-local elapsedTime = 0
-
-runservice.RenderStepped:Connect(function(dt)
-	frameCount += 1
-	elapsedTime += dt
-	if elapsedTime >= 1 then
-		fps = frameCount
-		frameCount = 0
-		elapsedTime = 0
+if isfile("blacklist2.txt") then
+	local contents = readfile("blacklist2.txt")
+	for entry in contents:gmatch("[^\r\n]+") do
+		local userid = tonumber(entry)
+		if userid then
+			table.insert(blacklist, userid)
+		end
+	end
+end
+task.spawn(function()
+	while task.wait(10) do
+		local contents = table.concat(blacklist, "\n")
+		writefile("blacklist2.txt", contents)
 	end
 end)
 
-if isfile("blacklist.txt") then
-	local contents = readfile("blacklist.txt")
-	for name in contents:gmatch("[^\r\n]+") do
-		blacklist[name:lower()] = true
-	end
+local function BlacklistAdd(userid)
+	if table.find(blacklist, userid) ~= nil then return end
+	table.insert(blacklist, userid)
+	debug("[blacklist]", "added", userid)
+end
+local function BlacklistDel(userid)
+	local idx = table.find(blacklist, userid)
+	if idx == nil then return end
+	table.remove(blacklist, idx)
+	debug("[blacklist]", "deled", userid)
 end
 
-for name in pairs(blacklist) do
-	table.insert(looplist, name:lower())
+BlacklistAdd(3258602407) -- fuck this maskid guy :3
+
+local function IsLooplisted(plr)
+	if table.find(blacklist, plr.UserId) == nil then
+		if not looplist[plr.UserId] then
+			return false
+		else
+			if whitelist[plr.Name] then
+				looplist[plr.UserId] = nil
+				return false
+			end
+			return true
+		end
+	else
+		if whitelist[plr.Name] then
+			BlacklistDel(plr.UserId)
+			return false
+		end
+		return true
+	end
 end
 
 local prefix = "sy."
 
-local function parse(inputStr)
+local function parseCommand(inputStr)
 	inputStr = tostring(inputStr or "")
 	local trim
 	if inputStr:sub(1, #prefix) == prefix then
@@ -270,15 +286,18 @@ local function parse(inputStr)
 	return out
 end
 
-local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
+local function febring(yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIVING THIS SNIPPET
 	tries = tries or 1
+	debug("[febring]", "bringing", yu, tries)
 	local success, err = pcall(function()
 		local sps = 10
 		local sp = 1
+		local me = Son.Character
+		if not me then return false end
 		local mer = me:FindFirstChild("HumanoidRootPart")
 		local meh = me:FindFirstChildOfClass("Humanoid")
 		local yur = yu:FindFirstChild("HumanoidRootPart")
-		if not mer or not meh or not yur then return end
+		if not mer or not meh or not yur then return false end
 
 		local oldcf = mer.CFrame
 		local fr = yur.Position + Vector3.new(0, 2, 0)
@@ -292,13 +311,16 @@ local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIV
 		local sspt = 0
 		local coins = {}
 
+		bringing = true
+
 		while t < 1 do
-			local dt = runs.PostSimulation:Wait()
+			local dt = RunService.PostSimulation:Wait()
 			if not (me.Parent and yu.Parent) then break end
 
 			meh:ChangeState(Enum.HumanoidStateType.Physics)
 			for _, v in pairs(meh:GetPlayingAnimationTracks()) do
 				v:Stop(0)
+				v:Destroy()
 			end
 
 			t += dt * ts * sp
@@ -337,207 +359,167 @@ local function febring(me, yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIV
 				end
 			end
 
-			if ct > 0.8 + player:GetNetworkPing() then
+			if ct > 0.8 + Son:GetNetworkPing() then
 				break
 			end
 			task.wait()
 		end
+
+		bringing = false
 
 		meh:ChangeState(Enum.HumanoidStateType.GettingUp)
 		mer.CFrame = oldcf
 		mer.Velocity = Vector3.zero
 
 		if t < 1 and yur.Velocity.Y > workspace.Gravity * -0.5 and yu:IsDescendantOf(workspace) and tries < 5 then
-			return febring(me, yu, to, tries + 1)
+			return false
 		end
+		return true
 	end)
 
-	if not success then
-		warn("[febring] Error:", err)
+	if success then
+		if not err then
+			task.wait()
+			return febring(me, yu, to, tries + 1)
+		end
+		debug("[febring]", "bring success")
+	else
+		debug("[febring]", "Error:", err)
 	end
+end
+
+function getPlayersByName(name)
+	local comp = string.lower
+	local Name, Len, Found = name, string.len(name), {}
+	local UsersOnly = string.sub(Name, 1, 1) == "@"
+	if UsersOnly then Name = string.sub(Name, 2, -1) end
+	local function chk(a, b)
+		local c = math.min(string.len(a), string.len(b))
+		return comp(string.sub(a, 1, c)) == comp(string.sub(b, 1, c))
+	end
+	for _,v in pairs(Players:GetPlayers()) do
+		if chk(v.Name, Name) or 
+			(not UsersOnly and 
+				string.len(v.DisplayName) > 0 and 
+					chk(v.DisplayName, Name)) then
+			table.insert(Found, v)
+		end
+	end
+	return Found
 end
 
 local cmds = {}
 
-cmds.loopkill = function(plr, ...)
-	local targets = {...}
-	if #targets == 0 then return end
-
-	for _, name in ipairs(targets) do
-		looplist[name:lower()] = true
-	end
-
-	coroutine.wrap(function()
-		while true do
-			if next(looplist) == nil then break end
-			runservice.Heartbeat:Wait()
-
-			for _, targetPlayer in ipairs(players:GetPlayers()) do
-				if targetPlayer == plr then continue end
-
-				local targetName = targetPlayer.Name:lower()
-				local matches = false
-
-				for partial in pairs(looplist) do
-					if string.find(targetName, partial, 1, true) then
-						matches = true
-						break
-					end
-				end
-
-				if matches then
-					local char = targetPlayer.Character
-					local root = char and char:FindFirstChild("HumanoidRootPart")
-					local hum = char and char:FindFirstChildOfClass("Humanoid")
-					if char and root and hum and hum.Health > 0 then
-						local tool = plr.Character and plr.Character:FindFirstChildOfClass("Tool")
-						if not tool then
-							local backpack = plr:FindFirstChild("Backpack")
-							local humanoid = plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
-							for _, v in ipairs(backpack:GetChildren()) do
-								if v:IsA("Tool") and v:FindFirstChild("Handle") then
-									if humanoid then
-										humanoid:EquipTool(v)
-										tool = v
-									end
-									break
-								end
-							end
-						end
-
-						if tool and tool:FindFirstChild("Handle") then
-							tool:Activate()
-							firetouchinterest(tool.Handle, root, 0)
-							firetouchinterest(tool.Handle, root, 1)
-						end
-					end
-				end
-			end
-		end
-	end)()
+cmds.hi = function(plr)
+	ChatSafeFunc("hi " .. plr.Name)
 end
 
-cmds.unloopkill = function(plr, ...)
+cmds.loopkill = function(_, ...)
 	local targets = {...}
 	if #targets == 0 then return end
 
 	for _, name in ipairs(targets) do
-		local key = name:lower()
-		if looplist[key] then
-			looplist[key] = nil
-			print(plr.Name .. " unloopkilled:", key)
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			debug("[looplist]", "loop", plr)
+			looplist[plr.UserId] = true
 		end
 	end
 end
 
-cmds.kill = function(plr, ...)
+cmds.unloopkill = function(_, ...)
 	local targets = {...}
 	if #targets == 0 then return end
 
 	for _, name in ipairs(targets) do
-		local targetName = name:lower()
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			debug("[looplist]", "unloop", plr)
+			looplist[plr.UserId] = nil
+		end
+	end
+end
 
-		for _, targetPlayer in ipairs(players:GetPlayers()) do
-			if targetPlayer == plr then continue end
+cmds.kill = function(_, ...)
+	local targets = {...}
+	if #targets == 0 then return end
 
-			local targetNameLower = targetPlayer.Name:lower()
-			if string.find(targetNameLower, targetName, 1, true) then
-				local char = targetPlayer.Character
-				local root = char and char:FindFirstChild("HumanoidRootPart")
-				local hum = char and char:FindFirstChildOfClass("Humanoid")
-
-				if char and root and hum and hum.Health > 0 then
-					local tool = plr.Character and plr.Character:FindFirstChildOfClass("Tool")
-
-					if not tool then
-						local backpack = plr:FindFirstChild("Backpack")
-						local humanoid = plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
-						for _, v in ipairs(backpack:GetChildren()) do
-							if v:IsA("Tool") and v:FindFirstChild("Handle") then
-								if humanoid then
-									humanoid:EquipTool(v)
-									tool = v
-								end
-								break
-							end
-						end
-					end
-
-					if tool and tool:FindFirstChild("Handle") then
-						tool:Activate()
-
-						local attempts = 0
-						while hum.Health > 0 and attempts < 50 do
-							firetouchinterest(tool.Handle, root, 0)
-							firetouchinterest(tool.Handle, root, 1)
-							task.wait()
-							attempts += 1
-						end
-					end
-				end
+	for _, name in ipairs(targets) do
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			if plr.Character then
+				debug("[kill]", "killing", plr)
+				plr:SetAttribute("Kill", true)
 			end
 		end
 	end
 end
 
-cmds.cleartargets = function(plr)
+cmds.cleartargets = function(_)
 	table.clear(looplist)
 end
 
-cmds.fps = function(plr, num)
-	num = fps
-	if num then
-		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current fps is %d"):format("SpawnYellow", num))
-		rbxGeneral:SendAsync(("%s fps is %d"):format("me", num))
-	end
+cmds.fps = function(_)
+	local fps = 1 / RunService.RenderStepped:Wait()
+	webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current fps is %d"):format("SpawnYellow", num))
+	ChatSafeFunc(("%s fps is %d"):format("me", num))
 end
 
-cmds.ping = function(plr)
-	local ping = math.floor(player:GetNetworkPing() * 1000)
+cmds.ping = function(_)
+	local ping = math.floor(Son:GetNetworkPing() * 1000)
 	if ping then
 		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current ping is %dms"):format("SpawnYellow", ping))
-		rbxGeneral:SendAsync(("%s ping is %dms"):format("me", ping))
+		ChatSafeFunc(("%s ping is %dms"):format("me", ping))
 	end
 end
 
-cmds.bring = function(plr, target, x, y, z)
-    local vect3
-    if x == "platform1" then
-        vect3 = Vector3.new(-119, 250, -133)
-    elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
-        vect3 = Vector3.new(x, y, z)
-    else
-        vect3 = (typeof(x) == "Vector3" and x) or middle.Position
-    end
-    
-    febring(plr, target, vect3)
+cmds.bring = function(_, target, x, y, z)
+	target = getPlayersByName(target)
+	if #target == 0 then return end
+	target = target[1]
+
+	local towards
+	if x == "platform1" then
+		towards = Vector3.new(-119, 250, -133)
+	elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
+		towards = Vector3.new(x, y, z)
+	elseif typeof(x) == "Vector3" then
+		towards = x
+	else
+		towards = middle.Position
+	end
+
+	bringparams = {target.Character, vect3}
 end
 
-cmds.tp = function(plr, target, x, y, z)
-    local vect3
+cmds.tp = function(_, target, x, y, z)
+	target = getPlayersByName(target)
+	if #target == 0 then return end
+	target = target[1]
 
-    if x == "platform1" then
-        vect3 = Vector3.new(-119, 250, -133)
-    elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
-        vect3 = Vector3.new(x, y, z)
-    elseif typeof(x) == "Vector3" then
-        vect3 = x
-    else
-        vect3 = middle.Position
-    end
+	local towards
+	if x == "platform1" then
+		towards = Vector3.new(-119, 250, -133)
+	elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
+		towards = Vector3.new(x, y, z)
+	elseif typeof(x) == "Vector3" then
+		towards = x
+	else
+		towards = middle.Position
+	end
 
-    local char = target.Character
-    local root = char and char:FindFirstChild("HumanoidRootPart")
-    local hum = char and char:FindFirstChildOfClass("Humanoid")
-    
-    if char and root and hum and hum.Health > 0 then
-        root.CFrame = CFrame.new(vect3)
-    end
+	local char = target.Character
+	local root = char and char:FindFirstChild("HumanoidRootPart")
+	local hum = char and char:FindFirstChildOfClass("Humanoid")
+
+	if char and root and hum and hum.Health > 0 then
+		root.CFrame = CFrame.new(vect3)
+	end
 end
 
-cmds.serverhop = function(plr)
+cmds.serverhop = function(_)
 	local currentPlaceId = game.PlaceId
-	local allServers = tpServ:GetPlayerPlaceInstances(currentPlaceId)
+	local allServers = TeleportService:GetPlayerPlaceInstances(currentPlaceId)
 	local serverList = {}
 
 	for _, server in pairs(allServers) do
@@ -548,92 +530,72 @@ cmds.serverhop = function(plr)
 
 	if #serverList > 0 then
 		local randomServer = serverList[math.random(1, #serverList)]
-		tpServ:TeleportToPlaceInstance(currentPlaceId, randomServer.Id, player)
+		TeleportService:TeleportToPlaceInstance(currentPlaceId, randomServer.Id, Son)
 	else
-		rbxGeneral:SendAsync("no servers found")
+		ChatSafeFunc("no servers found")
 	end
 end
 
-cmds.rejoin = function(plr)
-	tpServ:TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+cmds.rejoin = function(_)
+	TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Son)
 end
 
-cmds.servertime = function(plr)
+cmds.servertime = function(_)
 	local serverTime = stats:GetServerTimeInSeconds()
 	if serverTime then
 		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current server time is %.2f seconds"):format("SpawnYellow", serverTime))
-		rbxGeneral:SendAsync(("server time is %.2f seconds"):format("me", serverTime))
+		ChatSafeFunc(("server time is %.2f seconds"):format("me", serverTime))
 	end
 end
 
-cmds.blacklist = function(plr, ...)
-	local names = {...}
-	if #names == 0 then return end
+cmds.blacklist = function(_, ...)
+	local targets = {...}
+	if #targets == 0 then return end
 
-	for _, name in ipairs(names) do
-		local key = name:lower()
-		if not blacklist[key] then
-			blacklist[key] = true
-			table.insert(looplist, key)
+	for _, name in ipairs(targets) do
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			BlacklistAdd(plr.UserId)
 		end
 	end
-
-	local contents = table.concat(table.keys(blacklist), "\n")
-	writefile("blacklist.txt", contents)
 end
 
-cmds.unblacklist = function(plr, ...)
-	local names = {...}
-	if #names == 0 then return end
+cmds.unblacklist = function(_, ...)
+	local targets = {...}
+	if #targets == 0 then return end
 
-	for _, name in ipairs(names) do
-		local key = name:lower()
-		if blacklist[key] then
-			blacklist[key] = nil
-			for i, v in ipairs(looplist) do
-				if v == key then
-					table.remove(looplist, i)
-					break
-				end
+	for _, name in ipairs(targets) do
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			BlacklistDel(plr.UserId)
+		end
+	end
+end
+
+cmds.hide = function(_)
+	hide = true
+end
+
+cmds.unhide = function(_)
+	hide = false
+end
+
+local function executecommand(p, cmd)
+	if whitelist[p.Name] then
+		local out = parseCommand(cmd)
+		if not out.cmd then return end
+	
+		local commandFunc = cmds[out.cmd:lower()]
+		if commandFunc then
+			local success, err = pcall(function()
+				commandFunc(p, table.unpack(out.args))
+			end)
+			if not success then
+				debug("[command error] " .. err)
 			end
+		else
+			debug("not a command: ", out.cmd)
 		end
-	end
-
-	local contents = table.concat(table.keys(blacklist), "\n")
-	writefile("blacklist.txt", contents)
-end
-
-cmds.hide = function(plr)
-    hide = true
-end
-
-cmds.unhide = function(plr)
-    hide = false
-end
-
-task.spawn(function()
-    while runservice.Heartbeat:Wait() do
-        root.CFrame = hide and CFrame.new(0,-65536,65536)
-    end
-end)
-
-local function docmd(p,cmd)
-	if not whitelist[p.Name] or (typeof(p) == string and p ~= autoCmd) then
-		return
-	end
-	local out = parse(cmd)
-	if not out.cmd then return end
-
-	local commandFunc = commands[out.cmd:lower()]
-	if commandFunc then
-		local success, err = pcall(function()
-			commandFunc(p, table.unpack(out.args))
-		end)
-		if not success then
-			warn("[command error] " .. err)
-		end
-	else
-		warn("not a command: ", out.cmd)
 	end
 end
 
@@ -697,7 +659,7 @@ local function monitor(p)
 		if last_reports.speed + 5 < tick() then --idk i learned this today xd
 			last_reports.speed = tick()
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", vel, tostring(pos)))
-			rbxGeneral:SendAsync(("%s hey... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", vel))
+			ChatSafeFunc(("%s hey... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", vel))
 			docmd(autoCmd, "sy.kill "..p.Name)
 		end
 	end
@@ -707,7 +669,7 @@ local function monitor(p)
 		if last_reports.teleport + 5 < tick() then
 			last_reports.teleport = tick()
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-			rbxGeneral:SendAsync(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
+			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
 			docmd(autoCmd, "sy.kill "..p.Name)
 		end
 	end
@@ -722,7 +684,7 @@ local function monitor(p)
 				if last_reports.fly + 5 < tick() then
 					last_reports.fly = tick()
 					webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flying"):format(p.Name.."("..p.DisplayName..")"))
-					rbxGeneral:SendAsync(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
+					ChatSafeFunc(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
 					docmd(autoCmd, "sy.kill "..p.Name)
 				end
 			end
@@ -749,7 +711,7 @@ local function monitor(p)
 				if creator.Value == p then
 					if distance > 14 then
 						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						rbxGeneral:SendAsync(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
+						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
 						docmd(autoCmd, "sy.kill "..p.Name)
 					end
 				end
@@ -774,7 +736,7 @@ local function monitor(p)
 				if creator.Value == p then
 					if distance > 14 then
 						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						rbxGeneral:SendAsync(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
+						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
 						docmd(autoCmd, "sy.kill "..p.Name)
 					end
 				end
@@ -789,7 +751,7 @@ local function monitor(p)
 			if last_reports.fling + 5 < tick() then
 				last_reports.fling = tick()
 				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
-				rbxGeneral:SendAsync(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
+				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
 				docmd(autoCmd, "sy.kill "..p.Name)
 			end
 		end
@@ -798,181 +760,317 @@ end
 
 local lastSentMessage = {}
 
-local function on_chatted()
-	rbxGeneral.MessageReceived:Connect(function(message)
-		local sender = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
-		if not sender then return end
+TextChatService.MessageReceived:Connect(function(message)
+	local sender = message.TextSource and Players:GetPlayerByUserId(message.TextSource.UserId)
+	if not sender then return end
 
-		local msg = message.Text
-		if not msg or msg == "" then return end
+	local msg = message.Text
+	if not msg or msg == "" then return end
 
-		if lastSentMessage[sender.UserId] == msg then
-			return
-		end
-		lastSentMessage[sender.UserId] = msg
-		task.delay(3, function()
-			lastSentMessage[sender.UserId] = nil
-		end)
-
-		webhook_logChat(sender, msg)
-
-		local lowerMsg = msg:lower()
-		local hasPrefix = lowerMsg:sub(1, #prefix) == prefix
-
-		if whitelist[sender.Name] then
-			if sender.Name ~= player.Name then
-				docmd(msg)
-			end
-		else
-			if hasPrefix then
-				if sender.Name ~= player.Name then
-					webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
-				end
-				if math.random(1, 20) == 1 then
-					rbxGeneral:SendAsync(dummy[math.random(1, #dummy)])
-				end
-			end
-		end
-		
-		if sender == player then return end
-
-		if sender.Name == "s71pl" then
-			local rootPos = root.Position
-			local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
-			if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
-				task.wait(2 + math.random())
-				rbxGeneral:SendAsync("hi dad!!")
-			elseif lowerMsg:find("my boy") then
-				task.wait(2 + math.random())
-				rbxGeneral:SendAsync(">v<")
-			elseif lowerMsg:find("pat") and hrp and (hrp.Position - rootPos).Magnitude <= 8 then
-				task.wait(2 + math.random())
-				rbxGeneral:SendAsync(">▽<")
-			end
-		end
-
-		if lowerMsg:find("hi") and lowerMsg:find("spawnyellow") then
-			task.wait(2 + math.random())
-			rbxGeneral:SendAsync("hii!")
-		elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("ur") or (lowerMsg:find("u") and lowerMsg:find("r"))) and (lowerMsg:match("stupid$") or lowerMsg:match("dumb$") or lowerMsg:match("stoopid$")) then
-			local nah = {
-				"no u",
-				"nah",
-				"ur dumber",
-				"cope harder",
-				"cry about it",
-				"other way around, sucks to be u",
-				"atleast i have a brain"
-			}
-			task.wait(2 + math.random())
-			rbxGeneral:SendAsync(nah[math.random(1,#nah)])
-        elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("r") and lowerMsg:find("bot")) then
-			task.wait(2 + math.random())
-            rbxGeneral:SendAsync("maybe... :3")
-        elseif lowerMsg:find("who") and lowerMsg:find("loop") and lowerMsg:find("me") then
-            if blacklist[sender.Name] or table.find(blacklist, sender.Name) or looplist[sender.Name] or table.find(blacklist, sender.Name) then
-				task.wait(2 + math.random())
-                rbxGeneral:SendAsync("me xd")
-            end
-		elseif (lowerMsg:find("host") or lowerMsg:find("s71pl")) and (lowerMsg:find("trash") or lowerMsg:find("worst")) and lowerMsg:find("bot") and sender.Name == 'Dollmyaccdisabled686' then
-			local maskid = {
-				"ofc the one using chatgpt to write scripts for him",
-				"'hey chatgpt make me a kill all script that uses firetouchinterest and autoreset' ah",
-				"stfu maskid 😹😹😹",
-				"thats why u got stepdad 😹😹😹",
-				"everyone point and laugh at maskid",
-				"everyone clown on maskid",
-				"i took this from ur webcam: 🤡",
-				"sy bau SKID 💔💔",
-				"matrash 💔💔💔",
-				"ur so desperate for attention maskid",
-				"maskid is a joke",
-				"maskid is a clown",
-				"maskid has no friends",
-				"maskid has level 1 rage bait",
-				"maskid has no life",
-				"maskid dont got a bot 😹😹😹",
-				"ofc its maskid",
-				"desperate for a godmode script huh maskid",
-				"maskid is scared of colon xd",
-				"keep looking for a godmode script instead",
-				"ur so sad maskid",
-				"slopper of the day: maskid",
-				"yo homeboy is chatgpt pipe down",
-				"who? maskid?",
-				"yo maskid can u respectfully get off?"
-			}
-			task.wait(2 + math.random())
-			rbxGeneral:SendAsync(maskid[math.random(1,#maskid)])
-		elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("thank") or lowerMsg:find("thx")) then
-			local yw = {
-				"yw :3",
-				"no problem :3",
-				"np :3",
-				"anytime :3",
-				"glad to help :3",
-				"happy to help :3"
-			}
-			task.wait(2 + math.random())
-			rbxGeneral:SendAsync(yw[math.random(1,#yw)])
-		elseif lowerMsg:find("100") and (lowerMsg:find("deaths") or lowerMsg:find("wos")) and (lowerMsg:find("without") or lowerMsg:find("w o") or lowerMsg:find("w/o")) and lowerMsg:find("godmode") and sender.Name == 'Dollmyaccdisabled686' then
-			local maskid = {
-				"ok bro",
-				"10000000 deaths without loopkill all",
-				"its called countering dumbesses like u",
-				"oh you care 😹😹😹",
-				"stay mad",
-				"ur getting desperate every game",
-				"ur so sad",
-				"ur so mad",
-				"we're laughing at you maskid",
-			}
-			task.wait(2 + math.random())
-			rbxGeneral:SendAsync(maskid[math.random(1,#maskid)])
-		end
+	if lastSentMessage[sender.UserId] == msg then
+		return
+	end
+	lastSentMessage[sender.UserId] = msg
+	task.delay(3, function()
+		lastSentMessage[sender.UserId] = nil
 	end)
-end
 
-on_chatted() -- connect
+	webhook_logChat(sender, msg)
 
-local function player_added(v)
-	if v ~= player or v.Name ~= player.Name then
-		monitor(v)
-	end
-	if v.Name == "s71pl" then
-		rbxGeneral:SendAsync("OMG!!! HI DAD!!!")
-	elseif v.Name == "TheTerminalClone" then
-		rbxGeneral:SendAsync("hi terminal!1!")
-	elseif v.Name == "ColonThreeSpam" then
-		rbxGeneral:SendAsync("hi fluffy boi!!!")
-	end
-	if v.Name == "s71pl" or v.Name == "TheTerminalClone" or v.Name == "STEVETheReal916" or v.Name == "ColonThreeSpam" then
-		local char = v.Character
-		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		local root = char and char:FindFirstChild("HumanoidRootPart")
-		if char and hum and root then
-			hum.Died:Connect(function()
-				local creator = hum:FindFirstChild("creator")
-				if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
-					webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", p.Name.."("..p.DisplayName..")"))
+	local lowerMsg = msg:lower()
+	local hasPrefix = lowerMsg:sub(1, #prefix) == prefix
+
+	if whitelist[sender.Name] then
+		executecommand(sender, msg)
+	else
+		if hasPrefix then
+			if sender ~= player then
+				webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
+				if math.random(1, 20) == 1 then
+					ChatSafeFunc(dummy[math.random(1, #dummy)])
 				end
-			end)
+			end
 		end
 	end
+
+	if sender == player then return end
+
+	if sender.Name == "s71pl" then
+		local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
+		if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
+			task.wait(2 + math.random())
+			ChatSafeFunc("hi dad!!")
+		elseif lowerMsg:find("my boy") then
+			task.wait(2 + math.random())
+			ChatSafeFunc(">v<")
+		elseif lowerMsg:find("pat") and hrp and Son:DistanceFromCharacter(hrp.Position) <= 8 then
+			task.wait(2 + math.random())
+			ChatSafeFunc(">▽<")
+		end
+	end
+
+	if lowerMsg:find("hi") and lowerMsg:find("spawnyellow") then
+		task.wait(2 + math.random())
+		ChatSafeFunc("hii!")
+	elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("ur") or (lowerMsg:find("u") and lowerMsg:find("r"))) and (lowerMsg:match("stupid$") or lowerMsg:match("dumb$") or lowerMsg:match("stoopid$")) then
+		local nah = {
+			"no u",
+			"nah",	
+			"ur dumber",
+			"cope harder",
+			"cry about it",
+			"other way around, sucks to be u",
+			"atleast i have a brain"
+		}
+		task.wait(2 + math.random())
+		ChatSafeFunc(nah[math.random(1,#nah)])
+	elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("r") and lowerMsg:find("bot")) then
+		task.wait(2 + math.random())
+		ChatSafeFunc("maybe... :3")
+	elseif lowerMsg:find("who") and lowerMsg:find("loop") and lowerMsg:find("me") then
+		if blacklist[sender.Name] or table.find(blacklist, sender.Name) or looplist[sender.Name] or table.find(blacklist, sender.Name) then
+			task.wait(2 + math.random())
+			ChatSafeFunc("me xd")
+		end
+	elseif (lowerMsg:find("host") or lowerMsg:find("s71pl")) and (lowerMsg:find("trash") or lowerMsg:find("worst")) and lowerMsg:find("bot") and sender.Name == 'Dollmyaccdisabled686' then
+		local maskid = {
+			"ofc the one using chatgpt to write scripts for him",
+			"'hey chatgpt make me a kill all script that uses firetouchinterest and autoreset' ah",
+			"stfu maskid 😹😹😹",
+			"thats why u got stepdad 😹😹😹",
+			"everyone point and laugh at maskid",
+			"everyone clown on maskid",
+			"i took this from ur webcam: 🤡",
+			"sy bau SKID 💔💔",
+			"matrash 💔💔💔",
+			"ur so desperate for attention maskid",
+			"maskid is a joke",
+			"maskid is a clown",
+			"maskid has no friends",
+			"maskid has level 1 rage bait",
+			"maskid has no life",
+			"maskid dont got a bot 😹😹😹", -- he told me he cant make a bot cuz he had trouble
+			"ofc its maskid",
+			"desperate for a godmode script huh maskid",
+			"maskid is scared of colon xd",
+			"keep looking for a godmode script instead",
+			"ur so sad maskid",
+			"slopper of the day: maskid",
+			"yo homeboy is chatgpt pipe down",
+			"who? maskid?",
+			"yo maskid can u respectfully get off?"
+		}
+		task.wait(2 + math.random())
+		ChatSafeFunc(maskid[math.random(1,#maskid)])
+	elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("thank") or lowerMsg:find("thx")) then
+		local yw = {
+			"yw :3",
+			"no problem :3",
+			"np :3",
+			"anytime :3",
+			"glad to help :3",
+			"happy to help :3"
+		}
+		task.wait(2 + math.random())
+		ChatSafeFunc(yw[math.random(1,#yw)])
+	elseif lowerMsg:find("100") and (lowerMsg:find("deaths") or lowerMsg:find("wos")) and (lowerMsg:find("without") or lowerMsg:find("w o") or lowerMsg:find("w/o")) and lowerMsg:find("godmode") and sender.Name == 'Dollmyaccdisabled686' then
+		local maskid = {
+			"ok bro",
+			"10000000 deaths without loopkill all",
+			"its called countering dumbesses like u",
+			"oh you care 😹😹😹",
+			"stay mad",
+			"ur getting desperate every game",
+			"ur so sad",
+			"ur so mad",
+			"we're laughing at you maskid",
+		}
+		task.wait(2 + math.random())
+		ChatSafeFunc(maskid[math.random(1,#maskid)])
+	end
+end)
+
+local function character_added(plr, chr)
+	if chr == nil then return end
+	plr:SetAttribute("TickL", tick())
+	chr:SetAttribute("TickL", tick())
+	local root = chr:WaitForChild("HumanoidRootPart")
+	local hum = chr:WaitForChild("Humanoid")
+	local function died()
+		if chr:GetAttribute("Dead") then return end
+		chr:SetAttribute("Dead", true)
+		plr:SetAttribute("TickD", tick())
+		chr:SetAttribute("TickD", tick())
+		if plr.Name == "s71pl" or plr.Name == "TheTerminalClone" or plr.Name == "STEVETheReal916" or plr.Name == "ColonThreeSpam" then
+			local creator = hum:FindFirstChild("creator")
+			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
+				webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
+			end
+		end
+	end
+	if plr == Son then
+		chr.DescendantAdded:Connect(function(v)
+			if v.Name == "Animate" then
+				v.Disabled = true
+				task.wait()
+				v:Destroy()
+			end
+		end)
+	end
+	task.wait()
+	while chr:IsDescendantOf(workspace) do
+		local ded = true
+		if hum.RootPart ~= nil then
+			local head = chr:FindFirstChild("Head")
+			local torso = chr:FindFirstChild("Torso")
+			if head ~= nil and torso ~= nil then
+				if head.AssemblyRootPart == torso.AssemblyRootPart then
+					if hum:GetState() ~= Enum.HumanoidStateType.Dead then
+						ded = false
+					end
+				end
+			end
+		end
+		if ded then died() break end
+		task.wait()
+	end
 end
 
-players.PlayerAdded:Connect(player_added)
-for i, v in pairs(players:GetPlayers()) do
+local function player_added(plr)
+	if plr.Name == "s71pl" then
+		ChatSafeFunc("OMG!!! HI DAD!!!")
+	elseif plr.Name == "TheTerminalClone" then
+		ChatSafeFunc("hi terminal!1!")
+	elseif plr.Name == "ColonThreeSpam" then
+		ChatSafeFunc("hi fluffy boi!!!")
+	end
+	plr.CharacterAdded:Connect(function(chr)
+		character_added(plr, chr)
+	end)
+	character_added(plr, plr.Character)
+end
+
+Players.PlayerAdded:Connect(player_added)
+for i, v in pairs(Players:GetPlayers()) do
 	task.spawn(player_added, v)
 end
 
-players.PlayerRemoving:Connect(function(p)
+Players.PlayerRemoving:Connect(function(p)
 	webhook_sendMsg({overall_LOGGER, webhook}, p.DisplayName.."("..p.Name..") left.")
 end)
 
-player.CharacterAdded:Connect(function(c)
-    char = c
-    root = c:FindFirstChild("HumanoidRootPart")
-    humanoid = c:FindFirstChildOfClass("Humanoid") 
-end)
- 
+Son.Character:BreakJoints()
+
+local function SetMotor6DTransform(motor, transform)
+	motor.MaxVelocity = 9e9
+	local _, angle, _ = transform:ToEulerAnglesXYZ()
+	motor:SetDesiredAngle(angle)
+	motor.MaxVelocity = 9e9
+	local axis, angle = transform:ToAxisAngle()
+	local newangle = axis * angle
+	pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
+	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
+end
+
+local function GetTool(name)
+	local char = Son.Character
+	if char ~= nil then
+		for _,v in pairs(char:GetChildren()) do
+			if v:IsA("Tool") and v.Name == name then
+				return v
+			end
+		end
+	end
+	local back = Son:FindFirstChildOfClass("Backpack")
+	if back ~= nil then
+		for _,v in pairs(back:GetChildren()) do
+			if v:IsA("Tool") and v.Name == name then
+				return v
+			end
+		end
+	end
+	return nil
+end
+local ToolName = "Sword"
+
+local _hide = false
+local last = CFrame.identity
+while true do
+	task.wait()
+	local loopkillmode = false
+	local targets = {}
+	for _, plr in pairs(Players:GetPlayers()) do
+		if IsLooplisted(plr) then
+			table.insert(targets, plr)
+			loopkillmode = true
+		end
+		if plr.Character ~= nil then
+			if plr.Character:GetAttribute("Kill") then
+				table.insert(targets, plr)
+			end
+		end
+	end
+	local char = Son.Character
+	local back = Son:FindFirstChildOfClass("Backpack")
+	if char and back then
+		local ttl = char:GetAttribute("TickL") or tick()
+		ttl = tick() - ttl
+		local root, hum = char:FindFirstChild("HumanoidRootPart"), char:FindFirstChild("Humanoid")
+		if root and hum then
+			if hide ~= _hide then
+				_hide = hide
+				if hide then
+					last = root.CFrame
+				else
+					root.CFrame = last
+				end
+			end
+			local limbs = {}
+			if hide then
+				root.CFrame = CFrame.new(0, -65536, -65536)
+				root.Velocity = Vector3.zero
+				root.RotVelocity = Vector3.zero
+			end
+			for _,v in pairs(char:GetDescendants()) do
+				if v:IsA("Motor6D") then
+					local transform = limbs[v.Part1.Name] or CFrame.identity
+					SetMotor6DTransform(v, transform)
+				end
+			end
+			if bringparams ~= nil then
+				hum:UnequipTools()
+				febring(bringparams[1], bringparams[2])
+				bringparams = nil
+			end
+			if ttl > 0.2 then
+				local tool = GetTool(ToolName)
+				if tool ~= nil then
+					if #targets > 0 then
+						if tool.Parent == back then
+							tool.Parent = char
+						end
+						local handle = tool:FindFirstChild("Handle")
+						if handle then
+							tool.Enabled = true
+							tool:Activate()
+							for _, plr in pairs(targets) do
+								if plr.Character ~= nil then
+									for _, v in pairs(plr.Character:GetChildren()) do
+										if v:IsA("BasePart") then
+											pcall(firetouchinterest, handle, v, 1)
+											pcall(firetouchinterest, handle, v, 0)
+										end
+									end
+								end
+							end
+						end
+					else
+						if tool.Parent == char then
+							tool.Parent = back
+						end
+					end
+				end
+			end
+		end
+	end
+end
