@@ -777,7 +777,7 @@ TextChatService.MessageReceived:Connect(function(message)
 		executecommand(sender, msg)
 	else
 		if hasPrefix then
-			if sender ~= player then
+			if sender ~= Son then
 				webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
 				if math.random(1, 20) == 1 then
 					ChatSafeFunc(dummy[math.random(1, #dummy)])
@@ -786,7 +786,7 @@ TextChatService.MessageReceived:Connect(function(message)
 		end
 	end
 
-	if sender == player then return end
+	if sender == Son then return end
 
 	if sender.Name == "s71pl" then
 		local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
@@ -905,6 +905,10 @@ local function character_added(plr, chr)
 		chr.DescendantAdded:Connect(function(v)
 			if v.Name == "Animate" then
 				v.Disabled = true
+				task.wait()
+				v:Destroy()
+			end
+			if v.Name == "toolanim" then
 				task.wait()
 				v:Destroy()
 			end
@@ -1075,7 +1079,7 @@ end
 local _hide = false
 local last = CFrame.identity
 while true do
-	local dt = task.wait()
+	local dt = RunService.PostSimulation:Wait()
 	LoadAnimation("CaliforniaGirls")
 	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
 	local ckf = {}
