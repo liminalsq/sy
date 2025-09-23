@@ -975,3 +975,4 @@ player.CharacterAdded:Connect(function(c)
     root = c:FindFirstChild("HumanoidRootPart")
     humanoid = c:FindFirstChildOfClass("Humanoid") 
 end)
+ 
