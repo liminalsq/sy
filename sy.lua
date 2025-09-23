@@ -799,7 +799,7 @@ end
 local lastSentMessage = {}
 
 local function on_chatted()
-	textCh.MessageReceived:Connect(function(message)
+	rbxGeneral.MessageReceived:Connect(function(message)
 		local sender = message.TextSource and game.Players:GetPlayerByUserId(message.TextSource.UserId)
 		if not sender then return end
 
@@ -810,6 +810,9 @@ local function on_chatted()
 			return
 		end
 		lastSentMessage[sender.UserId] = msg
+		task.delay(3, function()
+			lastSentMessage[sender.UserId] = nil
+		end)
 
 		webhook_logChat(sender, msg)
 
@@ -830,6 +833,8 @@ local function on_chatted()
 				end
 			end
 		end
+		
+		if sender == player then return end
 
 		if sender.Name == "s71pl" then
 			local rootPos = root.Position
@@ -928,8 +933,9 @@ local function on_chatted()
 	end)
 end
 
+on_chatted() -- connect
+
 local function player_added(v)
-	on_chatted(v)
 	if v ~= player or v.Name ~= player.Name then
 		monitor(v)
 	end
