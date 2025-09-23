@@ -500,13 +500,14 @@ cmds.ping = function(plr)
 	end
 end
 
-cmds.bring = function(plr, target, vect3)
-    if vect3 == "platform1" then
+cmds.bring = function(plr, target, x, y, z)
+    local vect3
+    if x == "platform1" then
         vect3 = Vector3.new(-119, 250, -133)
-    elseif type(vect3) == "number" then
-        vect3 = Vector3.new(vect3, select(2, ...), select(3, ...))
+    elseif typeof(x) == "number" and typeof(y) == "number" and typeof(z) == "number" then
+        vect3 = Vector3.new(x, y, z)
     else
-        vect3 = vect3 or middle.Position
+        vect3 = (typeof(x) == "Vector3" and x) or middle.Position
     end
     
     febring(plr, target, vect3)
