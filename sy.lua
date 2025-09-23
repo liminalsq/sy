@@ -380,7 +380,7 @@ local function febring(yu, to, tries) -- CREDITS TO THETERMINALCLONE FOR GIVING 
 	if success then
 		if not err then
 			task.wait()
-			return febring(me, yu, to, tries + 1)
+			return febring(yu, to, tries + 1)
 		end
 		debug("[febring]", "bring success")
 	else
@@ -489,7 +489,7 @@ cmds.bring = function(_, target, x, y, z)
 		towards = middle.Position
 	end
 
-	bringparams = {target.Character, vect3}
+	bringparams = {target.Character, towards}
 end
 
 cmds.tp = function(_, target, x, y, z)
@@ -513,7 +513,7 @@ cmds.tp = function(_, target, x, y, z)
 	local hum = char and char:FindFirstChildOfClass("Humanoid")
 
 	if char and root and hum and hum.Health > 0 then
-		root.CFrame = CFrame.new(vect3)
+		root.CFrame = CFrame.new(towards)
 	end
 end
 
