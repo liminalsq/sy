@@ -14,6 +14,7 @@ local Workspace = workspace --joke variable, ofc im still gonna use workspace
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TextChatService = game:GetService("TextChatService")
+local TweenService = game:GetService("TweenService")
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -1044,7 +1045,7 @@ local function LoadAnimation(animName)
 						if es == "CubicV2" then
 							es = "Cubic"
 						end
-						a = TS:GetValue(
+						a = TweenService:GetValue(
 							a,
 							Enum.EasingStyle[es],
 							Enum.EasingDirection[k1.EasingDirection]
