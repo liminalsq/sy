@@ -404,7 +404,7 @@ end
 local cmds = {}
 
 cmds.hi = function(plr)
-	if plr == player then return end
+	if plr == player or plr.Name == player.Name then return end
 	ChatSafeFunc("hi " .. plr.Name)
 end
 
