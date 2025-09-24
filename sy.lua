@@ -71,6 +71,8 @@ end
 local bringing = false
 local bringparams = nil
 local hide = true
+local reset = false
+local rsTime = 3
 
 local middle = CFrame.new(0, 255, 0)
 
@@ -572,6 +574,22 @@ end
 
 cmds.unhide = function(_)
 	hide = false
+end
+
+cmds.autors = function(_)
+	reset = true
+end
+
+cmds.unautors = function(_)
+	reset = false
+end
+
+cmds.resettime = function(_, num)
+	rsTime = num or 3
+end
+
+cmds.reset = function(_)
+	Son.Character:FindFirstChildOfClass("Humanoid").Health = 0	
 end
 
 local function executecommand(p, cmd)
@@ -1167,6 +1185,11 @@ while true do
 										end
 									end
 								end
+							end
+						end
+						if reset then
+							if ttl > rsTime then
+								Son.Character:FindFirstChildOfClass("Humanoid").Health = 0
 							end
 						end
 					else
