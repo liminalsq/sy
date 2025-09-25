@@ -74,6 +74,7 @@ local hide = true
 local reset = false
 local rsTime = 3
 
+local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
 
 workspace.FallenPartsDestroyHeight = 0/0
@@ -1158,13 +1159,8 @@ while true do
 			for k,v in pairs(ckf) do
 				limbs[k] = v
 			end
-			for _,v in pairs(hum:GetPlayingAnimationTracks()) do
-				v:Stop(0)
-			end
-			hum.AutoRotate = false
-			hum.PlatformStand = true
 			if hide then
-				root.CFrame = CFrame.new(0, -65536, -65536)
+				root.CFrame = CFrame.new(ROOT_HIDE + Vector3.new(0, 0, math.random(1, 2) * 0.01))
 				root.Velocity = Vector3.zero
 				root.RotVelocity = Vector3.zero
 			end
@@ -1172,7 +1168,7 @@ while true do
 				if v:IsA("Motor6D") then
 					local cf = limbs[v.Part1.Name] or CFrame.identity
 					if hide and v.Name == "RootJoint" then
-						local offset = root.CFrame:Inverse() * last
+						local offset = last - ROOT_HIDE
 						offset = v.C0:Inverse() * offset * v.C1
 						cf = offset * cf
 					end
