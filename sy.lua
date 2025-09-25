@@ -920,19 +920,6 @@ local function character_added(plr, chr)
 			end
 		end
 	end
-	if plr == Son then
-		chr.DescendantAdded:Connect(function(v)
-			if v.Name == "Animate" then
-				v.Disabled = true
-				task.wait()
-				v:Destroy()
-			end
-			if v.Name == "toolanim" then
-				task.wait()
-				v:Destroy()
-			end
-		end)
-	end
 	task.wait()
 	while chr:IsDescendantOf(workspace) do
 		local ded = true
@@ -973,6 +960,38 @@ end
 
 Players.PlayerRemoving:Connect(function(p)
 	webhook_sendMsg({overall_LOGGER, webhook}, p.DisplayName.."("..p.Name..") left.")
+end)
+
+workspace.DescendantAdded:Connect(function(v)
+	if v:IsA("LocalScript") and v.Name == "Animate" then
+		v.Disabled = true
+		task.wait()
+		v:Destroy()
+	end
+	if v:IsA("Model") and v.Name == "Regen" then
+		task.wait()
+		v:Destroy()
+	end
+	if v:IsA("ObjectValue") and v.Name == "creator" then
+		v:SetAttribute("AddTick", tick())
+	end
+	if v:IsA("BasePart") then
+		v.AncestryChanged:Connect(function()
+			if v.Parent == nil then
+				task.wait()
+				v:Destroy()
+			end
+		end)
+	end
+end)
+Son.PlayerGui.DescendantAdded:Connect(function(v)
+	if v:IsA("LocalScript") then
+		v.Disabled = true
+	end
+end)
+Son.PlayerGui.ChildAdded:Connect(function(v)
+	task.wait()
+	v:Destroy()
 end)
 
 Son.Character:BreakJoints()
