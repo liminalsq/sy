@@ -1143,7 +1143,7 @@ while true do
 				v:Stop(0)
 			end
 			hum.AutoRotate = false
-			hum:ChangeState(Enum.HumanoidStateType.Physics)
+			hum.PlatformStand = true
 			if hide then
 				root.CFrame = CFrame.new(0, -65536, -65536)
 				root.Velocity = Vector3.zero
