@@ -446,7 +446,7 @@ cmds.kill = function(_, ...)
 		for _, plr in ipairs(plrs) do
 			if plr.Character then
 				debug("[kill]", "killing", plr)
-				plr:SetAttribute("Kill", true)
+				plr.Character:SetAttribute("Kill", true)
 			end
 		end
 	end
