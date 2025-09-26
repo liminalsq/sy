@@ -1115,7 +1115,7 @@ local function LoadAnimation(animName)
 	CharacterAnimationTime = 0
 end
 
-Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02)
+Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
 
 local _hide = false
 local last = CFrame.identity
