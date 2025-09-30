@@ -620,6 +620,8 @@ local function monitor(p)
 	local leaderstats = p:FindFirstChild("leaderstats")
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
 
+	local lastKOs = KOs.Value or 0
+
 	if not leaderstats or not KOs then return end
 
 	if not c then return end
@@ -639,6 +641,8 @@ local function monitor(p)
 		reach = 0,
 		fling = 0
 	}
+
+	local looped = {}
 
 	local fly = 0
 
@@ -682,13 +686,15 @@ local function monitor(p)
     end
 
 	--teleport
-	if (pos - r.Position).Magnitude > 35 and vel < 5 then
-		if last_reports.teleport + 5 < tick() then
-			last_reports.teleport = tick()
-			webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-			executecommand("default", "sy.kill "..p.Name)
-		end
+	while task.wait(0.2) do
+    	if (pos - r.Position).Magnitude > 35 and vel < 5 then 
+			if last_reports.teleport + 5 < tick() then
+			    last_reports.teleport = tick()
+	        	webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
+	     		ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
+		    	executecommand("default", "sy.kill "..p.Name)
+	    	end
+    	end
 	end
 
 	--fly, but take with a grain of salt
@@ -759,6 +765,31 @@ local function monitor(p)
 				end
 			end
 		end)
+	end)
+
+	KOs:GetPropertyChangedSignal("Value"):Connect(function(val)
+		if val - lastKOs > 9 then
+		   ChatSafeFunc("these kills belong to me... >:]")
+		   while runservice.Heartbeat:Wait() do
+		      if p then
+				 for i, v in pairs(players:GetPlayers()) do
+					if looplist[v.Name] then
+					    looped[v.Name] = true
+					end
+					executecommand("default", "sy.loopkill "..v.Name)
+				 end
+			  else
+				 for i, v in pairs(players:GetPlayers()) do
+                    if not looped[v.Name] then
+                       executecommand("default", "sy.unloopkill"..v.Name)
+					end
+					looped = {}
+					break
+				 end
+			  end
+		   end
+		end
+		lastKOs = val
 	end)
 
 	--fling
