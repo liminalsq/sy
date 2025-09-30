@@ -594,7 +594,7 @@ cmds.reset = function(_)
 end
 
 local function executecommand(p, cmd)
-	if whitelist[p.Name] then
+	if whitelist[p.Name] or p == "default" then
 		local out = parseCommand(cmd)
 		if not out.cmd then return end
 	
@@ -661,21 +661,25 @@ local function monitor(p)
 		rotVel = r.RotVelocity
 	end
 
-	if vel > 0.5 then
-		pos = r.Position
+	while Runservice.Heartbeat:Wait() do
+	    if vel > 0.5 then
+		    pos = r.Position
+	    end
 	end
-
+		
 	--atp ima just take notes cus i cant remember shit
 
 	--speed hack
-	if Vector3.new(vel.X, 0, vel.Z) > 25 then
-		if last_reports.speed + 5 < tick() then --idk i learned this today xd
-			last_reports.speed = tick()
-			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", vel, tostring(pos)))
-			ChatSafeFunc(("%s hey... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", vel))
-			docmd(autoCmd, "sy.kill "..p.Name)
-		end
-	end
+	while task.wait(0.2) do
+	    if Vector3.new(vel.X, 0, vel.Z) > 25 then
+		    if last_reports.speed + 5 < tick() then --idk i learned this today xd
+			    last_reports.speed = tick()
+			    webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", vel, tostring(pos)))
+			    ChatSafeFunc(("%s hey... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", vel))
+			    executeCommand("default", "sy.kill "..p.Name)
+		    end
+	    end
+    end
 
 	--teleport
 	if (pos - r.Position).Magnitude > 35 and vel < 5 then
@@ -683,7 +687,7 @@ local function monitor(p)
 			last_reports.teleport = tick()
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
 			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-			docmd(autoCmd, "sy.kill "..p.Name)
+			executeCommand("default", "sy.kill "..p.Name)
 		end
 	end
 
@@ -698,7 +702,7 @@ local function monitor(p)
 					last_reports.fly = tick()
 					webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flying"):format(p.Name.."("..p.DisplayName..")"))
 					ChatSafeFunc(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
-					docmd(autoCmd, "sy.kill "..p.Name)
+					executeCommand("default", "sy.kill "..p.Name)
 				end
 			end
 		elseif ground() and h:GetState() ~= Enum.HumanoidStateType.Freefall then
@@ -725,7 +729,7 @@ local function monitor(p)
 					if distance > 14 then
 						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
 						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						docmd(autoCmd, "sy.kill "..p.Name)
+						executeCommand("default", "sy.kill "..p.Name)
 					end
 				end
 			end
@@ -750,7 +754,7 @@ local function monitor(p)
 					if distance > 14 then
 						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
 						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						docmd(autoCmd, "sy.kill "..p.Name)
+						executeCommand("default", "sy.kill "..p.Name)
 					end
 				end
 			end
@@ -765,7 +769,7 @@ local function monitor(p)
 				last_reports.fling = tick()
 				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
 				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
-				docmd(autoCmd, "sy.kill "..p.Name)
+				executeCommand("default", "sy.kill "..p.Name)
 			end
 		end
 	end
