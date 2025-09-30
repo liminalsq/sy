@@ -99,7 +99,7 @@ local whitelist = {
 	['BorrowGoal'] = true,
 	['JeremysCherryl'] = true,
 	['STEVETheReal916'] = true,
-	['TMKOC63'] = true
+	['Obj687Alt'] = true
 }
 
 local exclude = {}
