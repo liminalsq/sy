@@ -951,7 +951,7 @@ local function character_added(plr, chr)
 		chr:SetAttribute("TickD", tick())
 		if plr.Name == "s71pl" or plr.Name == "TheTerminalClone" or plr.Name == "STEVETheReal916" or plr.Name == "ColonThreeSpam" then
 			local creator = hum:FindFirstChild("creator")
-			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
+			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") and creator.Value ~= Son then
 				webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
 				if plr.Name == "s71pl" then
 				   ChatSafeFunc("HEY DONT KILL DAD")
