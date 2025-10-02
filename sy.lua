@@ -20,10 +20,17 @@ local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local StatsService = game:GetService("Stats")
 
+local SupportedGames = {
+	SFOTH_Original = 487316,
+	Sword_Fighting_Tycoon = 5656638348
+}
+
 local webhook = "https://discord.com/api/webhooks/1405673325057019924/vgKZQv0O34Z7kQED-oVbAhFtHZPZtXTuOOjIQA27jCUxuWQBNBQtf9XZNaQXyYPaQ9TK"
 
 local overall_LOGGER = "https://discord.com/api/webhooks/1405674967521169672/6_BjCSepRZNgyhneJbwcYeSmAuin5UF-L7qj8pmgS6zFwSpvqqVXyOBOVbxf23bMBvGi"
 local chat_LOGGER = "https://discord.com/api/webhooks/1405676439008837753/Q9Ev9eeqLyBz4remCGrn0hTI41pwzuSurElMIZBPGgfJfJNRi74MFbGrc5Ju1xLxZAyB"
+
+local kill_LOGGER = "https://discord.com/api/webhooks/1412200142966362223/hyC7D3NANoIKSVNbz1jqac_HzrKwqOfrNmPt808MkKpY-Vl2gHPgOHcaW8nLkoUf56bh"
 
 local requestFunction = http_request or request
 
@@ -76,6 +83,19 @@ local rsTime = 3
 
 local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
+
+if game.PlaceId and SupportedGames[game.PlaceId] == nil then
+	error("Unsupported game. Supported games are:")
+	for name, id in pairs(SupportedGames) do
+		warn(name .. ": " .. id)
+	end
+end
+
+if game.PlaceId and SupportedGames[game.PlaceId] == SupportedGames.SFOTH_Original then
+	middle = CFrame.new(0,255,0)
+elseif SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+	middle = CFrame.new(-4, 62, 27)
+end
 
 workspace.FallenPartsDestroyHeight = 0/0
 
@@ -569,6 +589,48 @@ cmds.unblacklist = function(_, ...)
 	end
 end
 
+cmds.logBlacklist = function(_)
+	local list = {}
+	for _, id in ipairs(blacklist) do
+		local plr = Players:GetPlayerByUserId(id)
+		if plr then
+			table.insert(list, plr.Name.." Id: "..id.." Display: "..plr.DisplayName)
+		else
+			table.insert(list, tostring(id))
+		end
+	end
+	webhook_sendMsg({overall_LOGGER, webhook}, "Current blacklist:\n"..table.concat(list, "\n"))
+end
+
+cmds.logLooplist = function(_)
+	local list = {}
+	for id, _ in pairs(looplist) do
+		local plr = Players:GetPlayerByUserId(id)
+		if plr then
+			table.insert(list, plr.Name.." Id: "..id.." Display: "..plr.DisplayName)
+		else
+			table.insert(list, tostring(id))
+		end
+	end
+	webhook_sendMsg({overall_LOGGER, webhook}, "Current looplist:\n"..table.concat(list, "\n"))
+end
+
+cmds.placeId = function(_)
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current placeId is %d"):format(game.PlaceId))
+	ChatSafeFunc(("placeId is %d"):format(game.PlaceId))
+end
+
+cmds.region = function(_)
+	local region = game:GetService("LocalizationService").CountryRegion
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current region is %s"):format(region))
+	ChatSafeFunc(("region is %s"):format(region))
+end
+
+cmds.gameId = function(_)
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current gameId is %d"):format(game.GameId))
+	ChatSafeFunc(("gameId is %d"):format(game.GameId))
+end
+
 cmds.hide = function(_)
 	hide = true
 end
@@ -593,6 +655,20 @@ cmds.reset = function(_)
 	Son.Character:FindFirstChildOfClass("Humanoid").Health = 0	
 end
 
+cmds.getPos = function(_, plr)
+	plr = getPlayersByName(plr)
+	if #plr == 0 then return end
+	plr = plr[1]
+
+	local char = plr.Character
+	local root = char and char:FindFirstChild("HumanoidRootPart")
+	if char and root then
+		local pos = root.Position
+		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's position is (%.2f, %.2f, %.2f)"):format(plr.Name.."("..plr.DisplayName..")", pos.X, pos.Y, pos.Z))
+		ChatSafeFunc(("%s is at %.2f, %.2f, %.2f"):format(plr.Name, pos.X, pos.Y, pos.Z))
+	end
+end
+
 local function executecommand(p, cmd)
 	if whitelist[p.Name] or p == "default" then
 		local out = parseCommand(cmd)
@@ -608,6 +684,27 @@ local function executecommand(p, cmd)
 			end
 		else
 			debug("not a command: ", out.cmd)
+		end
+	else
+		task.wait(2 + math.random())
+		ChatSafeFunc("uhhh")
+		task.wait(2 + math.random())
+		local refuse = {
+			"alr",
+			"no",
+			"no :3",
+			"nah",
+			"i dont wanna",
+			"im not ur slave",
+			"im not ur servant",
+			"ok bro",
+			"nuh uh",
+			"i would but im too lazy -w-",
+		}
+		if math.random(1,7) == 1 and not Players:FindFirstChild("s71pl") then
+			ChatSafeFunc(refuse[math.random(1, #refuse)])
+		else
+			ChatSafeFunc("dad whos this weird person")
 		end
 	end
 end
@@ -807,6 +904,9 @@ local function monitor(p)
 end
 
 local lastSentMessage = {}
+local miniCommand: string? = nil
+
+local miniCommandUser = {}
 
 TextChatService.MessageReceived:Connect(function(message)
 	local sender = message.TextSource and Players:GetPlayerByUserId(message.TextSource.UserId)
@@ -843,6 +943,7 @@ TextChatService.MessageReceived:Connect(function(message)
 
 	if sender == Son then return end
 
+	-- chats
 	if sender.Name == "s71pl" then
 		local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
 		if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
@@ -936,6 +1037,30 @@ TextChatService.MessageReceived:Connect(function(message)
 		task.wait(2 + math.random())
 		ChatSafeFunc(maskid[math.random(1,#maskid)])
 	end
+
+	--mini commands
+	if lowerMsg:find("spawnyellow") and (lowerMsg:find("loopkill") or lowerMsg:find("loop")) and lowerMsg:find("me") then
+		if looplist[sender.UserId] then
+			ChatSafeFunc("u are already being loopkilled :3")
+			return -- did they really think that i was dumb enough to not add this check so that they can unloop themselves? smh
+		end
+		miniCommand = "loopkill"
+		miniCommandUser[sender.UserId] = true
+		ChatSafeFunc("ok then, u asked for it >:3.")
+		executecommand("default", "sy.loopkill "..sender.Name)
+	elseif lowerMsg:find("spawnyellow") and (((lowerMsg:find("unloopkill") or lowerMsg:find("unloop")) and lowerMsg:find("me")) or lowerMsg:find("stop")) and looplist[sender.UserId] and miniCommand == "loopkill" and miniCommandUser[sender.UserId] then
+		miniCommand = "unloopkill"
+		miniCommandUser[sender.UserId] = nil
+		ChatSafeFunc("okii :3")
+		executecommand("default", "sy.unloopkill "..sender.Name)
+	elseif lowerMsg:find("spawnyellow") and lowerMsg:find("kill") and lowerMsg:find("me") then
+		if not whitelist[sender.Name] then
+			ChatSafeFunc("this is the most useless command, u can just reset xd")
+		else
+			ChatSafeFunc("oki :3")
+			executecommand("default", "sy.kill "..sender.Name)
+		end
+	end
 end)
 
 local function character_added(plr, chr)
@@ -949,14 +1074,26 @@ local function character_added(plr, chr)
 		chr:SetAttribute("Dead", true)
 		plr:SetAttribute("TickD", tick())
 		chr:SetAttribute("TickD", tick())
-		if plr.Name == "s71pl" or plr.Name == "TheTerminalClone" or plr.Name == "STEVETheReal916" or plr.Name == "ColonThreeSpam" then
-			local creator = hum:FindFirstChild("creator")
-			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") and creator.Value ~= Son then
-				webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
+		local creator = hum:FindFirstChild("creator")
+		if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") and creator.Value ~= Son then
+			if whitelist[p.Name] then
+				webhook_sendMsg({overall_LOGGER, webhook, kill_LOGGER}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
 				if plr.Name == "s71pl" then
-				   ChatSafeFunc("HEY DONT KILL DAD")
+					ChatSafeFunc("HEY DONT KILL DAD")
+				elseif plr.Name == "TheTerminalClone" then
+					ChatSafeFunc("not terminal >:(")
+				elseif plr.Name == "STEVETheReal916" then
+					if plr.DisplayName:lower():find("stella") then
+						ChatSafeFunc("DONT KILL STELLA")
+					else
+						ChatSafeFunc("DONT KILL STEVE")
+					end
+				elseif plr.Name == "ColonThreeSpam" then
+					ChatSafeFunc("DONT KILL FLUFFY BOI")
 				end
 				executecommand("default", "sy.kill "..creator.Value.Name)
+			else
+				webhook_sendMsg({overall_LOGGER, webhook, kill_LOGGER}, ("%s killed %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
 			end
 		end
 	end
@@ -1154,13 +1291,47 @@ local function LoadAnimation(animName)
 	CharacterAnimationTime = 0
 end
 
-Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
+if SupportedGames[game.PlaceId] == SupportedGames.SFOTH_Original then
+	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
+elseif SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(-4, 62, 27)
+end
+
+local last_Direction_Facing = Son.Character:FindFirstChild("HumanoidRootPart").CFrame.LookVector
+
+local function nearest()
+	local nearest, maxDist = nil, 35
+	for _, plr in pairs(Players:GetPlayers()) do
+		if plr ~= Son and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+			local dist = (Son.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude
+
+			if Son.Character.HumanoidRootPart.CFrame.LookVector:Dot((plr.Character.HumanoidRootPart.Position - Son.Character.HumanoidRootPart.Position).Unit) > 0.7 then
+				if dist < maxDist then
+					maxDist = dist
+					nearest = plr
+				end
+			end
+		end
+	end
+end
 
 local _hide = false
 local last = CFrame.identity
+local animation = "CaliforniaGirls"
+
+task.spawn(function()
+	task.wait(120)
+	if animation == "CaliforniaGirls" then
+		animation = "Smug"
+	else
+		animation = "CaliforniaGirls"
+	end
+end)
+
 while true do
 	local dt = RunService.PostSimulation:Wait()
-	LoadAnimation("CaliforniaGirls")
+	local lookAt_target = nearest()
+	LoadAnimation(animation)
 	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
 	local ckf = {}
 	for i=1, #CharacterAnimation.Keyframes do
@@ -1178,6 +1349,14 @@ while true do
 		if plr.Character ~= nil then
 			if plr.Character:GetAttribute("Kill") then
 				table.insert(targets, plr)
+			end
+		end
+	end
+	if SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+		for i, part in pairs(workspace:WaitForChild("Tycoons"):GetDescendants()) do
+			if part:IsA("BasePart") and part.Name == "Giver" then
+				pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
+				pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
 			end
 		end
 	end
@@ -1205,14 +1384,32 @@ while true do
 				root.Velocity = Vector3.zero
 				root.RotVelocity = Vector3.zero
 			end
-			for _,v in pairs(char:GetDescendants()) do
+			for _, v in pairs(char:GetDescendants()) do
 				if v:IsA("Motor6D") then
 					local cf = limbs[v.Part1.Name] or CFrame.identity
-					if hide and v.Name == "RootJoint" then
-						local offset = last - ROOT_HIDE
-						offset = v.C0:Inverse() * offset * v.C1
-						cf = offset * cf
+
+					if v.Name == "RootJoint" then
+						local root = char:FindFirstChild("HumanoidRootPart")
+						if root then
+							local lookAtCF
+
+							if lookAt_target and lookAt_target:FindFirstChild("HumanoidRootPart") then
+								local targetPos = lookAt_target.HumanoidRootPart.Position
+								local rootPos = root.Position
+								
+								local dir = (Vector3.new(targetPos.X, rootPos.Y, targetPos.Z) - rootPos).Unit
+								lookAtCF = CFrame.new(rootPos, rootPos + dir)
+								
+								last_Direction_facing = lookAtCF
+							else
+								lookAtCF = last_Direction_facing
+							end
+
+							local offset = v.C0:Inverse() * (root.CFrame:ToObjectSpace(lookAtCF)) * v.C1
+							cf = offset * cf
+						end
 					end
+
 					SetMotor6DTransform(v, cf)
 				end
 			end
