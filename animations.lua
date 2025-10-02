@@ -6847,6 +6847,1272 @@ local SpookyMonth = {
 	Time = 0.4000
 }
 
+local Smug = {
+	Keyframes = {
+		{
+			Time = 0.0000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1057, 0.0322, -0.2600, 0.8457, 0.4986, 0.1901, -0.5231, 0.8451, 0.1104, -0.1056, -0.1928, 0.9755)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0516, 0.3784, 0.0144, 0.8933, -0.4495, 0.0000, 0.3756, 0.7464, 0.5494, -0.2470, -0.4908, 0.8355)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.4552, -0.1727, 0.0459, -0.4737, -0.7655, -0.4354, -0.2780, -0.3391, 0.8987, -0.8356, 0.5468, -0.0522)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0000, 0.0000, 0.9867, -0.1622, 0.0127, 0.1608, 0.9840, 0.0768, -0.0249, -0.0737, 0.9970)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3423, 0.1755, 0.2906, -0.1409, 0.3838, 0.9126, -0.9138, -0.4051, 0.0293, 0.3809, -0.8298, 0.4078)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.7728, -0.1127, -0.0002, 0.8914, 0.4533, 0.0000, -0.4533, 0.8914, -0.0000, -0.0000, 0.0000, 1.0000)},
+			}
+		},
+		{
+			Time = 0.0333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1054, 0.0251, -0.2554, 0.8500, 0.4930, 0.1855, -0.5162, 0.8496, 0.1078, -0.1045, -0.1874, 0.9767)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0505, 0.3720, 0.0142, 0.8970, -0.4420, 0.0042, 0.3683, 0.7525, 0.5460, -0.2445, -0.4882, 0.8378)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4442, -0.1704, 0.0503, -0.4311, -0.7893, -0.4372, -0.2716, -0.3485, 0.8971, -0.8604, 0.5055, -0.0642)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, 0.0000, 0.0000, 0.9868, -0.1614, 0.0123, 0.1599, 0.9838, 0.0808, -0.0252, -0.0778, 0.9967)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3403, 0.1741, 0.2840, -0.1384, 0.3993, 0.9063, -0.9082, -0.4162, 0.0447, 0.3950, -0.8169, 0.4202)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7553, -0.1098, 0.0018, 0.8957, 0.4446, -0.0013, -0.4446, 0.8957, 0.0054, 0.0036, -0.0043, 1.0000)},
+			}
+		},
+		{
+			Time = 0.0667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1043, 0.0036, -0.2418, 0.8627, 0.4757, 0.1718, -0.4956, 0.8628, 0.0997, -0.1008, -0.1712, 0.9801)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0473, 0.3528, 0.0136, 0.9077, -0.4193, 0.0164, 0.3462, 0.7703, 0.5355, -0.2372, -0.4804, 0.8444)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4113, -0.1635, 0.0636, -0.2972, -0.8480, -0.4389, -0.2498, -0.3746, 0.8929, -0.9216, 0.3750, -0.1005)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, 0.0000, 0.0000, 0.9872, -0.1589, 0.0113, 0.1572, 0.9832, 0.0929, -0.0259, -0.0899, 0.9956)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3344, 0.1699, 0.2639, -0.1324, 0.4450, 0.8857, -0.8897, -0.4473, 0.0917, 0.4370, -0.7759, 0.4551)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7025, -0.1011, 0.0078, 0.9082, 0.4185, -0.0057, -0.4183, 0.9081, 0.0217, 0.0143, -0.0173, 0.9997)},
+			}
+		},
+		{
+			Time = 0.1000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1024, -0.0321, -0.2190, 0.8826, 0.4458, 0.1493, -0.4607, 0.8834, 0.0855, -0.0938, -0.1442, 0.9851)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0419, 0.3208, 0.0126, 0.9241, -0.3804, 0.0361, 0.3085, 0.7985, 0.5170, -0.2255, -0.4666, 0.8552)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3565, -0.1521, 0.0858, -0.0599, -0.9009, -0.4299, -0.2055, -0.4103, 0.8885, -0.9768, 0.1416, -0.1606)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, 0.0000, 0.0000, 0.9879, -0.1548, 0.0097, 0.1527, 0.9818, 0.1130, -0.0270, -0.1101, 0.9936)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3244, 0.1630, 0.2306, -0.1275, 0.5187, 0.8454, -0.8537, -0.4913, 0.1727, 0.5049, -0.6997, 0.5054)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6146, -0.0867, 0.0177, 0.9272, 0.3742, -0.0140, -0.3732, 0.9265, 0.0484, 0.0311, -0.0397, 0.9987)},
+			}
+		},
+		{
+			Time = 0.1333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0999, -0.0822, -0.1870, 0.9080, 0.4019, 0.1186, -0.4109, 0.9094, 0.0640, -0.0821, -0.1068, 0.9909)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0343, 0.2760, 0.0113, 0.9440, -0.3240, 0.0621, 0.2541, 0.8343, 0.4893, -0.2103, -0.4461, 0.8699)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2798, -0.1360, 0.1168, 0.2770, -0.8765, -0.3936, -0.1318, -0.4404, 0.8881, -0.9518, -0.1941, -0.2375)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0002, 0.0000, 0.0000, 0.9888, -0.1489, 0.0076, 0.1464, 0.9791, 0.1411, -0.0285, -0.1384, 0.9900)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3104, 0.1532, 0.1838, -0.1315, 0.6148, 0.7776, -0.7935, -0.5354, 0.2892, 0.5942, -0.5790, 0.5583)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4915, -0.0664, 0.0316, 0.9500, 0.3111, -0.0278, -0.3079, 0.9476, 0.0850, 0.0528, -0.0722, 0.9960)},
+			}
+		},
+		{
+			Time = 0.1667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0966, -0.1465, -0.1460, 0.9362, 0.3421, 0.0806, -0.3456, 0.9378, 0.0338, -0.0641, -0.0595, 0.9962)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0245, 0.2184, 0.0096, 0.9642, -0.2485, 0.0925, 0.1820, 0.8740, 0.4507, -0.1929, -0.4177, 0.8879)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1811, -0.1154, 0.1567, 0.6590, -0.6837, -0.3135, -0.0301, -0.4405, 0.8973, -0.7515, -0.5819, -0.3109)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0002, 0.0001, 0.0000, 0.9900, -0.1413, 0.0052, 0.1381, 0.9745, 0.1770, -0.0300, -0.1745, 0.9842)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2924, 0.1406, 0.1238, -0.1551, 0.7224, 0.6739, -0.7019, -0.5606, 0.4394, 0.6952, -0.4049, 0.5940)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3332, -0.0403, 0.0495, 0.9723, 0.2287, -0.0490, -0.2208, 0.9666, 0.1304, 0.0772, -0.1160, 0.9902)},
+			}
+		},
+		{
+			Time = 0.2000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0926, -0.2251, -0.0958, 0.9637, 0.2646, 0.0370, -0.2645, 0.9644, -0.0067, -0.0375, -0.0033, 0.9993)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0126, 0.1480, 0.0075, 0.9803, -0.1526, 0.1250, 0.0911, 0.9122, 0.3994, -0.1750, -0.3801, 0.9082)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0605, -0.0901, 0.2054, 0.9480, -0.2578, -0.1869, 0.0774, -0.3827, 0.9206, -0.3089, -0.8872, -0.3428)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0001, 0.0001, 0.0000, 0.9913, -0.1318, 0.0025, 0.1280, 0.9669, 0.2206, -0.0315, -0.2184, 0.9754)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2705, 0.1253, 0.0503, -0.2103, 0.8223, 0.5288, -0.5742, -0.5416, 0.6139, 0.7912, -0.1745, 0.5861)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1398, -0.0085, 0.0714, 0.9887, 0.1270, -0.0801, -0.1107, 0.9769, 0.1826, 0.1014, -0.1717, 0.9799)},
+			}
+		},
+		{
+			Time = 0.2333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0878, -0.3181, -0.0365, 0.9858, 0.1676, -0.0101, -0.1679, 0.9840, -0.0591, 0.0000, 0.0600, 0.9982)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0015, 0.0648, 0.0051, 0.9871, -0.0358, 0.1560, -0.0186, 0.9424, 0.3338, -0.1590, -0.3324, 0.9296)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0820, -0.0603, 0.2630, 0.9361, 0.3488, -0.0448, 0.1412, -0.2561, 0.9563, 0.3221, -0.9015, -0.2890)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0000, 0.0001, 0.0000, 0.9927, -0.1205, 0.0000, 0.1160, 0.9554, 0.2716, -0.0327, -0.2697, 0.9624)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.2445, 0.1072, -0.0364, -0.3077, 0.8868, 0.3447, -0.4131, -0.4509, 0.7912, 0.8571, 0.1011, 0.5051)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0888, 0.0291, 0.0973, 0.9923, 0.0077, -0.1234, 0.0222, 0.9708, 0.2387, 0.1216, -0.2396, 0.9632)},
+			}
+		},
+		{
+			Time = 0.2667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1042, -0.3203, -0.1626, 0.9998, 0.0130, -0.0150, -0.0130, 0.9999, 0.0058, 0.0151, -0.0056, 0.9999)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2179, 0.0981, 0.1755, 0.9774, -0.1777, 0.1143, 0.1464, 0.9597, 0.2400, -0.1523, -0.2179, 0.9640)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0265, -0.0722, 0.2662, 0.8370, 0.3502, -0.4204, 0.4265, 0.0638, 0.9022, 0.3428, -0.9345, -0.0960)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0002, -0.0000, -0.0001, 0.9999, 0.0061, 0.0100, -0.0077, 0.9858, 0.1678, -0.0088, -0.1678, 0.9858)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2973, 0.0664, 0.0523, -0.3374, 0.8295, 0.4450, 0.0046, -0.4713, 0.8820, 0.9414, 0.2996, 0.1552)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0460, 0.1096, 0.0770, 0.9746, 0.1934, -0.1131, -0.1579, 0.9511, 0.2656, 0.1589, -0.2409, 0.9574)},
+			}
+		},
+		{
+			Time = 0.3000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1176, -0.3221, -0.2657, 0.9932, -0.1134, -0.0265, 0.1147, 0.9917, 0.0578, 0.0198, -0.0605, 0.9980)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3974, 0.1254, 0.3150, 0.9515, -0.2939, 0.0910, 0.2777, 0.9478, 0.1567, -0.1323, -0.1238, 0.9834)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1153, -0.0820, 0.2689, 0.6819, 0.2597, -0.6837, 0.6113, 0.3108, 0.7278, 0.4015, -0.9143, 0.0532)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0002, -0.0002, 0.9939, 0.1101, 0.0081, -0.1104, 0.9906, 0.0809, 0.0009, -0.0813, 0.9967)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3406, 0.0330, 0.1249, -0.3237, 0.7835, 0.5303, 0.3492, -0.4220, 0.8367, 0.8794, 0.4560, -0.1370)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0109, 0.1754, 0.0604, 0.9348, 0.3406, -0.1010, -0.3007, 0.9099, 0.2858, 0.1893, -0.2368, 0.9529)},
+			}
+		},
+		{
+			Time = 0.3333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1280, -0.3235, -0.3459, 0.9769, -0.2099, -0.0400, 0.2129, 0.9723, 0.0969, 0.0185, -0.1032, 0.9945)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5370, 0.1466, 0.4235, 0.9205, -0.3824, 0.0800, 0.3754, 0.9225, 0.0892, -0.1079, -0.0521, 0.9928)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1844, -0.0896, 0.2709, 0.5283, 0.1396, -0.8375, 0.7081, 0.4719, 0.5253, 0.4685, -0.8706, 0.1505)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0003, -0.0002, 0.9818, 0.1898, 0.0003, -0.1898, 0.9817, 0.0134, 0.0022, -0.0132, 0.9999)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3742, 0.0071, 0.1814, -0.2904, 0.7523, 0.5914, 0.5894, -0.3463, 0.7299, 0.7539, 0.5605, -0.3428)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0163, 0.2266, 0.0475, 0.8886, 0.4498, -0.0895, -0.4065, 0.8629, 0.3002, 0.2123, -0.2304, 0.9497)},
+			}
+		},
+		{
+			Time = 0.3667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1355, -0.3245, -0.4031, 0.9594, -0.2773, -0.0519, 0.2817, 0.9515, 0.1239, 0.0150, -0.1334, 0.9909)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6368, 0.1618, 0.5010, 0.8929, -0.4438, 0.0761, 0.4419, 0.8961, 0.0402, -0.0860, -0.0023, 0.9963)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2337, -0.0950, 0.2724, 0.4079, 0.0324, -0.9124, 0.7472, 0.5624, 0.3540, 0.5247, -0.8262, 0.2052)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0003, -0.0003, 0.9693, 0.2457, -0.0085, -0.2458, 0.9687, -0.0345, -0.0002, 0.0355, 0.9994)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3982, -0.0115, 0.2217, -0.2557, 0.7339, 0.6293, 0.7348, -0.2754, 0.6198, 0.6282, 0.6210, -0.4689)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0358, 0.2631, 0.0382, 0.8480, 0.5239, -0.0803, -0.4784, 0.8218, 0.3095, 0.2281, -0.2241, 0.9475)},
+			}
+		},
+		{
+			Time = 0.4000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1399, -0.3251, -0.4375, 0.9466, -0.3169, -0.0599, 0.3223, 0.9363, 0.1395, 0.0119, -0.1514, 0.9884)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6966, 0.1709, 0.5475, 0.8742, -0.4796, 0.0754, 0.4803, 0.8771, 0.0107, -0.0712, 0.0269, 0.9971)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2633, -0.0983, 0.2732, 0.3337, -0.0384, -0.9419, 0.7578, 0.6052, 0.2438, 0.5607, -0.7952, 0.2310)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9603, 0.2786, -0.0152, -0.2790, 0.9582, -0.0629, -0.0030, 0.0646, 0.9979)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4126, -0.0226, 0.2459, -0.2313, 0.7247, 0.6491, 0.8089, -0.2274, 0.5422, 0.5405, 0.6504, -0.5336)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0475, 0.2851, 0.0327, 0.8206, 0.5666, -0.0743, -0.5198, 0.7942, 0.3148, 0.2374, -0.2197, 0.9462)},
+			}
+		},
+		{
+			Time = 0.4333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1414, -0.3253, -0.4490, 0.9419, -0.3300, -0.0627, 0.3357, 0.9308, 0.1447, 0.0106, -0.1573, 0.9875)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.7166, 0.1739, 0.5630, 0.8677, -0.4914, 0.0754, 0.4928, 0.8702, 0.0008, -0.0660, 0.0364, 0.9972)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.2732, -0.0994, 0.2735, 0.3088, -0.0629, -0.9490, 0.7592, 0.6174, 0.2062, 0.5729, -0.7842, 0.2384)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9570, 0.2894, -0.0176, -0.2899, 0.9543, -0.0723, -0.0041, 0.0743, 0.9972)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.4174, -0.0263, 0.2540, -0.2226, 0.7220, 0.6551, 0.8312, -0.2107, 0.5146, 0.5095, 0.6590, -0.5532)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0514, 0.2924, 0.0309, 0.8111, 0.5805, -0.0723, -0.5333, 0.7845, 0.3165, 0.2404, -0.2181, 0.9458)},
+			}
+		},
+		{
+			Time = 0.4667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1387, -0.3253, -0.4432, 0.9469, -0.3157, -0.0603, 0.3212, 0.9356, 0.1466, 0.0102, -0.1582, 0.9874)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.7019, 0.1728, 0.5556, 0.8677, -0.4923, 0.0683, 0.4932, 0.8699, 0.0049, -0.0618, 0.0294, 0.9977)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2700, -0.0945, 0.2720, 0.3069, -0.0732, -0.9489, 0.7770, 0.5951, 0.2054, 0.5497, -0.8003, 0.2395)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9599, 0.2803, -0.0118, -0.2804, 0.9574, -0.0688, -0.0080, 0.0693, 0.9976)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4162, -0.0236, 0.2512, -0.2223, 0.7296, 0.6467, 0.8095, -0.2316, 0.5395, 0.5434, 0.6435, -0.5391)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0477, 0.2896, 0.0302, 0.8146, 0.5749, -0.0761, -0.5273, 0.7889, 0.3156, 0.2415, -0.2170, 0.9458)},
+			}
+		},
+		{
+			Time = 0.5000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1304, -0.3254, -0.4260, 0.9607, -0.2724, -0.0530, 0.2774, 0.9486, 0.1521, 0.0088, -0.1608, 0.9870)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6577, 0.1695, 0.5335, 0.8677, -0.4948, 0.0469, 0.4946, 0.8690, 0.0171, -0.0492, 0.0084, 0.9988)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2604, -0.0799, 0.2674, 0.2994, -0.1038, -0.9485, 0.8262, 0.5254, 0.2033, 0.4772, -0.8445, 0.2430)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9676, 0.2525, 0.0054, -0.2518, 0.9661, -0.0578, -0.0198, 0.0546, 0.9983)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4125, -0.0154, 0.2428, -0.2190, 0.7521, 0.6216, 0.7369, -0.2901, 0.6106, 0.6396, 0.5917, -0.4907)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0369, 0.2814, 0.0283, 0.8252, 0.5581, -0.0876, -0.5091, 0.8019, 0.3128, 0.2449, -0.2135, 0.9458)},
+			}
+		},
+		{
+			Time = 0.5333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1167, -0.3255, -0.3974, 0.9791, -0.1991, -0.0401, 0.2030, 0.9659, 0.1604, 0.0068, -0.1652, 0.9862)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5842, 0.1639, 0.4966, 0.8672, -0.4979, 0.0112, 0.4972, 0.8668, 0.0373, -0.0283, -0.0268, 0.9992)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2444, -0.0554, 0.2597, 0.2809, -0.1529, -0.9475, 0.8942, 0.4003, 0.2005, 0.3486, -0.9035, 0.2492)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9782, 0.2052, 0.0332, -0.2039, 0.9782, -0.0384, -0.0404, 0.0308, 0.9987)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4063, -0.0017, 0.2287, -0.2044, 0.7881, 0.5806, 0.5930, -0.3722, 0.7140, 0.7789, 0.4902, -0.3913)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0187, 0.2676, 0.0252, 0.8417, 0.5293, -0.1067, -0.4783, 0.8226, 0.3076, 0.2506, -0.2079, 0.9455)},
+			}
+		},
+		{
+			Time = 0.5667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0974, -0.3257, -0.3572, 0.9953, -0.0948, -0.0212, 0.0970, 0.9806, 0.1704, 0.0046, -0.1717, 0.9851)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4812, 0.1562, 0.4451, 0.8651, -0.5001, -0.0388, 0.5016, 0.8626, 0.0654, 0.0008, -0.0760, 0.9971)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2221, -0.0213, 0.2490, 0.2435, -0.2161, -0.9455, 0.9571, 0.2115, 0.1981, 0.1571, -0.9532, 0.2583)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0003, 0.9880, 0.1371, 0.0705, -0.1368, 0.9906, -0.0090, -0.0711, -0.0007, 0.9975)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3977, 0.0174, 0.2091, -0.1664, 0.8329, 0.5278, 0.3537, -0.4492, 0.8204, 0.9204, 0.3232, -0.2198)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0067, 0.2484, 0.0208, 0.8628, 0.4877, -0.1330, -0.4342, 0.8497, 0.2991, 0.2589, -0.2004, 0.9449)},
+			}
+		},
+		{
+			Time = 0.6000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0726, -0.3259, -0.3056, 0.9992, 0.0406, 0.0045, -0.0408, 0.9828, 0.1802, 0.0029, -0.1803, 0.9836)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3488, 0.1462, 0.3787, 0.8603, -0.4993, -0.1031, 0.5084, 0.8552, 0.1009, 0.0378, -0.1392, 0.9895)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1934, 0.0227, 0.2352, 0.1778, -0.2837, -0.9423, 0.9793, -0.0432, 0.1979, -0.0969, -0.9579, 0.2701)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9922, 0.0470, 0.1152, -0.0511, 0.9982, 0.0323, -0.1134, -0.0380, 0.9928)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3866, 0.0420, 0.1838, -0.0921, 0.8757, 0.4739, 0.0096, -0.4752, 0.8798, 0.9957, 0.0856, 0.0354)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0393, 0.2236, 0.0151, 0.8864, 0.4321, -0.1660, -0.3760, 0.8813, 0.2862, 0.2700, -0.1913, 0.9437)},
+			}
+		},
+		{
+			Time = 0.6333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0424, -0.3262, -0.2425, 0.9781, 0.2045, 0.0374, -0.2079, 0.9601, 0.1872, 0.0024, -0.1909, 0.9816)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1870, 0.1340, 0.2977, 0.8511, -0.4927, -0.1811, 0.5185, 0.8430, 0.1431, 0.0821, -0.2157, 0.9730)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1583, 0.0764, 0.2184, 0.0773, -0.3395, -0.9374, 0.9153, -0.3486, 0.2017, -0.3953, -0.8736, 0.2838)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9843, -0.0655, 0.1640, 0.0516, 0.9948, 0.0878, -0.1689, -0.0779, 0.9825)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3731, 0.0720, 0.1529, 0.0239, 0.8984, 0.4385, -0.4056, -0.3922, 0.8256, 0.9137, -0.1976, 0.3550)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0792, 0.1934, 0.0082, 0.9096, 0.3612, -0.2051, -0.3029, 0.9147, 0.2675, 0.2842, -0.1812, 0.9415)},
+			}
+		},
+		{
+			Time = 0.6667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0066, -0.3265, -0.1679, 0.9176, 0.3899, 0.0771, -0.3974, 0.8981, 0.1882, 0.0041, -0.2033, 0.9791)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0042, 0.1196, 0.2019, 0.8358, -0.4772, -0.2716, 0.5327, 0.8244, 0.1910, 0.1328, -0.3043, 0.9433)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1168, 0.1399, 0.1984, -0.0567, -0.3603, -0.9311, 0.7202, -0.6606, 0.2118, -0.6914, -0.6586, 0.2970)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9565, -0.1995, 0.2127, 0.1676, 0.9730, 0.1589, -0.2386, -0.1164, 0.9641)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.3571, 0.1075, 0.1163, 0.1676, 0.8782, 0.4479, -0.7862, -0.1550, 0.5982, 0.5948, -0.4524, 0.6645)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1263, 0.1577, -0.0000, 0.9289, 0.2741, -0.2491, -0.2146, 0.9464, 0.2413, 0.3018, -0.1707, 0.9380)},
+			}
+		},
+		{
+			Time = 0.7000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0148, -0.3023, -0.2559, 0.8851, 0.4625, 0.0507, -0.4653, 0.8784, 0.1093, 0.0060, -0.1204, 0.9927)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0128, 0.2219, 0.2227, 0.8769, -0.4761, -0.0659, 0.4770, 0.8453, 0.2409, -0.0590, -0.2426, 0.9683)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1903, 0.0685, 0.1904, -0.0324, -0.6416, -0.7664, 0.4723, -0.6856, 0.5540, -0.8808, -0.3441, 0.3252)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9588, -0.2066, 0.1952, 0.1830, 0.9742, 0.1321, -0.2174, -0.0909, 0.9718)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3479, 0.0776, 0.1355, 0.1962, 0.8056, 0.5590, -0.7932, -0.2048, 0.5735, 0.5765, -0.5560, 0.5988)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1930, 0.1966, -0.0144, 0.9022, 0.3228, -0.2859, -0.2561, 0.9345, 0.2472, 0.3470, -0.1498, 0.9258)},
+			}
+		},
+		{
+			Time = 0.7333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0324, -0.2826, -0.3279, 0.8549, 0.5182, 0.0245, -0.5188, 0.8537, 0.0459, 0.0028, -0.0519, 0.9986)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0267, 0.3057, 0.2398, 0.8790, -0.4651, 0.1055, 0.4244, 0.8638, 0.2715, -0.2174, -0.1939, 0.9566)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2505, 0.0101, 0.1838, -0.0884, -0.8164, -0.5707, 0.2372, -0.5737, 0.7839, -0.9674, -0.0661, 0.2444)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9602, -0.2127, 0.1810, 0.1952, 0.9746, 0.1099, -0.1997, -0.0702, 0.9773)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3404, 0.0531, 0.1512, 0.2174, 0.7350, 0.6423, -0.8002, -0.2426, 0.5485, 0.5590, -0.6332, 0.5354)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4542, 0.2285, -0.0262, 0.8774, 0.3615, -0.3154, -0.2893, 0.9231, 0.2533, 0.3827, -0.1310, 0.9145)},
+			}
+		},
+		{
+			Time = 0.7667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0460, -0.2672, -0.3839, 0.8293, 0.5589, 0.0014, -0.5589, 0.8293, -0.0025, -0.0025, 0.0013, 1.0000)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0375, 0.3708, 0.2530, 0.8608, -0.4504, 0.2371, 0.3804, 0.8787, 0.2884, -0.3382, -0.1581, 0.9277)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2973, -0.0354, 0.1787, -0.1745, -0.9000, -0.3995, 0.0571, -0.4143, 0.9084, -0.9830, 0.1357, 0.1237)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0005, -0.0002, 0.9611, -0.2177, 0.1700, 0.2044, 0.9745, 0.0924, -0.1858, -0.0541, 0.9811)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3345, 0.0341, 0.1634, 0.2324, 0.6737, 0.7015, -0.8063, -0.2699, 0.5264, 0.5440, -0.6879, 0.4805)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6574, 0.2532, -0.0353, 0.8563, 0.3907, -0.3378, -0.3146, 0.9133, 0.2588, 0.4096, -0.1153, 0.9050)},
+			}
+		},
+		{
+			Time = 0.8000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0558, -0.2562, -0.4239, 0.8099, 0.5863, -0.0166, -0.5865, 0.8091, -0.0364, -0.0079, 0.0392, 0.9992)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0453, 0.4173, 0.2625, 0.8373, -0.4369, 0.3286, 0.3477, 0.8895, 0.2965, -0.4219, -0.1340, 0.8967)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3307, -0.0678, 0.1750, -0.2544, -0.9269, -0.2759, -0.0604, -0.2695, 0.9611, -0.9652, 0.2612, 0.0126)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9616, -0.2214, 0.1622, 0.2108, 0.9743, 0.0799, -0.1757, -0.0426, 0.9835)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3303, 0.0205, 0.1721, 0.2422, 0.6269, 0.7405, -0.8110, -0.2881, 0.5092, 0.5326, -0.7239, 0.4386)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8026, 0.2709, -0.0419, 0.8403, 0.4111, -0.3535, -0.3324, 0.9057, 0.2631, 0.4283, -0.1036, 0.8977)},
+			}
+		},
+		{
+			Time = 0.8333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0616, -0.2496, -0.4479, 0.7979, 0.6022, -0.0279, -0.6027, 0.7960, -0.0563, -0.0117, 0.0618, 0.9980)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0499, 0.4452, 0.2682, 0.8192, -0.4276, 0.3822, 0.3278, 0.8959, 0.2998, -0.4706, -0.1203, 0.8741)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3507, -0.0873, 0.1728, -0.3082, -0.9292, -0.2038, -0.1239, -0.1732, 0.9771, -0.9432, 0.3264, -0.0617)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9619, -0.2236, 0.1575, 0.2146, 0.9740, 0.0723, -0.1696, -0.0358, 0.9849)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3278, 0.0124, 0.1773, 0.2478, 0.5976, 0.7626, -0.8139, -0.2985, 0.4984, 0.5255, -0.7442, 0.4124)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8897, 0.2816, -0.0458, 0.8303, 0.4231, -0.3628, -0.3429, 0.9010, 0.2658, 0.4393, -0.0963, 0.8931)},
+			}
+		},
+		{
+			Time = 0.8667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0635, -0.2474, -0.4559, 0.7938, 0.6073, -0.0317, -0.6080, 0.7914, -0.0630, -0.0131, 0.0693, 0.9975)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0514, 0.4546, 0.2701, 0.8125, -0.4243, 0.3998, 0.3211, 0.8981, 0.3006, -0.4866, -0.1159, 0.8659)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.3574, -0.0938, 0.1721, -0.3269, -0.9277, -0.1804, -0.1437, -0.1399, 0.9797, -0.9341, 0.3461, -0.0875)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9620, -0.2243, 0.1559, 0.2158, 0.9739, 0.0698, -0.1675, -0.0335, 0.9853)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3269, 0.0097, 0.1791, 0.2495, 0.5876, 0.7697, -0.8149, -0.3019, 0.4947, 0.5231, -0.7507, 0.4035)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.9187, 0.2851, -0.0471, 0.8269, 0.4271, -0.3659, -0.3464, 0.8993, 0.2668, 0.4430, -0.0938, 0.8916)},
+			}
+		},
+		{
+			Time = 0.9000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0637, -0.2464, -0.4529, 0.8026, 0.5958, -0.0311, -0.5965, 0.8003, -0.0609, -0.0114, 0.0674, 0.9977)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0535, 0.4502, 0.2645, 0.8154, -0.4189, 0.3996, 0.3152, 0.9002, 0.3005, -0.4856, -0.1191, 0.8660)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3498, -0.0954, 0.1753, -0.2908, -0.9393, -0.1822, -0.1399, -0.1466, 0.9792, -0.9465, 0.3102, -0.0888)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9637, -0.2201, 0.1513, 0.2114, 0.9748, 0.0717, -0.1633, -0.0371, 0.9859)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3281, 0.0068, 0.1790, 0.2498, 0.5975, 0.7619, -0.8042, -0.3103, 0.5070, 0.5394, -0.7394, 0.4030)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8976, 0.2874, -0.0485, 0.8271, 0.4242, -0.3687, -0.3423, 0.9005, 0.2682, 0.4458, -0.0956, 0.8900)},
+			}
+		},
+		{
+			Time = 0.9333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0642, -0.2433, -0.4439, 0.8278, 0.5603, -0.0294, -0.5610, 0.8260, -0.0545, -0.0062, 0.0616, 0.9981)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0596, 0.4371, 0.2480, 0.8238, -0.4027, 0.3991, 0.2975, 0.9063, 0.3003, -0.4826, -0.1286, 0.8663)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3268, -0.1002, 0.1851, -0.1802, -0.9656, -0.1872, -0.1272, -0.1658, 0.9779, -0.9754, 0.2001, -0.0929)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9686, -0.2072, 0.1376, 0.1980, 0.9771, 0.0774, -0.1505, -0.0478, 0.9875)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3314, -0.0017, 0.1787, 0.2490, 0.6269, 0.7383, -0.7703, -0.3339, 0.5433, 0.5871, -0.7040, 0.3998)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8343, 0.2943, -0.0529, 0.8277, 0.4155, -0.3771, -0.3298, 0.9040, 0.2722, 0.4540, -0.1010, 0.8852)},
+			}
+		},
+		{
+			Time = 0.9667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0651, -0.2382, -0.4289, 0.8663, 0.4988, -0.0272, -0.4995, 0.8652, -0.0438, 0.0017, 0.0515, 0.9987)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0699, 0.4152, 0.2203, 0.8370, -0.3752, 0.3982, 0.2678, 0.9156, 0.2999, -0.4771, -0.1444, 0.8669)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2885, -0.1082, 0.2013, 0.0084, -0.9809, -0.1943, -0.1013, -0.1942, 0.9757, -0.9948, 0.0115, -0.1010)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9760, -0.1852, 0.1147, 0.1758, 0.9805, 0.0875, -0.1287, -0.0652, 0.9895)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3370, -0.0160, 0.1783, 0.2427, 0.6742, 0.6975, -0.7087, -0.3677, 0.6021, 0.6624, -0.6405, 0.3886)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7288, 0.3059, -0.0601, 0.8283, 0.4011, -0.3912, -0.3087, 0.9094, 0.2787, 0.4676, -0.1101, 0.8771)},
+			}
+		},
+		{
+			Time = 1.0000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0663, -0.2310, -0.4079, 0.9125, 0.4082, -0.0255, -0.4089, 0.9121, -0.0285, 0.0116, 0.0365, 0.9993)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0842, 0.3846, 0.1817, 0.8541, -0.3361, 0.3969, 0.2256, 0.9271, 0.2994, -0.4686, -0.1662, 0.8676)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2349, -0.1194, 0.2240, 0.2701, -0.9415, -0.2014, -0.0571, -0.2245, 0.9728, -0.9611, -0.2513, -0.1144)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9846, -0.1537, 0.0830, 0.1449, 0.9841, 0.1024, -0.0975, -0.0888, 0.9913)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3448, -0.0359, 0.1777, 0.2239, 0.7365, 0.6383, -0.6130, -0.4028, 0.6797, 0.7577, -0.5435, 0.3613)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.5812, 0.3221, -0.0702, 0.8283, 0.3809, -0.4110, -0.2789, 0.9164, 0.2872, 0.4860, -0.1232, 0.8652)},
+			}
+		},
+		{
+			Time = 1.0333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0678, -0.2217, -0.3809, 0.9580, 0.2858, -0.0255, -0.2860, 0.9582, -0.0088, 0.0220, 0.0157, 0.9996)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1027, 0.3452, 0.1320, 0.8733, -0.2847, 0.3953, 0.1708, 0.9389, 0.2989, -0.4562, -0.1936, 0.8686)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1659, -0.1338, 0.2533, 0.5752, -0.7920, -0.2048, 0.0088, -0.2444, 0.9696, -0.8180, -0.5595, -0.1336)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9928, -0.1118, 0.0429, 0.1058, 0.9868, 0.1229, -0.0561, -0.1175, 0.9915)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3548, -0.0615, 0.1769, 0.1830, 0.8076, 0.5606, -0.4766, -0.4259, 0.7691, 0.8599, -0.4079, 0.3069)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3913, 0.3428, -0.0832, 0.8268, 0.3550, -0.4364, -0.2401, 0.9242, 0.2970, 0.5088, -0.1408, 0.8493)},
+			}
+		},
+		{
+			Time = 1.0667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0696, -0.2104, -0.3479, 0.9911, 0.1296, -0.0291, -0.1293, 0.9915, 0.0150, 0.0308, -0.0111, 0.9995)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1252, 0.2971, 0.0712, 0.8926, -0.2205, 0.3932, 0.1029, 0.9489, 0.2985, -0.4389, -0.2259, 0.8697)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0817, -0.1514, 0.2890, 0.8520, -0.4839, -0.1999, 0.0924, -0.2369, 0.9671, -0.5153, -0.8425, -0.1571)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0006, -0.0002, 0.9983, -0.0589, -0.0049, 0.0590, 0.9869, 0.1500, -0.0040, -0.1501, 0.9887)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3671, -0.0929, 0.1759, 0.1095, 0.8774, 0.4670, -0.2962, -0.4197, 0.8580, 0.9488, -0.2323, 0.2139)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1593, 0.3683, -0.0991, 0.8227, 0.3236, -0.4674, -0.1920, 0.9320, 0.3074, 0.5351, -0.1631, 0.8289)},
+			}
+		},
+		{
+			Time = 1.1000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0718, -0.1970, -0.3089, 0.9976, -0.0586, -0.0381, 0.0602, 0.9973, 0.0420, 0.0355, -0.0442, 0.9984)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1519, 0.2403, -0.0006, 0.9093, -0.1431, 0.3907, 0.0221, 0.9543, 0.2981, -0.4155, -0.2625, 0.8709)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0179, -0.1722, 0.3313, 0.9831, -0.0140, -0.1825, 0.1768, -0.1852, 0.9667, -0.0473, -0.9826, -0.1796)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0005, -0.0006, -0.0002, 0.9982, 0.0057, -0.0594, 0.0054, 0.9828, 0.1847, 0.0595, -0.1847, 0.9810)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.3816, -0.1299, 0.1748, -0.0053, 0.9311, 0.3647, -0.0763, -0.3640, 0.9283, 0.9971, -0.0229, 0.0730)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1150, 0.3983, -0.1179, 0.8148, 0.2868, -0.5039, -0.1342, 0.9388, 0.3172, 0.5640, -0.1908, 0.8034)},
+			}
+		},
+		{
+			Time = 1.1333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0001, -0.2457, -0.3477, 0.9976, -0.0615, -0.0333, 0.0602, 0.9975, -0.0378, 0.0355, 0.0357, 0.9987)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3057, 0.2754, 0.1659, 0.9313, -0.1167, 0.3451, 0.0596, 0.9834, 0.1716, -0.3594, -0.1393, 0.9227)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0280, -0.1891, 0.2946, 0.9611, -0.1837, -0.2061, 0.2027, -0.0376, 0.9785, -0.1875, -0.9823, 0.0010)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0008, -0.0001, 0.9982, 0.0194, -0.0570, -0.0135, 0.9947, 0.1016, 0.0587, -0.1006, 0.9932)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3800, -0.1511, 0.1730, -0.0447, 0.9757, 0.2146, -0.0747, -0.2175, 0.9732, 0.9962, 0.0275, 0.0826)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0383, 0.3984, -0.1282, 0.9062, 0.2686, -0.3265, -0.1485, 0.9252, 0.3491, 0.3959, -0.2679, 0.8784)},
+			}
+		},
+		{
+			Time = 1.1667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0586, -0.2855, -0.3795, 0.9976, -0.0635, -0.0292, 0.0602, 0.9929, -0.1030, 0.0355, 0.1010, 0.9943)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4316, 0.3041, 0.3021, 0.9472, -0.0999, 0.3046, 0.0842, 0.9944, 0.0644, -0.3093, -0.0354, 0.9503)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0655, -0.2029, 0.2646, 0.9255, -0.3205, -0.2020, 0.2388, 0.0795, 0.9678, -0.2941, -0.9439, 0.1501)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0001, -0.0009, -0.0001, 0.9980, 0.0307, -0.0559, -0.0289, 0.9990, 0.0330, 0.0568, -0.0313, 0.9979)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3788, -0.1685, 0.1716, -0.0768, 0.9932, 0.0876, -0.0779, -0.0936, 0.9926, 0.9940, 0.0694, 0.0846)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1638, 0.3985, -0.1366, 0.9548, 0.2424, -0.1721, -0.1649, 0.9134, 0.3722, 0.2474, -0.3270, 0.9121)},
+			}
+		},
+		{
+			Time = 1.2000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1042, -0.3165, -0.4042, 0.9976, -0.0649, -0.0259, 0.0602, 0.9863, -0.1534, 0.0355, 0.1515, 0.9878)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5295, 0.3264, 0.4081, 0.9582, -0.0901, 0.2714, 0.0993, 0.9949, -0.0203, -0.2681, 0.0464, 0.9623)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0947, -0.2136, 0.2413, 0.8875, -0.4223, -0.1843, 0.2754, 0.1655, 0.9470, -0.3694, -0.8912, 0.2631)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0000, -0.0010, -0.0000, 0.9977, 0.0395, -0.0556, -0.0407, 0.9990, -0.0205, 0.0547, 0.0227, 0.9982)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3778, -0.1820, 0.1704, -0.1012, 0.9948, -0.0123, -0.0832, 0.0038, 0.9965, 0.9914, 0.1019, 0.0824)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2613, 0.3986, -0.1431, 0.9753, 0.2155, -0.0490, -0.1802, 0.9039, 0.3878, 0.1279, -0.3694, 0.9204)},
+			}
+		},
+		{
+			Time = 1.2333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1368, -0.3386, -0.4219, 0.9976, -0.0658, -0.0236, 0.0602, 0.9801, -0.1892, 0.0355, 0.1873, 0.9817)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5994, 0.3423, 0.4837, 0.9653, -0.0849, 0.2470, 0.1078, 0.9909, -0.0810, -0.2378, 0.1048, 0.9656)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1156, -0.2213, 0.2246, 0.8555, -0.4912, -0.1641, 0.3056, 0.2230, 0.9257, -0.4181, -0.8420, 0.3409)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0001, -0.0011, 0.0000, 0.9974, 0.0458, -0.0556, -0.0491, 0.9971, -0.0586, 0.0528, 0.0612, 0.9967)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3771, -0.1916, 0.1696, -0.1182, 0.9895, -0.0836, -0.0884, 0.0733, 0.9934, 0.9890, 0.1248, 0.0788)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3310, 0.3986, -0.1478, 0.9804, 0.1929, 0.0392, -0.1924, 0.8971, 0.3976, 0.0416, -0.3974, 0.9167)},
+			}
+		},
+		{
+			Time = 1.2667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1564, -0.3519, -0.4324, 0.9976, -0.0663, -0.0221, 0.0602, 0.9757, -0.2105, 0.0355, 0.2087, 0.9773)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6414, 0.3519, 0.5291, 0.9692, -0.0824, 0.2321, 0.1120, 0.9867, -0.1174, -0.2193, 0.1398, 0.9656)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1281, -0.2259, 0.2146, 0.8344, -0.5306, -0.1490, 0.3252, 0.2557, 0.9104, -0.4450, -0.8081, 0.3859)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0002, -0.0011, 0.0000, 0.9972, 0.0496, -0.0557, -0.0540, 0.9952, -0.0815, 0.0514, 0.0843, 0.9951)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3767, -0.1974, 0.1691, -0.1282, 0.9837, -0.1261, -0.0921, 0.1148, 0.9891, 0.9875, 0.1385, 0.0759)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3728, 0.3987, -0.1506, 0.9797, 0.1782, 0.0919, -0.2002, 0.8931, 0.4029, -0.0103, -0.4131, 0.9106)},
+			}
+		},
+		{
+			Time = 1.3000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1629, -0.3563, -0.4360, 0.9976, -0.0665, -0.0216, 0.0602, 0.9742, -0.2176, 0.0355, 0.2158, 0.9758)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.6553, 0.3551, 0.5443, 0.9704, -0.0817, 0.2271, 0.1133, 0.9851, -0.1295, -0.2131, 0.1514, 0.9652)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1322, -0.2274, 0.2113, 0.8271, -0.5434, -0.1435, 0.3319, 0.2663, 0.9049, -0.4536, -0.7961, 0.4006)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0002, -0.0011, 0.0001, 0.9971, 0.0508, -0.0558, -0.0557, 0.9945, -0.0891, 0.0510, 0.0920, 0.9945)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3765, -0.1993, 0.1690, -0.1315, 0.9813, -0.1402, -0.0934, 0.1286, 0.9873, 0.9869, 0.1430, 0.0748)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.3868, 0.3987, -0.1515, 0.9788, 0.1731, 0.1094, -0.2029, 0.8917, 0.4045, -0.0275, -0.4182, 0.9080)},
+			}
+		},
+		{
+			Time = 1.3333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1599, -0.3555, -0.4304, 0.9983, -0.0541, -0.0236, 0.0478, 0.9755, -0.2145, 0.0346, 0.2130, 0.9764)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6477, 0.3479, 0.5373, 0.9715, -0.0861, 0.2207, 0.1152, 0.9857, -0.1226, -0.2070, 0.1446, 0.9676)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1319, -0.2199, 0.2111, 0.8169, -0.5547, -0.1579, 0.3491, 0.2577, 0.9010, -0.4591, -0.7911, 0.4041)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0002, -0.0011, 0.0001, 0.9973, 0.0526, -0.0514, -0.0568, 0.9949, -0.0830, 0.0468, 0.0857, 0.9952)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3760, -0.1937, 0.1683, -0.1170, 0.9850, -0.1270, -0.1076, 0.1146, 0.9876, 0.9873, 0.1292, 0.0926)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3778, 0.3928, -0.1478, 0.9806, 0.1675, 0.1016, -0.1945, 0.8944, 0.4028, -0.0234, -0.4148, 0.9096)},
+			}
+		},
+		{
+			Time = 1.3667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1507, -0.3530, -0.4135, 0.9994, -0.0171, -0.0291, 0.0107, 0.9787, -0.2051, 0.0320, 0.2047, 0.9783)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6247, 0.3264, 0.5165, 0.9746, -0.0989, 0.2011, 0.1213, 0.9874, -0.1021, -0.1885, 0.1239, 0.9742)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1310, -0.1974, 0.2103, 0.7841, -0.5873, -0.2005, 0.3995, 0.2304, 0.8873, -0.4750, -0.7759, 0.4153)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0001, -0.0011, 0.0000, 0.9976, 0.0578, -0.0381, -0.0602, 0.9961, -0.0646, 0.0342, 0.0667, 0.9972)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3742, -0.1769, 0.1664, -0.0743, 0.9935, -0.0857, -0.1513, 0.0737, 0.9857, 0.9857, 0.0862, 0.1448)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3507, 0.3751, -0.1365, 0.9855, 0.1505, 0.0783, -0.1693, 0.9020, 0.3972, -0.0108, -0.4047, 0.9144)},
+			}
+		},
+		{
+			Time = 1.4000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1353, -0.3489, -0.3854, 0.9983, 0.0448, -0.0376, -0.0511, 0.9807, -0.1889, 0.0284, 0.1905, 0.9813)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5864, 0.2905, 0.4817, 0.9786, -0.1192, 0.1678, 0.1322, 0.9889, -0.0681, -0.1578, 0.0888, 0.9835)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1296, -0.1599, 0.2091, 0.7223, -0.6371, -0.2689, 0.4791, 0.1807, 0.8590, -0.4987, -0.7493, 0.4358)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0001, -0.0010, 0.0000, 0.9977, 0.0659, -0.0157, -0.0664, 0.9972, -0.0339, 0.0134, 0.0349, 0.9993)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3712, -0.1489, 0.1632, -0.0073, 0.9999, -0.0118, -0.2268, 0.0098, 0.9739, 0.9739, 0.0097, 0.2267)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3057, 0.3455, -0.1177, 0.9918, 0.1216, 0.0397, -0.1274, 0.9135, 0.3864, 0.0107, -0.3883, 0.9215)},
+			}
+		},
+		{
+			Time = 1.4333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1139, -0.3432, -0.3460, 0.9902, 0.1313, -0.0478, -0.1375, 0.9766, -0.1653, 0.0249, 0.1703, 0.9851)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5327, 0.2402, 0.4330, 0.9821, -0.1456, 0.1198, 0.1492, 0.9886, -0.0210, -0.1153, 0.0385, 0.9926)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1275, -0.1075, 0.2073, 0.6220, -0.6964, -0.3578, 0.5801, 0.1030, 0.8080, -0.5259, -0.7102, 0.4680)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, -0.0009, -0.0000, 0.9970, 0.0760, 0.0161, -0.0761, 0.9971, 0.0087, -0.0154, -0.0099, 0.9998)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3671, -0.1098, 0.1586, 0.0762, 0.9920, 0.1002, -0.3365, -0.0690, 0.9392, 0.9386, -0.1053, 0.3285)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2427, 0.3042, -0.0915, 0.9967, 0.0796, -0.0138, -0.0689, 0.9271, 0.3684, 0.0421, -0.3663, 0.9296)},
+			}
+		},
+		{
+			Time = 1.4667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0863, -0.3358, -0.2955, 0.9688, 0.2412, -0.0577, -0.2469, 0.9598, -0.1338, 0.0231, 0.1439, 0.9893)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4638, 0.1756, 0.3705, 0.9828, -0.1758, 0.0559, 0.1738, 0.9840, 0.0382, -0.0617, -0.0278, 0.9977)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1248, -0.0400, 0.2051, 0.4728, -0.7530, -0.4578, 0.6888, -0.0083, 0.7250, -0.5497, -0.6580, 0.5147)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0002, -0.0008, -0.0001, 0.9946, 0.0868, 0.0575, -0.0904, 0.9939, 0.0631, -0.0517, -0.0679, 0.9963)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3617, -0.0594, 0.1528, 0.1621, 0.9537, 0.2533, -0.4789, -0.1484, 0.8652, 0.8628, -0.2615, 0.4327)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1616, 0.2511, -0.0577, 0.9964, 0.0235, -0.0812, 0.0055, 0.9402, 0.3405, 0.0843, -0.3397, 0.9367)},
+			}
+		},
+		{
+			Time = 1.5000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0525, -0.3267, -0.2336, 0.9261, 0.3716, -0.0649, -0.3764, 0.9217, -0.0940, 0.0249, 0.1114, 0.9935)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3795, 0.0967, 0.2940, 0.9781, -0.2065, -0.0246, 0.2079, 0.9722, 0.1080, 0.0016, -0.1108, 0.9938)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1215, 0.0424, 0.2024, 0.2666, -0.7893, -0.5531, 0.7841, -0.1561, 0.6007, -0.5605, -0.5938, 0.5773)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0007, -0.0001, 0.9894, 0.0968, 0.1087, -0.1105, 0.9856, 0.1283, -0.0947, -0.1390, 0.9858)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3552, 0.0022, 0.1457, 0.2281, 0.8667, 0.4436, -0.6451, -0.2067, 0.7356, 0.7293, -0.4539, 0.5119)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0626, 0.1862, -0.0165, 0.9859, -0.0475, -0.1606, 0.0945, 0.9495, 0.2993, 0.1383, -0.3102, 0.9406)},
+			}
+		},
+		{
+			Time = 1.5333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0127, -0.3161, -0.1606, 0.8536, 0.5167, -0.0662, -0.5199, 0.8530, -0.0460, 0.0327, 0.0737, 0.9967)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.2798, 0.0033, 0.2036, 0.9647, -0.2336, -0.1219, 0.2534, 0.9494, 0.1857, 0.0724, -0.2101, 0.9750)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1176, 0.1398, 0.1992, 0.0038, -0.7835, -0.6214, 0.8372, -0.3373, 0.4304, -0.5469, -0.5218, 0.6547)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9801, 0.1037, 0.1695, -0.1377, 0.9694, 0.2032, -0.1433, -0.2225, 0.9644)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.3475, 0.0749, 0.1373, 0.2448, 0.7162, 0.6536, -0.8135, -0.2151, 0.5403, 0.5275, -0.6639, 0.5300)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0545, 0.1094, 0.0323, 0.9592, -0.1340, -0.2491, 0.1954, 0.9506, 0.2413, 0.2044, -0.2801, 0.9380)},
+			}
+		},
+		{
+			Time = 1.5667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0415, -0.3135, -0.2458, 0.8152, 0.5777, -0.0415, -0.5787, 0.8154, -0.0170, 0.0240, 0.0379, 0.9990)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3092, -0.0088, 0.1717, 0.9084, -0.3928, -0.1431, 0.4158, 0.8844, 0.2121, 0.0432, -0.2522, 0.9667)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1847, 0.1202, 0.2362, -0.0311, -0.8935, -0.4479, 0.4006, -0.4217, 0.8134, -0.9157, -0.1542, 0.3711)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9840, 0.0914, 0.1530, -0.1061, 0.9902, 0.0908, -0.1432, -0.1056, 0.9840)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2989, 0.0830, 0.1416, 0.2744, 0.5406, 0.7953, -0.8526, -0.2457, 0.4612, 0.4448, -0.8046, 0.3935)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2481, 0.1280, 0.0271, 0.9654, 0.0776, -0.2490, -0.0157, 0.9703, 0.2413, 0.2604, -0.2290, 0.9380)},
+			}
+		},
+		{
+			Time = 1.6000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0858, -0.3113, -0.3155, 0.7805, 0.6248, -0.0198, -0.6248, 0.7808, 0.0054, 0.0188, 0.0082, 0.9998)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3332, -0.0187, 0.1456, 0.8423, -0.5136, -0.1635, 0.5388, 0.8103, 0.2304, 0.0142, -0.2822, 0.9593)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2395, 0.1041, 0.2666, -0.1399, -0.9361, -0.3226, -0.0517, -0.3185, 0.9465, -0.9888, 0.1491, -0.0039)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0005, -0.0002, 0.9868, 0.0798, 0.1406, -0.0803, 0.9968, -0.0024, -0.1404, -0.0089, 0.9901)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2592, 0.0897, 0.1451, 0.2828, 0.3761, 0.8824, -0.8837, -0.2555, 0.3921, 0.3729, -0.8907, 0.2601)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4957, 0.1433, 0.0228, 0.9361, 0.2483, -0.2490, -0.1884, 0.9520, 0.2413, 0.2970, -0.1789, 0.9380)},
+			}
+		},
+		{
+			Time = 1.6333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1203, -0.3097, -0.3698, 0.7517, 0.6595, -0.0020, -0.6593, 0.7516, 0.0219, 0.0159, -0.0151, 0.9998)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3519, -0.0264, 0.1253, 0.7793, -0.6000, -0.1811, 0.6266, 0.7407, 0.2424, -0.0112, -0.3024, 0.9531)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2822, 0.0916, 0.2902, -0.2569, -0.9314, -0.2578, -0.3851, -0.1460, 0.9112, -0.8864, 0.3334, -0.3212)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9888, 0.0700, 0.1318, -0.0604, 0.9953, -0.0752, -0.1364, 0.0664, 0.9884)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2283, 0.0948, 0.1479, 0.2791, 0.2392, 0.9300, -0.9067, -0.2533, 0.3373, 0.3162, -0.9374, 0.1462)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6882, 0.1551, 0.0195, 0.8925, 0.3760, -0.2490, -0.3188, 0.9166, 0.2413, 0.3190, -0.1360, 0.9380)},
+			}
+		},
+		{
+			Time = 1.6667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1450, -0.3085, -0.4085, 0.7302, 0.6832, 0.0112, -0.6831, 0.7295, 0.0331, 0.0145, -0.0318, 0.9994)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3652, -0.0319, 0.1108, 0.7285, -0.6569, -0.1945, 0.6844, 0.6851, 0.2496, -0.0307, -0.3149, 0.9486)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3127, 0.0827, 0.3070, -0.3471, -0.9078, -0.2355, -0.5816, 0.0114, 0.8134, -0.7357, 0.4193, -0.5320)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9901, 0.0626, 0.1259, -0.0464, 0.9908, -0.1271, -0.1327, 0.1200, 0.9839)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2062, 0.0985, 0.1498, 0.2711, 0.1384, 0.9526, -0.9221, -0.2464, 0.2982, 0.2760, -0.9592, 0.0608)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8258, 0.1636, 0.0171, 0.8508, 0.4628, -0.2490, -0.4083, 0.8804, 0.2413, 0.3309, -0.1036, 0.9380)},
+			}
+		},
+		{
+			Time = 1.7000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1597, -0.3078, -0.4318, 0.7168, 0.6970, 0.0192, -0.6971, 0.7159, 0.0397, 0.0139, -0.0419, 0.9990)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3732, -0.0352, 0.1021, 0.6959, -0.6889, -0.2028, 0.7169, 0.6496, 0.2534, -0.0428, -0.3217, 0.9459)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3310, 0.0773, 0.3171, -0.4005, -0.8862, -0.2327, -0.6752, 0.1138, 0.7288, -0.6194, 0.4490, -0.6440)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9908, 0.0580, 0.1226, -0.0382, 0.9867, -0.1581, -0.1301, 0.1520, 0.9798)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1929, 0.1007, 0.1510, 0.2642, 0.0772, 0.9614, -0.9309, -0.2403, 0.2751, 0.2522, -0.9676, 0.0084)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.9083, 0.1686, 0.0157, 0.8216, 0.5127, -0.2490, -0.4601, 0.8545, 0.2413, 0.3365, -0.0837, 0.9380)},
+			}
+		},
+		{
+			Time = 1.7333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.1647, -0.3076, -0.4395, 0.7123, 0.7015, 0.0219, -0.7017, 0.7112, 0.0419, 0.0138, -0.0452, 0.9989)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3759, -0.0363, 0.0992, 0.6847, -0.6992, -0.2056, 0.7273, 0.6374, 0.2545, -0.0470, -0.3238, 0.9450)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.3370, 0.0755, 0.3205, -0.4179, -0.8780, -0.2336, -0.7017, 0.1486, 0.6968, -0.5771, 0.4551, -0.6782)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9910, 0.0564, 0.1215, -0.0354, 0.9851, -0.1684, -0.1292, 0.1626, 0.9782)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.1885, 0.1015, 0.1514, 0.2615, 0.0568, 0.9635, -0.9338, -0.2379, 0.2674, 0.2444, -0.9696, -0.0092)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.9358, 0.1703, 0.0152, 0.8113, 0.5290, -0.2490, -0.4770, 0.8451, 0.2413, 0.3381, -0.0769, 0.9380)},
+			}
+		},
+		{
+			Time = 1.7667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1584, -0.3071, -0.4347, 0.7192, 0.6945, 0.0234, -0.6947, 0.7180, 0.0421, 0.0124, -0.0465, 0.9988)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3690, -0.0304, 0.1012, 0.6933, -0.6909, -0.2051, 0.7193, 0.6460, 0.2555, -0.0440, -0.3247, 0.9448)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3327, 0.0743, 0.3233, -0.3879, -0.8943, -0.2231, -0.7091, 0.1349, 0.6921, -0.5888, 0.4267, -0.6865)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9908, 0.0634, 0.1196, -0.0439, 0.9862, -0.1594, -0.1281, 0.1527, 0.9799)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1885, 0.1015, 0.1514, 0.2635, 0.0681, 0.9623, -0.9292, -0.2501, 0.2721, 0.2592, -0.9658, -0.0026)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.9172, 0.1682, 0.0157, 0.8165, 0.5217, -0.2473, -0.4707, 0.8496, 0.2381, 0.3344, -0.0780, 0.9392)},
+			}
+		},
+		{
+			Time = 1.8000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1396, -0.3055, -0.4202, 0.7391, 0.6730, 0.0278, -0.6735, 0.7379, 0.0429, 0.0083, -0.0505, 0.9987)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3481, -0.0129, 0.1070, 0.7184, -0.6651, -0.2037, 0.6947, 0.6712, 0.2585, -0.0352, -0.3272, 0.9443)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3195, 0.0705, 0.3317, -0.2952, -0.9364, -0.1898, -0.7284, 0.0921, 0.6789, -0.6182, 0.3387, -0.7093)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9898, 0.0845, 0.1143, -0.0692, 0.9888, -0.1321, -0.1242, 0.1229, 0.9846)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1886, 0.1015, 0.1513, 0.2683, 0.1022, 0.9579, -0.9143, -0.2861, 0.2866, 0.3034, -0.9527, 0.0167)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.8614, 0.1617, 0.0173, 0.8318, 0.4995, -0.2421, -0.4513, 0.8625, 0.2287, 0.3230, -0.0810, 0.9429)},
+			}
+		},
+		{
+			Time = 1.8333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1083, -0.3029, -0.3961, 0.7710, 0.6359, 0.0351, -0.6369, 0.7697, 0.0446, 0.0013, -0.0567, 0.9984)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3134, 0.0164, 0.1167, 0.7581, -0.6203, -0.2012, 0.6518, 0.7113, 0.2632, -0.0202, -0.3307, 0.9435)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2975, 0.0642, 0.3456, -0.1342, -0.9826, -0.1287, -0.7506, 0.0160, 0.6605, -0.6470, 0.1852, -0.7397)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0005, -0.0002, 0.9870, 0.1199, 0.1068, -0.1110, 0.9901, -0.0862, -0.1161, 0.0732, 0.9905)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1886, 0.1015, 0.1513, 0.2728, 0.1592, 0.9488, -0.8856, -0.3438, 0.3123, 0.3759, -0.9255, 0.0472)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7684, 0.1510, 0.0199, 0.8560, 0.4617, -0.2327, -0.4182, 0.8829, 0.2134, 0.3040, -0.0853, 0.9489)},
+			}
+		},
+		{
+			Time = 1.8667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0644, -0.2993, -0.3623, 0.8124, 0.5814, 0.0452, -0.5830, 0.8111, 0.0474, -0.0091, -0.0649, 0.9979)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2649, 0.0574, 0.1303, 0.8091, -0.5537, -0.1971, 0.5877, 0.7628, 0.2697, 0.0010, -0.3340, 0.9426)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2668, 0.0554, 0.3651, 0.0964, -0.9947, -0.0346, -0.7596, -0.0960, 0.6433, -0.6433, -0.0358, -0.7648)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0004, -0.0002, 0.9805, 0.1697, 0.0991, -0.1685, 0.9855, -0.0210, -0.1013, 0.0039, 0.9949)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1887, 0.1015, 0.1512, 0.2714, 0.2384, 0.9325, -0.8376, -0.4187, 0.3509, 0.4741, -0.8763, 0.0861)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6382, 0.1360, 0.0235, 0.8868, 0.4073, -0.2183, -0.3701, 0.9088, 0.1925, 0.2768, -0.0899, 0.9567)},
+			}
+		},
+		{
+			Time = 1.9000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0081, -0.2947, -0.3189, 0.8599, 0.5072, 0.0578, -0.5099, 0.8586, 0.0521, -0.0232, -0.0743, 0.9970)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2024, 0.1101, 0.1477, 0.8660, -0.4621, -0.1911, 0.4993, 0.8208, 0.2774, 0.0287, -0.3357, 0.9415)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2273, 0.0440, 0.3902, 0.3807, -0.9201, 0.0922, -0.7326, -0.2393, 0.6372, -0.5642, -0.3101, -0.7652)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0004, -0.0002, 0.9678, 0.2336, 0.0941, -0.2400, 0.9687, 0.0633, -0.0764, -0.0838, 0.9935)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1889, 0.1015, 0.1511, 0.2568, 0.3378, 0.9055, -0.7635, -0.5035, 0.4044, 0.5925, -0.7952, 0.1287)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4708, 0.1167, 0.0282, 0.9211, 0.3353, -0.1978, -0.3054, 0.9375, 0.1668, 0.2413, -0.0932, 0.9660)},
+			}
+		},
+		{
+			Time = 1.9333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0608, -0.2891, -0.2659, 0.9087, 0.4111, 0.0725, -0.4154, 0.9077, 0.0593, -0.0414, -0.0840, 0.9956)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1261, 0.1745, 0.1690, 0.9215, -0.3428, -0.1827, 0.3834, 0.8782, 0.2860, 0.0624, -0.3336, 0.9406)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1790, 0.0302, 0.4209, 0.6702, -0.7029, 0.2383, -0.6454, -0.3934, 0.6547, -0.3664, -0.5926, -0.7173)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0004, -0.0002, 0.9458, 0.3103, 0.0954, -0.3225, 0.9319, 0.1658, -0.0375, -0.1876, 0.9815)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1890, 0.1015, 0.1510, 0.2196, 0.4522, 0.8644, -0.6566, -0.5868, 0.4738, 0.7215, -0.6717, 0.1681)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2661, 0.0930, 0.0339, 0.9547, 0.2445, -0.1697, -0.2227, 0.9651, 0.1375, 0.1975, -0.0935, 0.9758)},
+			}
+		},
+		{
+			Time = 1.9667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1423, -0.2824, -0.2032, 0.9525, 0.2915, 0.0887, -0.2978, 0.9521, 0.0698, -0.0642, -0.0929, 0.9936)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.0359, 0.2506, 0.1942, 0.9659, -0.1939, -0.1714, 0.2381, 0.9255, 0.2947, 0.1015, -0.3255, 0.9401)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1219, 0.0138, 0.4571, 0.8748, -0.3124, 0.3702, -0.4835, -0.5161, 0.7070, -0.0298, -0.7975, -0.6026)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0007, -0.0004, -0.0003, 0.9114, 0.3973, 0.1075, -0.4111, 0.8663, 0.2837, 0.0195, -0.3028, 0.9529)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1892, 0.1015, 0.1509, 0.1502, 0.5720, 0.8063, -0.5122, -0.6526, 0.5584, 0.8456, -0.4969, 0.1950)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0243, 0.0651, 0.0406, 0.9819, 0.1347, -0.1329, -0.1210, 0.9870, 0.1063, 0.1454, -0.0883, 0.9854)},
+			}
+		},
+		{
+			Time = 2.0000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1411, -0.2933, -0.2632, 0.9938, 0.1017, 0.0449, -0.1067, 0.9858, 0.1299, -0.0310, -0.1339, 0.9905)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2507, 0.1804, 0.2644, 0.9476, -0.2952, -0.1220, 0.3136, 0.9324, 0.1796, 0.0607, -0.2085, 0.9761)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1699, -0.0156, 0.4037, 0.9918, -0.0877, -0.0927, 0.0598, -0.3223, 0.9447, -0.1127, -0.9426, -0.3144)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0004, -0.0002, 0.8848, 0.4557, 0.0970, -0.4644, 0.8456, 0.2634, 0.0381, -0.2781, 0.9598)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2589, 0.0625, 0.1826, 0.0164, 0.7327, 0.6804, -0.2688, -0.6522, 0.7088, 0.9631, -0.1945, 0.1863)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0632, 0.1253, 0.0155, 0.9489, 0.2933, -0.1165, -0.2706, 0.9462, 0.1776, 0.1623, -0.1370, 0.9772)},
+			}
+		},
+		{
+			Time = 2.0333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1401, -0.3022, -0.3123, 0.9985, -0.0552, 0.0008, 0.0542, 0.9836, 0.1718, -0.0102, -0.1715, 0.9851)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4264, 0.1230, 0.3218, 0.9256, -0.3714, -0.0725, 0.3768, 0.9222, 0.0868, 0.0346, -0.1077, 0.9936)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2092, -0.0397, 0.3599, 0.8658, -0.0072, -0.5003, 0.4987, -0.0686, 0.8641, -0.0405, -0.9976, -0.0558)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8604, 0.5021, 0.0873, -0.5069, 0.8258, 0.2472, 0.0520, -0.2570, 0.9650)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3159, 0.0306, 0.2085, -0.1294, 0.8122, 0.5688, -0.0710, -0.5798, 0.8117, 0.9891, 0.0646, 0.1326)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0950, 0.1746, -0.0051, 0.9040, 0.4169, -0.0946, -0.3870, 0.8922, 0.2330, 0.1815, -0.1740, 0.9679)},
+			}
+		},
+		{
+			Time = 2.0667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1393, -0.3091, -0.3505, 0.9838, -0.1751, -0.0377, 0.1791, 0.9635, 0.1990, 0.0015, -0.2025, 0.9793)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5631, 0.0783, 0.3664, 0.9044, -0.4256, -0.0289, 0.4262, 0.9045, 0.0165, 0.0192, -0.0272, 0.9994)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2398, -0.0584, 0.3259, 0.6490, -0.0258, -0.7604, 0.7552, 0.1427, 0.6397, 0.0921, -0.9894, 0.1121)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8398, 0.5371, 0.0792, -0.5393, 0.8087, 0.2349, 0.0621, -0.2400, 0.9688)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3603, 0.0058, 0.2287, -0.2571, 0.8369, 0.4831, 0.0708, -0.4823, 0.8731, 0.9638, 0.2587, 0.0648)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1197, 0.2129, -0.0212, 0.8586, 0.5074, -0.0725, -0.4722, 0.8380, 0.2735, 0.1996, -0.2006, 0.9591)},
+			}
+		},
+		{
+			Time = 2.1000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1387, -0.3141, -0.3778, 0.9637, -0.2585, -0.0671, 0.2669, 0.9394, 0.2152, 0.0074, -0.2253, 0.9743)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6607, 0.0464, 0.3983, 0.8872, -0.4613, 0.0046, 0.4612, 0.8867, -0.0324, 0.0108, 0.0309, 0.9995)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2616, -0.0717, 0.3016, 0.4505, -0.0817, -0.8891, 0.8664, 0.2804, 0.4132, 0.2155, -0.9564, 0.1971)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8242, 0.5615, 0.0731, -0.5620, 0.7956, 0.2263, 0.0689, -0.2276, 0.9713)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3920, -0.0120, 0.2431, -0.3522, 0.8338, 0.4252, 0.1610, -0.3935, 0.9051, 0.9220, 0.3873, 0.0044)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1374, 0.2402, -0.0326, 0.8209, 0.5685, -0.0543, -0.5295, 0.7932, 0.3007, 0.2140, -0.2181, 0.9522)},
+			}
+		},
+		{
+			Time = 2.1333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1384, -0.3171, -0.3941, 0.9478, -0.3072, -0.0854, 0.3187, 0.9211, 0.2235, 0.0100, -0.2391, 0.9709)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.7193, 0.0273, 0.4174, 0.8761, -0.4814, 0.0257, 0.4821, 0.8740, -0.0610, 0.0069, 0.0658, 0.9978)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2747, -0.0798, 0.2871, 0.3216, -0.1304, -0.9379, 0.8993, 0.3520, 0.2594, 0.2963, -0.9269, 0.2305)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8146, 0.5759, 0.0693, -0.5755, 0.7873, 0.2212, 0.0729, -0.2201, 0.9728)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4110, -0.0226, 0.2517, -0.4096, 0.8235, 0.3924, 0.2097, -0.3337, 0.9191, 0.8878, 0.4588, -0.0360)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1480, 0.2566, -0.0395, 0.7962, 0.6035, -0.0423, -0.5623, 0.7640, 0.3163, 0.2232, -0.2280, 0.9477)},
+			}
+		},
+		{
+			Time = 2.1667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1383, -0.3181, -0.3996, 0.9419, -0.3232, -0.0915, 0.3357, 0.9144, 0.2261, 0.0106, -0.2437, 0.9698)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.7389, 0.0209, 0.4238, 0.8723, -0.4879, 0.0329, 0.4890, 0.8694, -0.0704, 0.0058, 0.0775, 0.9970)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.2791, -0.0824, 0.2822, 0.2778, -0.1489, -0.9490, 0.9044, 0.3735, 0.2062, 0.3238, -0.9156, 0.2384)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8113, 0.5807, 0.0680, -0.5799, 0.7845, 0.2196, 0.0741, -0.2176, 0.9732)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.4173, -0.0261, 0.2546, -0.4287, 0.8187, 0.3819, 0.2249, -0.3127, 0.9228, 0.8750, 0.4815, -0.0500)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1515, 0.2621, -0.0418, 0.7877, 0.6149, -0.0382, -0.5730, 0.7539, 0.3213, 0.2264, -0.2312, 0.9462)},
+			}
+		},
+		{
+			Time = 2.2000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1389, -0.3159, -0.3953, 0.9463, -0.3115, -0.0871, 0.3233, 0.9185, 0.2278, 0.0090, -0.2437, 0.9698)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.7269, 0.0221, 0.4195, 0.8725, -0.4879, 0.0275, 0.4886, 0.8702, -0.0635, 0.0071, 0.0689, 0.9976)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2760, -0.0787, 0.2776, 0.2767, -0.1542, -0.9485, 0.9117, 0.3540, 0.2085, 0.3037, -0.9224, 0.2385)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8145, 0.5758, 0.0713, -0.5752, 0.7855, 0.2284, 0.0755, -0.2270, 0.9710)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4127, -0.0235, 0.2525, -0.4121, 0.8238, 0.3892, 0.2067, -0.3315, 0.9205, 0.8874, 0.4598, -0.0337)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1452, 0.2581, -0.0411, 0.7921, 0.6090, -0.0407, -0.5674, 0.7593, 0.3187, 0.2250, -0.2293, 0.9470)},
+			}
+		},
+		{
+			Time = 2.2333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1405, -0.3093, -0.3825, 0.9583, -0.2761, -0.0735, 0.2857, 0.9297, 0.2324, 0.0041, -0.2437, 0.9698)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6910, 0.0258, 0.4066, 0.8730, -0.4876, 0.0114, 0.4876, 0.8720, -0.0428, 0.0109, 0.0430, 0.9990)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2667, -0.0676, 0.2639, 0.2729, -0.1699, -0.9469, 0.9310, 0.2947, 0.2154, 0.2424, -0.9404, 0.2386)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8239, 0.5609, 0.0807, -0.5611, 0.7875, 0.2548, 0.0793, -0.2552, 0.9636)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3987, -0.0157, 0.2461, -0.3620, 0.8359, 0.4127, 0.1496, -0.3849, 0.9108, 0.9201, 0.3915, 0.0143)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1264, 0.2461, -0.0392, 0.8051, 0.5911, -0.0482, -0.5504, 0.7750, 0.3105, 0.2209, -0.2235, 0.9494)},
+			}
+		},
+		{
+			Time = 2.2667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1433, -0.2983, -0.3610, 0.9750, -0.2164, -0.0505, 0.2221, 0.9453, 0.2390, -0.0040, -0.2442, 0.9697)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6312, 0.0319, 0.3852, 0.8737, -0.4861, -0.0154, 0.4861, 0.8739, -0.0082, 0.0174, -0.0003, 0.9998)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2512, -0.0491, 0.2410, 0.2642, -0.1956, -0.9444, 0.9545, 0.1934, 0.2270, 0.1382, -0.9614, 0.2378)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8393, 0.5353, 0.0954, -0.5371, 0.7889, 0.2986, 0.0845, -0.3019, 0.9496)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3754, -0.0027, 0.2355, -0.2789, 0.8450, 0.4562, 0.0469, -0.4625, 0.8854, 0.9592, 0.2684, 0.0893)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0950, 0.2260, -0.0359, 0.8260, 0.5604, -0.0602, -0.5213, 0.8002, 0.2964, 0.2143, -0.2135, 0.9531)},
+			}
+		},
+		{
+			Time = 2.3000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1473, -0.2829, -0.3310, 0.9912, -0.1312, -0.0177, 0.1315, 0.9604, 0.2456, -0.0152, -0.2457, 0.9692)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5474, 0.0405, 0.3552, 0.8745, -0.4822, -0.0527, 0.4843, 0.8740, 0.0403, 0.0267, -0.0607, 0.9978)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2295, -0.0231, 0.2090, 0.2475, -0.2296, -0.9413, 0.9688, 0.0485, 0.2429, -0.0101, -0.9721, 0.2345)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0002, 0.8599, 0.4976, 0.1136, -0.5025, 0.7863, 0.3594, 0.0895, -0.3662, 0.9262)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3427, 0.0155, 0.2207, -0.1667, 0.8349, 0.5246, -0.1082, -0.5443, 0.8319, 0.9800, 0.0819, 0.1811)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0510, 0.1980, -0.0314, 0.8533, 0.5159, -0.0761, -0.4792, 0.8332, 0.2759, 0.2058, -0.1990, 0.9582)},
+			}
+		},
+		{
+			Time = 2.3333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1523, -0.2631, -0.2924, 0.9995, -0.0204, 0.0251, 0.0135, 0.9683, 0.2496, -0.0294, -0.2491, 0.9680)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4398, 0.0515, 0.3166, 0.8749, -0.4737, -0.1003, 0.4827, 0.8698, 0.1025, 0.0386, -0.1381, 0.9897)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2017, 0.0102, 0.1679, 0.2189, -0.2691, -0.9379, 0.9550, -0.1381, 0.2626, -0.2002, -0.9531, 0.2268)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0005, -0.0002, 0.8849, 0.4465, 0.1328, -0.4567, 0.7754, 0.4361, 0.0918, -0.4465, 0.8901)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3008, 0.0389, 0.2016, -0.0373, 0.7832, 0.6206, -0.3165, -0.5983, 0.7361, 0.9478, -0.1690, 0.2703)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0056, 0.1619, -0.0255, 0.8849, 0.4561, -0.0949, -0.4227, 0.8716, 0.2482, 0.1959, -0.1796, 0.9640)},
+			}
+		},
+		{
+			Time = 2.3667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1585, -0.2389, -0.2453, 0.9903, 0.1151, 0.0776, -0.1310, 0.9600, 0.2476, -0.0460, -0.2553, 0.9658)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3082, 0.0650, 0.2694, 0.8747, -0.4585, -0.1573, 0.4817, 0.8581, 0.1778, 0.0534, -0.2313, 0.9714)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1676, 0.0510, 0.1176, 0.1745, -0.3089, -0.9350, 0.8897, -0.3574, 0.2841, -0.4219, -0.8814, 0.2124)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0005, -0.0002, 0.9125, 0.3807, 0.1494, -0.3993, 0.7505, 0.5266, 0.0884, -0.5402, 0.8369)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2495, 0.0676, 0.1783, 0.0848, 0.6672, 0.7400, -0.5624, -0.5810, 0.5883, 0.8225, -0.4661, 0.3260)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0747, 0.1179, -0.0184, 0.9180, 0.3796, -0.1151, -0.3506, 0.9121, 0.2125, 0.1856, -0.1547, 0.9704)},
+			}
+		},
+		{
+			Time = 2.4000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1658, -0.2103, -0.1896, 0.9525, 0.2714, 0.1384, -0.2978, 0.9251, 0.2354, -0.0642, -0.2655, 0.9620)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1527, 0.0809, 0.2136, 0.8733, -0.4335, -0.2224, 0.4821, 0.8351, 0.2650, 0.0708, -0.3386, 0.9383)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1274, 0.0992, 0.0581, 0.1118, -0.3410, -0.9334, 0.7489, -0.5885, 0.3047, -0.6532, -0.7331, 0.1896)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0007, -0.0006, -0.0003, 0.9407, 0.2995, 0.1592, -0.3307, 0.7052, 0.6271, 0.0755, -0.6426, 0.7625)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1889, 0.1014, 0.1508, 0.1603, 0.4731, 0.8663, -0.8042, -0.4463, 0.3925, 0.5723, -0.7596, 0.3089)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1563, 0.0658, -0.0099, 0.9489, 0.2852, -0.1349, -0.2618, 0.9504, 0.1681, 0.1761, -0.1242, 0.9765)},
+			}
+		},
+		{
+			Time = 2.4333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1491, -0.1453, -0.2385, 0.9261, 0.3394, 0.1649, -0.3696, 0.9042, 0.2143, -0.0764, -0.2594, 0.9627)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1217, 0.1718, 0.1526, 0.8874, -0.4342, -0.1551, 0.4602, 0.8129, 0.3570, -0.0290, -0.3882, 0.9211)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2276, 0.0161, 0.0544, 0.0108, -0.5693, -0.8220, 0.4471, -0.7326, 0.5132, -0.8944, -0.3731, 0.2466)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0004, -0.0002, 0.9726, 0.2137, 0.0918, -0.2299, 0.8239, 0.5180, 0.0351, -0.5249, 0.8504)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2370, 0.1062, 0.1976, 0.0943, 0.4459, 0.8901, -0.8756, -0.3882, 0.2873, 0.4737, -0.8065, 0.3538)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1348, 0.0284, -0.0130, 0.9344, 0.3426, -0.0981, -0.3329, 0.9373, 0.1029, 0.1272, -0.0635, 0.9898)},
+			}
+		},
+		{
+			Time = 2.4667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1356, -0.0922, -0.2786, 0.9003, 0.3938, 0.1854, -0.4265, 0.8831, 0.1955, -0.0867, -0.2551, 0.9630)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0964, 0.2462, 0.1026, 0.8937, -0.4375, -0.0992, 0.4351, 0.7914, 0.4294, -0.1094, -0.4270, 0.8976)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3095, -0.0519, 0.0514, -0.1370, -0.6932, -0.7076, 0.1664, -0.7203, 0.6734, -0.9765, -0.0255, 0.2140)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0002, -0.0001, 0.9899, 0.1343, 0.0464, -0.1414, 0.8990, 0.4145, 0.0140, -0.4168, 0.9089)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2764, 0.1102, 0.2358, 0.0372, 0.4273, 0.9033, -0.9213, -0.3355, 0.1967, 0.3871, -0.8395, 0.3812)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3730, -0.0022, -0.0156, 0.9181, 0.3900, -0.0709, -0.3874, 0.9207, 0.0474, 0.0838, -0.0160, 0.9964)},
+			}
+		},
+		{
+			Time = 2.5000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1250, -0.0509, -0.3098, 0.8778, 0.4351, 0.2004, -0.4695, 0.8644, 0.1800, -0.0949, -0.2521, 0.9630)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0767, 0.3041, 0.0638, 0.8954, -0.4418, -0.0557, 0.4114, 0.7727, 0.4834, -0.1706, -0.4558, 0.8736)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3732, -0.1047, 0.0490, -0.2786, -0.7376, -0.6151, -0.0455, -0.6296, 0.7756, -0.9593, 0.2441, 0.1418)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0001, -0.0000, 0.9975, 0.0682, 0.0180, -0.0703, 0.9425, 0.3267, 0.0053, -0.3271, 0.9450)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3070, 0.1132, 0.2656, -0.0086, 0.4153, 0.9096, -0.9484, -0.2917, 0.1241, 0.3169, -0.8617, 0.3964)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.5582, -0.0260, -0.0175, 0.9028, 0.4270, -0.0518, -0.4274, 0.9041, 0.0031, 0.0481, 0.0194, 0.9987)},
+			}
+		},
+		{
+			Time = 2.5333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1174, -0.0214, -0.3320, 0.8604, 0.4640, 0.2107, -0.4995, 0.8498, 0.1685, -0.1008, -0.2502, 0.9629)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0627, 0.3455, 0.0360, 0.8948, -0.4458, -0.0247, 0.3922, 0.7584, 0.5206, -0.2134, -0.4755, 0.8534)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4187, -0.1425, 0.0473, -0.3867, -0.7387, -0.5521, -0.1822, -0.5256, 0.8310, -0.9040, 0.4220, 0.0687)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0000, -0.0000, 0.9998, 0.0191, 0.0016, -0.0189, 0.9652, 0.2609, 0.0034, -0.2609, 0.9654)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3289, 0.1154, 0.2869, -0.0420, 0.4080, 0.9120, -0.9632, -0.2591, 0.0716, 0.2655, -0.8754, 0.4039)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6906, -0.0430, -0.0189, 0.8905, 0.4533, -0.0392, -0.4545, 0.8903, -0.0291, 0.0217, 0.0437, 0.9988)},
+			}
+		},
+		{
+			Time = 2.5667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1129, -0.0037, -0.3454, 0.8495, 0.4811, 0.2166, -0.5172, 0.8405, 0.1614, -0.1044, -0.2492, 0.9628)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0542, 0.3703, 0.0194, 0.8937, -0.4485, -0.0062, 0.3799, 0.7494, 0.5423, -0.2386, -0.4870, 0.8402)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4460, -0.1652, 0.0463, -0.4521, -0.7270, -0.5168, -0.2554, -0.4497, 0.8559, -0.8546, 0.5189, 0.0176)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, 0.0000, 0.0000, 0.9999, -0.0108, -0.0065, 0.0120, 0.9753, 0.2204, 0.0040, -0.2205, 0.9754)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3421, 0.1168, 0.2996, -0.0621, 0.4042, 0.9125, -0.9702, -0.2391, 0.0399, 0.2343, -0.8829, 0.4070)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7699, -0.0533, -0.0198, 0.8826, 0.4691, -0.0320, -0.4701, 0.8813, -0.0486, 0.0055, 0.0579, 0.9983)},
+			}
+		},
+		{
+			Time = 2.6000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1114, 0.0022, -0.3498, 0.8457, 0.4868, 0.2186, -0.5231, 0.8373, 0.1590, -0.1056, -0.2488, 0.9628)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0514, 0.3785, 0.0138, 0.8933, -0.4495, 0.0000, 0.3756, 0.7464, 0.5494, -0.2470, -0.4908, 0.8355)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.4551, -0.1727, 0.0460, -0.4737, -0.7211, -0.5056, -0.2780, -0.4223, 0.8628, -0.8357, 0.5493, -0.0004)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0003, 0.0000, 0.0000, 0.9997, -0.0209, -0.0090, 0.0223, 0.9781, 0.2068, 0.0045, -0.2069, 0.9783)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3464, 0.1172, 0.3039, -0.0689, 0.4030, 0.9126, -0.9722, -0.2324, 0.0293, 0.2239, -0.8852, 0.4078)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.7964, -0.0567, -0.0201, 0.8799, 0.4743, -0.0297, -0.4752, 0.8781, -0.0551, -0.0000, 0.0626, 0.9980)},
+			}
+		},
+		{
+			Time = 2.6333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1126, -0.0018, -0.3454, 0.8507, 0.4794, 0.2156, -0.5152, 0.8417, 0.1615, -0.1040, -0.2485, 0.9630)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0544, 0.3735, 0.0144, 0.8942, -0.4478, -0.0018, 0.3763, 0.7492, 0.5450, -0.2426, -0.4880, 0.8384)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4485, -0.1672, 0.0462, -0.4597, -0.7237, -0.5147, -0.2645, -0.4417, 0.8573, -0.8478, 0.5302, 0.0117)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0000, 0.0000, 0.9999, -0.0140, -0.0073, 0.0152, 0.9764, 0.2155, 0.0041, -0.2156, 0.9765)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3432, 0.1169, 0.3008, -0.0667, 0.4092, 0.9100, -0.9685, -0.2459, 0.0396, 0.2400, -0.8787, 0.4127)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7768, -0.0518, -0.0182, 0.8812, 0.4717, -0.0325, -0.4728, 0.8799, -0.0478, 0.0060, 0.0575, 0.9983)},
+			}
+		},
+		{
+			Time = 2.6667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1161, -0.0139, -0.3320, 0.8652, 0.4569, 0.2065, -0.4914, 0.8544, 0.1689, -0.0992, -0.2476, 0.9638)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0632, 0.3583, 0.0163, 0.8967, -0.4425, -0.0075, 0.3784, 0.7578, 0.5316, -0.2296, -0.4795, 0.8470)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4284, -0.1505, 0.0469, -0.4178, -0.7289, -0.5424, -0.2214, -0.4974, 0.8388, -0.8812, 0.4705, 0.0464)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0001, 0.0000, 1.0000, 0.0066, -0.0018, -0.0060, 0.9704, 0.2414, 0.0033, -0.2414, 0.9704)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3336, 0.1159, 0.2914, -0.0609, 0.4276, 0.9019, -0.9557, -0.2857, 0.0710, 0.2880, -0.8576, 0.4260)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7181, -0.0371, -0.0127, 0.8849, 0.4640, -0.0408, -0.4651, 0.8849, -0.0260, 0.0241, 0.0419, 0.9988)},
+			}
+		},
+		{
+			Time = 2.7000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1219, -0.0341, -0.3097, 0.8879, 0.4186, 0.1908, -0.4509, 0.8741, 0.1805, -0.0912, -0.2463, 0.9649)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0778, 0.3329, 0.0194, 0.9008, -0.4339, -0.0170, 0.3813, 0.7717, 0.5090, -0.2077, -0.4650, 0.8606)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3950, -0.1228, 0.0482, -0.3483, -0.7283, -0.5902, -0.1422, -0.5812, 0.8012, -0.9265, 0.3630, 0.0989)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0002, -0.0000, 0.9991, 0.0405, 0.0086, -0.0413, 0.9580, 0.2838, 0.0033, -0.2840, 0.9588)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3176, 0.1143, 0.2758, -0.0534, 0.4583, 0.8872, -0.9288, -0.3490, 0.1244, 0.3667, -0.8174, 0.4443)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6201, -0.0125, -0.0035, 0.8907, 0.4512, -0.0551, -0.4514, 0.8923, 0.0103, 0.0538, 0.0157, 0.9984)},
+			}
+		},
+		{
+			Time = 2.7333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1301, -0.0623, -0.2785, 0.9163, 0.3636, 0.1679, -0.3924, 0.8988, 0.1956, -0.0798, -0.2451, 0.9662)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0983, 0.2975, 0.0237, 0.9061, -0.4220, -0.0308, 0.3844, 0.7905, 0.4768, -0.1769, -0.4438, 0.8785)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3482, -0.0839, 0.0499, -0.2545, -0.7082, -0.6585, -0.0187, -0.6772, 0.7355, -0.9669, 0.1995, 0.1591)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0004, -0.0001, 0.9959, 0.0871, 0.0256, -0.0906, 0.9354, 0.3417, 0.0059, -0.3426, 0.9395)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2952, 0.1121, 0.2539, -0.0477, 0.5010, 0.8641, -0.8800, -0.4304, 0.2009, 0.4726, -0.7508, 0.4614)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4830, 0.0218, 0.0093, 0.8977, 0.4339, -0.0759, -0.4302, 0.9007, 0.0606, 0.0946, -0.0218, 0.9953)},
+			}
+		},
+		{
+			Time = 2.7667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1406, -0.0987, -0.2384, 0.9470, 0.2906, 0.1372, -0.3147, 0.9251, 0.2127, -0.0651, -0.2446, 0.9674)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1247, 0.2519, 0.0293, 0.9120, -0.4073, -0.0492, 0.3867, 0.8134, 0.4346, -0.1370, -0.4153, 0.8993)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2881, -0.0340, 0.0521, -0.1445, -0.6508, -0.7453, 0.1551, -0.7588, 0.6326, -0.9773, -0.0242, 0.2106)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0005, -0.0006, -0.0001, 0.9881, 0.1450, 0.0515, -0.1532, 0.8979, 0.4128, 0.0136, -0.4157, 0.9094)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2663, 0.1092, 0.2258, -0.0488, 0.5542, 0.8309, -0.7992, -0.5206, 0.3003, 0.5990, -0.6494, 0.4684)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3067, 0.0659, 0.0259, 0.9050, 0.4126, -0.1039, -0.3998, 0.9081, 0.1243, 0.1456, -0.0709, 0.9868)},
+			}
+		},
+		{
+			Time = 2.8000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1535, -0.1431, -0.1894, 0.9751, 0.1989, 0.0978, -0.2166, 0.9488, 0.2300, -0.0471, -0.2455, 0.9683)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1569, 0.1962, 0.0362, 0.9179, -0.3900, -0.0726, 0.3869, 0.8394, 0.3819, -0.0880, -0.3786, 0.9214)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2146, 0.0271, 0.0548, -0.0356, -0.5375, -0.8425, 0.3758, -0.7884, 0.4871, -0.9260, -0.2992, 0.2301)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0008, -0.0002, 0.9733, 0.2118, 0.0890, -0.2278, 0.8394, 0.4936, 0.0298, -0.5006, 0.8651)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2311, 0.1056, 0.1915, -0.0628, 0.6148, 0.7861, -0.6761, -0.6056, 0.4196, 0.7341, -0.5051, 0.4538)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0913, 0.1198, 0.0461, 0.9109, 0.3881, -0.1398, -0.3579, 0.9121, 0.2002, 0.2052, -0.1323, 0.9697)},
+			}
+		},
+		{
+			Time = 2.8333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1687, -0.1955, -0.1315, 0.9949, 0.0881, 0.0493, -0.0976, 0.9646, 0.2452, -0.0259, -0.2487, 0.9682)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1950, 0.1303, 0.0442, 0.9231, -0.3708, -0.1015, 0.3833, 0.8670, 0.3183, -0.0300, -0.3327, 0.9425)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1277, 0.0992, 0.0580, 0.0443, -0.3561, -0.9334, 0.6222, -0.7211, 0.3047, -0.7816, -0.5943, 0.1896)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0007, -0.0011, -0.0002, 0.9485, 0.2839, 0.1409, -0.3115, 0.7536, 0.5789, 0.0581, -0.5929, 0.8032)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1894, 0.1014, 0.1509, -0.0966, 0.6770, 0.7296, -0.5026, -0.6659, 0.5513, 0.8591, -0.3134, 0.4046)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1634, 0.1835, 0.0700, 0.9139, 0.3617, -0.1844, -0.3021, 0.9093, 0.2861, 0.2712, -0.2058, 0.9403)},
+			}
+		},
+		{
+			Time = 2.8667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1604, -0.2352, -0.2285, 0.9991, -0.0404, 0.0106, 0.0371, 0.9748, 0.2201, -0.0192, -0.2195, 0.9754)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3970, 0.1237, 0.1869, 0.9083, -0.4158, -0.0466, 0.4158, 0.8847, 0.2107, -0.0464, -0.2107, 0.9765)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1721, 0.0385, 0.1238, 0.1549, -0.3221, -0.9339, 0.8716, -0.4006, 0.2827, -0.4652, -0.8578, 0.2187)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0009, -0.0002, 0.9221, 0.3640, 0.1315, -0.3808, 0.7922, 0.4769, 0.0694, -0.4898, 0.8691)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2590, 0.0624, 0.1825, -0.1734, 0.7884, 0.5902, -0.2054, -0.6150, 0.7613, 0.9632, 0.0108, 0.2686)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0680, 0.2307, -0.0299, 0.8966, 0.4229, -0.1313, -0.3625, 0.8712, 0.3311, 0.2544, -0.2493, 0.9344)},
+			}
+		},
+		{
+			Time = 2.9000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1536, -0.2676, -0.3079, 0.9891, -0.1459, -0.0184, 0.1467, 0.9696, 0.1956, -0.0107, -0.1962, 0.9805)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5622, 0.1183, 0.3036, 0.8946, -0.4468, 0.0022, 0.4433, 0.8881, 0.1217, -0.0564, -0.1079, 0.9926)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2085, -0.0111, 0.1777, 0.2286, -0.2625, -0.9375, 0.9629, -0.0807, 0.2574, -0.1432, -0.9615, 0.2344)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0007, -0.0002, 0.8968, 0.4270, 0.1163, -0.4366, 0.8111, 0.3891, 0.0718, -0.3997, 0.9138)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3160, 0.0305, 0.2083, -0.2730, 0.8364, 0.4754, 0.0409, -0.4836, 0.8743, 0.9611, 0.2581, 0.0978)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0101, 0.2692, -0.1117, 0.8786, 0.4697, -0.0856, -0.4111, 0.8355, 0.3646, 0.2428, -0.2851, 0.9272)},
+			}
+		},
+		{
+			Time = 2.9333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1483, -0.2929, -0.3696, 0.9730, -0.2273, -0.0390, 0.2306, 0.9573, 0.1744, -0.0023, -0.1787, 0.9839)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6907, 0.1141, 0.3944, 0.8832, -0.4671, 0.0422, 0.4649, 0.8838, 0.0527, -0.0619, -0.0269, 0.9977)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2368, -0.0497, 0.2196, 0.2693, -0.2010, -0.9418, 0.9555, 0.1782, 0.2352, 0.1205, -0.9632, 0.2401)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0007, -0.0006, -0.0003, 0.8750, 0.4737, 0.0998, -0.4791, 0.8178, 0.3190, 0.0695, -0.3270, 0.9425)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3603, 0.0057, 0.2284, -0.3664, 0.8430, 0.3939, 0.2169, -0.3343, 0.9172, 0.9048, 0.4215, -0.0603)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0708, 0.2993, -0.1753, 0.8624, 0.5039, -0.0488, -0.4484, 0.8050, 0.3884, 0.2350, -0.3131, 0.9202)},
+			}
+		},
+		{
+			Time = 2.9667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1445, -0.3109, -0.4137, 0.9572, -0.2847, -0.0526, 0.2895, 0.9440, 0.1582, 0.0046, -0.1667, 0.9860)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.7824, 0.1111, 0.4593, 0.8747, -0.4794, 0.0716, 0.4804, 0.8770, 0.0037, -0.0646, 0.0311, 0.9974)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2570, -0.0773, 0.2495, 0.2877, -0.1516, -0.9457, 0.9080, 0.3572, 0.2189, 0.3046, -0.9216, 0.2404)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0005, -0.0003, 0.8585, 0.5056, 0.0857, -0.5086, 0.8181, 0.2682, 0.0655, -0.2739, 0.9595)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3920, -0.0120, 0.2428, -0.4382, 0.8308, 0.3431, 0.3273, -0.2080, 0.9217, 0.8372, 0.5162, -0.1808)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1142, 0.3207, -0.2208, 0.8496, 0.5270, -0.0219, -0.4746, 0.7819, 0.4043, 0.2302, -0.3331, 0.9144)},
+			}
+		},
+		{
+			Time = 3.0000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1422, -0.3217, -0.4402, 0.9459, -0.3187, -0.0602, 0.3242, 0.9343, 0.1481, 0.0091, -0.1596, 0.9871)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.8375, 0.1093, 0.4982, 0.8694, -0.4859, 0.0895, 0.4897, 0.8715, -0.0254, -0.0657, 0.0659, 0.9957)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2691, -0.0939, 0.2674, 0.2940, -0.1206, -0.9482, 0.8633, 0.4592, 0.2093, 0.4101, -0.8801, 0.2391)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0003, 0.8482, 0.5241, 0.0763, -0.5260, 0.8166, 0.2376, 0.0622, -0.2417, 0.9684)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4110, -0.0227, 0.2514, -0.4822, 0.8170, 0.3163, 0.3857, -0.1262, 0.9139, 0.7866, 0.5627, -0.2543)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1402, 0.3336, -0.2480, 0.8415, 0.5403, -0.0056, -0.4901, 0.7675, 0.4133, 0.2276, -0.3450, 0.9106)},
+			}
+		},
+		{
+			Time = 3.0333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1414, -0.3253, -0.4490, 0.9419, -0.3300, -0.0627, 0.3357, 0.9308, 0.1447, 0.0106, -0.1573, 0.9875)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.8559, 0.1087, 0.5112, 0.8676, -0.4879, 0.0955, 0.4928, 0.8694, -0.0350, -0.0660, 0.0775, 0.9948)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.2732, -0.0994, 0.2734, 0.2953, -0.1101, -0.9490, 0.8459, 0.4919, 0.2062, 0.4441, -0.8637, 0.2384)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0003, 0.8447, 0.5302, 0.0731, -0.5317, 0.8158, 0.2274, 0.0609, -0.2309, 0.9711)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.4173, -0.0262, 0.2542, -0.4969, 0.8113, 0.3081, 0.4037, -0.0982, 0.9096, 0.7682, 0.5764, -0.2788)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1489, 0.3379, -0.2571, 0.8387, 0.5447, -0.0001, -0.4952, 0.7626, 0.4162, 0.2267, -0.3490, 0.9093)},
+			}
+		},
+		{
+			Time = 3.0667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1422, -0.3226, -0.4417, 0.9466, -0.3169, -0.0594, 0.3223, 0.9352, 0.1465, 0.0091, -0.1578, 0.9874)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.8420, 0.1092, 0.5047, 0.8682, -0.4882, 0.0889, 0.4922, 0.8700, -0.0289, -0.0633, 0.0688, 0.9956)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2697, -0.0908, 0.2696, 0.2742, -0.1281, -0.9531, 0.8612, 0.4738, 0.1841, 0.4281, -0.8712, 0.2402)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0003, 0.8496, 0.5219, 0.0764, -0.5241, 0.8190, 0.2337, 0.0594, -0.2386, 0.9693)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.4128, -0.0225, 0.2513, -0.4817, 0.8194, 0.3107, 0.3852, -0.1206, 0.9149, 0.7872, 0.5604, -0.2575)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1497, 0.3314, -0.2510, 0.8416, 0.5401, -0.0036, -0.4910, 0.7678, 0.4117, 0.2251, -0.3447, 0.9113)},
+			}
+		},
+		{
+			Time = 3.1000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1444, -0.3145, -0.4198, 0.9595, -0.2774, -0.0493, 0.2817, 0.9474, 0.1517, 0.0046, -0.1595, 0.9872)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.8006, 0.1105, 0.4852, 0.8698, -0.4886, 0.0691, 0.4904, 0.8715, -0.0104, -0.0551, 0.0429, 0.9976)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2591, -0.0651, 0.2580, 0.2080, -0.1792, -0.9616, 0.9017, 0.4161, 0.1175, 0.3790, -0.8915, 0.2481)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0004, -0.0003, 0.8637, 0.4966, 0.0859, -0.5010, 0.8277, 0.2529, 0.0545, -0.2615, 0.9637)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3993, -0.0114, 0.2423, -0.4353, 0.8412, 0.3209, 0.3256, -0.1852, 0.9272, 0.8393, 0.5081, -0.1933)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1523, 0.3120, -0.2328, 0.8502, 0.5262, -0.0139, -0.4781, 0.7830, 0.3979, 0.2203, -0.3317, 0.9173)},
+			}
+		},
+		{
+			Time = 3.1333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1480, -0.3010, -0.3834, 0.9771, -0.2105, -0.0320, 0.2129, 0.9640, 0.1594, -0.0027, -0.1626, 0.9867)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.7315, 0.1128, 0.4528, 0.8720, -0.4881, 0.0360, 0.4877, 0.8728, 0.0206, -0.0414, -0.0004, 0.9991)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2415, -0.0222, 0.2387, 0.0894, -0.2538, -0.9631, 0.9510, 0.3090, 0.0069, 0.2959, -0.9166, 0.2690)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0009, -0.0004, -0.0003, 0.8857, 0.4532, 0.1005, -0.4620, 0.8398, 0.2852, 0.0448, -0.2990, 0.9532)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3769, 0.0072, 0.2274, -0.3562, 0.8684, 0.3450, 0.2151, -0.2831, 0.9347, 0.9093, 0.4072, -0.0859)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1566, 0.2796, -0.2025, 0.8641, 0.5024, -0.0307, -0.4561, 0.8073, 0.3744, 0.2129, -0.3095, 0.9268)},
+			}
+		},
+		{
+			Time = 3.1667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1532, -0.2821, -0.3323, 0.9933, -0.1154, -0.0070, 0.1149, 0.9790, 0.1682, -0.0126, -0.1678, 0.9857)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.6348, 0.1160, 0.4074, 0.8744, -0.4851, -0.0103, 0.4847, 0.8723, 0.0640, -0.0220, -0.0609, 0.9979)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2169, 0.0378, 0.2117, -0.0882, -0.3326, -0.9389, 0.9797, 0.1416, -0.1422, 0.1802, -0.9324, 0.3133)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0010, -0.0005, -0.0003, 0.9133, 0.3899, 0.1180, -0.4064, 0.8517, 0.3308, 0.0284, -0.3500, 0.9363)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3454, 0.0332, 0.2066, -0.2457, 0.8863, 0.3925, 0.0420, -0.3948, 0.9178, 0.9684, 0.2420, 0.0598)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1627, 0.2343, -0.1601, 0.8823, 0.4676, -0.0528, -0.4244, 0.8391, 0.3402, 0.2034, -0.2777, 0.9389)},
+			}
+		},
+		{
+			Time = 3.2000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1598, -0.2577, -0.2667, 0.9996, 0.0083, 0.0263, -0.0128, 0.9844, 0.1756, -0.0244, -0.1759, 0.9841)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.5105, 0.1201, 0.3490, 0.8761, -0.4771, -0.0695, 0.4821, 0.8679, 0.1197, 0.0032, -0.1384, 0.9904)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1853, 0.1149, 0.1770, -0.3229, -0.3844, -0.8649, 0.9455, -0.0908, -0.3126, 0.0416, -0.9187, 0.3928)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0011, -0.0006, -0.0003, 0.9426, 0.3050, 0.1355, -0.3338, 0.8584, 0.3896, 0.0025, -0.4125, 0.9109)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3050, 0.0667, 0.1798, -0.1126, 0.8737, 0.4733, -0.1979, -0.4865, 0.8510, 0.9737, 0.0022, 0.2276)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1704, 0.1761, -0.1055, 0.9038, 0.4206, -0.0792, -0.3819, 0.8761, 0.2943, 0.1931, -0.2357, 0.9524)},
+			}
+		},
+		{
+			Time = 3.2333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1679, -0.2280, -0.1865, 0.9850, 0.1587, 0.0677, -0.1685, 0.9693, 0.1789, -0.0373, -0.1876, 0.9815)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3585, 0.1251, 0.2776, 0.8761, -0.4611, -0.1407, 0.4808, 0.8566, 0.1871, 0.0342, -0.2316, 0.9722)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1466, 0.2092, 0.1346, -0.5916, -0.3668, -0.7180, 0.8005, -0.3735, -0.4688, -0.0962, -0.8520, 0.5146)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0012, -0.0006, -0.0003, 0.9690, 0.1972, 0.1489, -0.2445, 0.8530, 0.4611, -0.0361, -0.4832, 0.8748)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2556, 0.1075, 0.1470, 0.0202, 0.8058, 0.5919, -0.4880, -0.5088, 0.7092, 0.8726, -0.3032, 0.3830)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1799, 0.1049, -0.0388, 0.9267, 0.3600, -0.1079, -0.3280, 0.9149, 0.2354, 0.1834, -0.1828, 0.9659)},
+			}
+		},
+		{
+			Time = 3.2667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1774, -0.1929, -0.0918, 0.9366, 0.3305, 0.1166, -0.3469, 0.9215, 0.1743, -0.0499, -0.2037, 0.9778)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1789, 0.1310, 0.1932, 0.8733, -0.4335, -0.2224, 0.4821, 0.8351, 0.2650, 0.0708, -0.3386, 0.9383)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1009, 0.3207, 0.0845, -0.8395, -0.2354, -0.4896, 0.5082, -0.6590, -0.5545, -0.1922, -0.7143, 0.6729)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.0014, -0.0007, -0.0003, 0.9860, 0.0663, 0.1531, -0.1400, 0.8278, 0.5433, -0.0907, -0.5571, 0.8255)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(-0.1972, 0.1558, 0.1083, 0.1123, 0.6637, 0.7396, -0.7768, -0.4055, 0.4819, 0.6197, -0.6286, 0.4700)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "Out", CFrame = CFrame.new(0.1911, 0.0207, 0.0401, 0.9489, 0.2844, -0.1365, -0.2617, 0.9513, 0.1627, 0.1761, -0.1187, 0.9772)},
+			}
+		},
+		{
+			Time = 3.3000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1555, -0.1241, -0.1432, 0.9128, 0.3834, 0.1404, -0.4028, 0.9018, 0.1564, -0.0667, -0.1993, 0.9777)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1400, 0.2066, 0.1386, 0.8874, -0.4342, -0.1551, 0.4602, 0.8129, 0.3570, -0.0290, -0.3882, 0.9211)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2092, 0.1699, 0.0727, -0.6960, -0.3651, -0.6182, 0.4619, -0.8869, 0.0038, -0.5497, -0.2829, 0.7860)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0011, -0.0005, -0.0002, 0.9951, 0.0045, 0.0984, -0.0452, 0.9085, 0.4154, -0.0875, -0.4178, 0.9043)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2415, 0.1618, 0.1640, 0.0451, 0.5821, 0.8119, -0.8360, -0.4230, 0.3497, 0.5469, -0.6945, 0.4675)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3689, -0.0200, 0.0278, 0.9375, 0.3356, -0.0918, -0.3246, 0.9387, 0.1163, 0.1252, -0.0792, 0.9890)},
+			}
+		},
+		{
+			Time = 3.3333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1376, -0.0678, -0.1852, 0.8908, 0.4257, 0.1590, -0.4473, 0.8833, 0.1406, -0.0806, -0.1964, 0.9772)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.1082, 0.2684, 0.0939, 0.8937, -0.4375, -0.0992, 0.4351, 0.7914, 0.4294, -0.1094, -0.4270, 0.8976)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.2977, 0.0466, 0.0630, -0.5812, -0.5176, -0.6280, 0.2619, -0.8496, 0.4578, -0.7705, 0.1017, 0.6293)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0008, -0.0003, -0.0001, 0.9968, -0.0521, 0.0608, 0.0316, 0.9536, 0.2995, -0.0736, -0.2966, 0.9522)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.2778, 0.1668, 0.2096, -0.0172, 0.5120, 0.8588, -0.8734, -0.4257, 0.2363, 0.4866, -0.7461, 0.4545)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.5143, -0.0534, 0.0177, 0.9241, 0.3779, -0.0571, -0.3734, 0.9246, 0.0760, 0.0816, -0.0489, 0.9955)},
+			}
+		},
+		{
+			Time = 3.3667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1236, -0.0240, -0.2179, 0.8719, 0.4580, 0.1730, -0.4810, 0.8674, 0.1277, -0.0915, -0.1946, 0.9766)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0835, 0.3165, 0.0591, 0.8954, -0.4418, -0.0557, 0.4114, 0.7727, 0.4834, -0.1706, -0.4558, 0.8736)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.3666, -0.0494, 0.0555, -0.5139, -0.6387, -0.5726, 0.0379, -0.6838, 0.7287, -0.8570, 0.3528, 0.3756)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0006, -0.0002, -0.0001, 0.9944, -0.0991, 0.0367, 0.0896, 0.9748, 0.2041, -0.0560, -0.1996, 0.9783)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3061, 0.1706, 0.2451, -0.0695, 0.4562, 0.8871, -0.8953, -0.4207, 0.1462, 0.4399, -0.7841, 0.4377)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.6274, -0.0794, 0.0099, 0.9111, 0.4109, -0.0314, -0.4095, 0.9113, 0.0434, 0.0464, -0.0267, 0.9986)},
+			}
+		},
+		{
+			Time = 3.4000,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1137, 0.0072, -0.2413, 0.8577, 0.4807, 0.1826, -0.5045, 0.8553, 0.1182, -0.0993, -0.1935, 0.9761)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0658, 0.3509, 0.0342, 0.8948, -0.4458, -0.0247, 0.3922, 0.7584, 0.5206, -0.2134, -0.4755, 0.8534)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4158, -0.1179, 0.0502, -0.4843, -0.7152, -0.5039, -0.1381, -0.5062, 0.8513, -0.8639, 0.4819, 0.1464)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0004, -0.0001, -0.0000, 0.9907, -0.1339, 0.0223, 0.1297, 0.9825, 0.1338, -0.0399, -0.1297, 0.9908)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3262, 0.1733, 0.2704, -0.1087, 0.4161, 0.9028, -0.9070, -0.4133, 0.0813, 0.4070, -0.8100, 0.4223)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7082, -0.0979, 0.0043, 0.9006, 0.4345, -0.0137, -0.4342, 0.9006, 0.0195, 0.0208, -0.0116, 0.9997)},
+			}
+		},
+		{
+			Time = 3.4333,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.1077, 0.0260, -0.2553, 0.8487, 0.4941, 0.1883, -0.5185, 0.8477, 0.1124, -0.1040, -0.1930, 0.9757)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.0552, 0.3715, 0.0193, 0.8937, -0.4485, -0.0062, 0.3799, 0.7494, 0.5423, -0.2386, -0.4870, 0.8402)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.4453, -0.1590, 0.0470, -0.4752, -0.7540, -0.4535, -0.2436, -0.3825, 0.8913, -0.8455, 0.5340, -0.0019)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0000, 0.0000, 0.9878, -0.1551, 0.0149, 0.1531, 0.9840, 0.0911, -0.0288, -0.0877, 0.9957)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(-0.3383, 0.1750, 0.2856, -0.1328, 0.3919, 0.9104, -0.9123, -0.4073, 0.0423, 0.3874, -0.8249, 0.4116)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.7567, -0.1090, 0.0009, 0.8937, 0.4486, -0.0034, -0.4486, 0.8937, 0.0049, 0.0052, -0.0029, 1.0000)},
+			}
+		},
+		{
+			Time = 3.4667,
+			Poses = {
+				{Name = "HumanoidRootPart", Weight = 0.00, EasingStyle = "Linear", EasingDirection = "In", CFrame = CFrame.new(0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000)},
+				{Name = "Torso", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.1057, 0.0322, -0.2600, 0.8457, 0.4986, 0.1901, -0.5231, 0.8451, 0.1104, -0.1056, -0.1928, 0.9755)},
+				{Name = "Left Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.0516, 0.3784, 0.0144, 0.8933, -0.4495, 0.0000, 0.3756, 0.7464, 0.5494, -0.2470, -0.4908, 0.8355)},
+				{Name = "Right Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.4552, -0.1727, 0.0459, -0.4737, -0.7655, -0.4354, -0.2780, -0.3391, 0.8987, -0.8356, 0.5468, -0.0522)},
+				{Name = "Head", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.0003, -0.0000, 0.0000, 0.9867, -0.1622, 0.0127, 0.1608, 0.9840, 0.0768, -0.0249, -0.0737, 0.9970)},
+				{Name = "Left Arm", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(-0.3423, 0.1755, 0.2906, -0.1409, 0.3838, 0.9126, -0.9138, -0.4051, 0.0293, 0.3809, -0.8298, 0.4078)},
+				{Name = "Right Leg", Weight = 1.00, EasingStyle = "Cubic", EasingDirection = "In", CFrame = CFrame.new(0.7728, -0.1127, -0.0002, 0.8914, 0.4533, 0.0000, -0.4533, 0.8914, -0.0000, -0.0000, 0.0000, 1.0000)},
+			}
+		},
+	},
+	Time = 3.4667
+}
+
 _G._TerminalDance = {
 	CaliforniaGirls = CaliforniaGirls,
 	LDance = LDance,
@@ -6857,4 +8123,5 @@ _G._TerminalDance = {
 	KazotskyKick = KazotskyKick,
 	Penguin = Penguin,
 	SpookyMonth = SpookyMonth,
+	Smug = Smug
 }
