@@ -84,16 +84,16 @@ local rsTime = 3
 local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
 
-if game.PlaceId and SupportedGames[game.PlaceId] == nil then
+if game.GameId and SupportedGames[game.GameId] == nil then
 	error("Unsupported game. Supported games are:")
 	for name, id in pairs(SupportedGames) do
 		warn(name .. ": " .. id)
 	end
 end
 
-if game.PlaceId and SupportedGames[game.PlaceId] == SupportedGames.SFOTH_Original then
+if game.GameId and SupportedGames[game.GameId] == SupportedGames.SFOTH_Original then
 	middle = CFrame.new(0,255,0)
-elseif SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+elseif SupportedGames[game.GameId] == SupportedGames.Sword_Fighting_Tycoon then
 	middle = CFrame.new(-4, 62, 27)
 end
 
@@ -1188,7 +1188,7 @@ local function GetTool(name)
 	local char = Son.Character
 	if char ~= nil then
 		for _,v in pairs(char:GetChildren()) do
-			if v:IsA("Tool") and v.Name == name then
+			if v:IsA("Tool") and v.Name:lower():find(name) then
 				return v
 			end
 		end
@@ -1196,7 +1196,19 @@ local function GetTool(name)
 	local back = Son:FindFirstChildOfClass("Backpack")
 	if back ~= nil then
 		for _,v in pairs(back:GetChildren()) do
-			if v:IsA("Tool") and v.Name == name then
+			if v:IsA("Tool") and v.Name:lower():find(name) then
+				return v
+			end
+		end
+	end
+	return nil
+end
+local function GetAnyToolInBack()
+	local char = Son.Character
+	local back = Son:FindFirstChildOfClass("Backpack")
+	if back ~= nil then
+		for _,v in pairs(back:GetChildren()) do
+			if v:IsA("Tool") and v:FindFirstChild("Handle") then
 				return v
 			end
 		end
@@ -1291,9 +1303,9 @@ local function LoadAnimation(animName)
 	CharacterAnimationTime = 0
 end
 
-if SupportedGames[game.PlaceId] == SupportedGames.SFOTH_Original then
+if SupportedGames[game.GameId] == SupportedGames.SFOTH_Original then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
-elseif SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+elseif SupportedGames[game.GameId] == SupportedGames.Sword_Fighting_Tycoon then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(-4, 62, 27)
 end
 
@@ -1353,10 +1365,12 @@ while true do
 		end
 	end
 	if SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
-		for i, part in pairs(workspace:WaitForChild("Tycoons"):GetDescendants()) do
-			if part:IsA("BasePart") and part.Name == "Giver" then
-				pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
-				pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
+		if not GetAnyToolInBack() then
+			for i, part in pairs(workspace:WaitForChild("Tycoons"):GetDescendants()) do
+				if part:IsA("BasePart") and part.Name == "Giver" then
+					pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
+					pcall(firetouchinterest, Son.Character:FindFirstChild("HumanoidRootPart"), part, 0)
+				end
 			end
 		end
 	end
