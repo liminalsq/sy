@@ -1230,6 +1230,18 @@ end
 
 Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
 
+local anim = "CaliforniaGirls"
+
+task.spawn(function() 
+	while task.wait(120) do
+       if anim == "CaliforniaGirls" then
+			anim = "Smug"
+		else
+		    anim = "CaliforniaGirls"
+       end
+	end
+end)
+
 local _hide = false
 local last = CFrame.identity
 while true do
