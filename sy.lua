@@ -1318,7 +1318,7 @@ local function nearest()
 		if plr ~= Son and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 			local dist = (Son.Character:WaitForChild("Torso").Position - plr.Character.HumanoidRootPart.Position).Magnitude
 
-			if Son.Character.HumanoidRootPart.CFrame.LookVector:Dot((plr.Character.HumanoidRootPart.Position - Son.Character.HumanoidRootPart.Position).Unit) > 0.7 then
+			if Son.Character:WaitForChild("Torso").CFrame.LookVector:Dot((plr.Character.HumanoidRootPart.Position - Son.Character.HumanoidRootPart.Position).Unit) > 0.7 then
 				if dist < maxDist then
 					maxDist = dist
 					nearest = plr
