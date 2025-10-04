@@ -1355,7 +1355,7 @@ task.spawn(function()
 end)
 
 while true do
-	local dt = RunService.PostSimumation:Wait()
+	local dt = RunService.PostSimulation:Wait()
 	LoadAnimation(animation)
 	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
 	local ckf = {}
