@@ -1355,8 +1355,7 @@ task.spawn(function()
 end)
 
 while true do
-	local dt = RunService.PostSimulation:Wait()
-	local lookAt_target = nearest()
+	local dt = RunService.PostSimumation:Wait()
 	LoadAnimation(animation)
 	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
 	local ckf = {}
@@ -1378,7 +1377,7 @@ while true do
 			end
 		end
 	end
-	if SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
+	--[[if SupportedGames[game.PlaceId] == SupportedGames.Sword_Fighting_Tycoon then
 		if not GetAnyToolInBack() then
 			for i, part in pairs(workspace:WaitForChild("Tycoons"):GetDescendants()) do
 				if part:IsA("BasePart") and part.Name == "Giver" then
@@ -1387,7 +1386,7 @@ while true do
 				end
 			end
 		end
-	end
+	end]]
 	local char = Son.Character
 	local back = Son:FindFirstChildOfClass("Backpack")
 	if char and back then
