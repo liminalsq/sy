@@ -1399,32 +1399,14 @@ while true do
 				root.Velocity = Vector3.zero
 				root.RotVelocity = Vector3.zero
 			end
-			for _, v in pairs(char:GetDescendants()) do
+			for _,v in pairs(char:GetDescendants()) do
 				if v:IsA("Motor6D") then
 					local cf = limbs[v.Part1.Name] or CFrame.identity
-
-					if v.Name == "RootJoint" then
-						local root = char:FindFirstChild("HumanoidRootPart")
-						if root then
-							local lookAtCF = root.CFrame
-if targetPos and rootPos then
-	local dir = (Vector3.new(targetPos.X, rootPos.Y, targetPos.Z) - rootPos)
-	if dir.Magnitude > 0 then
-		dir = dir.Unit
-		lookAtCF = CFrame.new(rootPos, rootPos + dir)
-		last_Direction_facing = lookAtCF
-	else
-		lookAtCF = last_Direction_facing or root.CFrame
-	end
-else
-	lookAtCF = last_Direction_facing or root.CFrame
-end
-
-local offset = v.C0:Inverse() * (root.CFrame:ToObjectSpace(lookAtCF)) * v.C1
-cf = offset * cf
-						end
+					if hide and v.Name == "RootJoint" then
+						local offset = last - ROOT_HIDE
+						offset = v.C0:Inverse() * offset * v.C1
+						cf = offset * cf
 					end
-
 					SetMotor6DTransform(v, cf)
 				end
 			end
