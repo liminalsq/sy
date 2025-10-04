@@ -1084,7 +1084,11 @@ local function character_added(plr, chr)
 			if whitelist[plr.Name] then
 				webhook_sendMsg({overall_LOGGER, webhook, kill_LOGGER}, ("%s killed administrator %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
 				if plr.Name == "s71pl" then
-					ChatSafeFunc("HEY DONT KILL DAD")
+					if plr.DisplayName ~= "Hosterina" then
+					   ChatSafeFunc("HEY DONT KILL DAD")
+					else
+					   ChatSafeFunc("HEY DONT KILL MOM")
+					end
 				elseif plr.Name == "TheTerminalClone" then
 					ChatSafeFunc("not terminal >:(")
 				elseif plr.Name == "STEVETheReal916" then
@@ -1097,6 +1101,7 @@ local function character_added(plr, chr)
 					ChatSafeFunc("DONT KILL FLUFFY BOI")
 				end
 				executecommand("default", "sy.kill "..creator.Value.Name)
+				creator.Value.Character:SetAttribute("Kill", true)
 			else
 				webhook_sendMsg({overall_LOGGER, webhook, kill_LOGGER}, ("%s killed %s"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")"))
 			end
