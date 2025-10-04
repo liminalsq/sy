@@ -949,7 +949,11 @@ TextChatService.MessageReceived:Connect(function(message)
 		local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
 		if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
 			task.wait(2 + math.random())
-			ChatSafeFunc("hi dad!!")
+			if sender.DisplayName ~= "Hosterina" then
+			    ChatSafeFunc("hi dad!!")
+			else 
+          ChatSafeFunc("hi momm!!")
+			end
 		elseif lowerMsg:find("my boy") then
 			task.wait(2 + math.random())
 			ChatSafeFunc(">v<")
@@ -1119,8 +1123,12 @@ end
 
 local function player_added(plr)
 	if plr.Name == "s71pl" then
-		ChatSafeFunc("OMG!!! HI DAD!!!")
-	elseif plr.Name == "TheTerminalClone" then
+		if plr.DisplayName ~= "Hosterina" then
+		   ChatSafeFunc("OMG!!! HI DAD!!!")
+		else
+       ChatSafeFunc("HI MAMA!!")
+		end
+	elseif plr.Name == "TheTerminalClone" or plr.Name == "STEVETheReal916" then
 		ChatSafeFunc("hi terminal!1!")
 	elseif plr.Name == "ColonThreeSpam" then
 		ChatSafeFunc("hi fluffy boi!!!")
