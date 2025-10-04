@@ -1316,7 +1316,7 @@ local function nearest()
 	local nearest, maxDist = nil, 35
 	for _, plr in pairs(Players:GetPlayers()) do
 		if plr ~= Son and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-			local dist = (Son.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).Magnitude
+			local dist = (Son.Character:WaitForChild("Torso").Position - plr.Character.HumanoidRootPart.Position).Magnitude
 
 			if Son.Character.HumanoidRootPart.CFrame.LookVector:Dot((plr.Character.HumanoidRootPart.Position - Son.Character.HumanoidRootPart.Position).Unit) > 0.7 then
 				if dist < maxDist then
