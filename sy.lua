@@ -959,6 +959,12 @@ local function character_added(plr, chr)
 					else
                         ChatSafeFunc("HEY DONT KILL MOM")
 					end
+				elseif plr.Name == "STEVETheReal916" then
+					if plr.DisplayName:lower():find("stella") then
+                       ChatSafeFunc("DONT KILL STELLA")
+					else
+                       ChatSafeFunc("DONT KILL STEVE")
+					end
 			    end
 				executecommand("default", "sy.kill "..creator.Value.Name)
 			end
