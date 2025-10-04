@@ -25,6 +25,14 @@ local SupportedGames = {
 	Sword_Fighting_Tycoon = 5656638348
 }
 
+local CurrentGame = nil
+
+if game.GameId == SupportedGames.SFOTH_Original then
+  CurrentGame = "SFOTH_Original"
+elseif game.GameId == SupportedGames.Sword_Fighting_Tycoon then
+  CurrentGame = "SF_Tycoon"
+end
+
 local webhook = "https://discord.com/api/webhooks/1405673325057019924/vgKZQv0O34Z7kQED-oVbAhFtHZPZtXTuOOjIQA27jCUxuWQBNBQtf9XZNaQXyYPaQ9TK"
 
 local overall_LOGGER = "https://discord.com/api/webhooks/1405674967521169672/6_BjCSepRZNgyhneJbwcYeSmAuin5UF-L7qj8pmgS6zFwSpvqqVXyOBOVbxf23bMBvGi"
@@ -84,16 +92,16 @@ local rsTime = 3
 local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
 
-if game.GameId and SupportedGames[game.GameId] == nil then
+if not CurrentGame then
 	error("Unsupported game. Supported games are:")
 	for name, id in pairs(SupportedGames) do
 		warn(name .. ": " .. id)
 	end
 end
 
-if game.GameId and SupportedGames[game.GameId] == SupportedGames.SFOTH_Original then
+if CurrentGame == "SFOTH_Original" then
 	middle = CFrame.new(0,255,0)
-elseif SupportedGames[game.GameId] == SupportedGames.Sword_Fighting_Tycoon then
+elseif CurrentGame == "SF_Tycoon" then
 	middle = CFrame.new(-4, 62, 27)
 end
 
@@ -1303,9 +1311,9 @@ local function LoadAnimation(animName)
 	CharacterAnimationTime = 0
 end
 
-if SupportedGames[game.GameId] == SupportedGames.SFOTH_Original then
+if CurrentGame == "SFOTH_Original" then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
-elseif SupportedGames[game.GameId] == SupportedGames.Sword_Fighting_Tycoon then
+elseif CurrentGame == "SF_Tycoon" then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(-4, 62, 27)
 end
 
