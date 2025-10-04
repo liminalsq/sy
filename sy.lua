@@ -1406,22 +1406,22 @@ while true do
 					if v.Name == "RootJoint" then
 						local root = char:FindFirstChild("HumanoidRootPart")
 						if root then
-							local lookAtCF
+							local lookAtCF = root.CFrame
+if targetPos and rootPos then
+	local dir = (Vector3.new(targetPos.X, rootPos.Y, targetPos.Z) - rootPos)
+	if dir.Magnitude > 0 then
+		dir = dir.Unit
+		lookAtCF = CFrame.new(rootPos, rootPos + dir)
+		last_Direction_facing = lookAtCF
+	else
+		lookAtCF = last_Direction_facing or root.CFrame
+	end
+else
+	lookAtCF = last_Direction_facing or root.CFrame
+end
 
-							if lookAt_target and lookAt_target:FindFirstChild("HumanoidRootPart") then
-								local targetPos = lookAt_target.HumanoidRootPart.Position
-								local rootPos = root.Position
-								
-								local dir = (Vector3.new(targetPos.X, rootPos.Y, targetPos.Z) - rootPos).Unit
-								lookAtCF = CFrame.new(rootPos, rootPos + dir)
-								
-								last_Direction_facing = lookAtCF
-							else
-								lookAtCF = last_Direction_facing
-							end
-
-							local offset = v.C0:Inverse() * (root.CFrame:ToObjectSpace(lookAtCF)) * v.C1
-							cf = offset * cf
+local offset = v.C0:Inverse() * (root.CFrame:ToObjectSpace(lookAtCF)) * v.C1
+cf = offset * cf
 						end
 					end
 
