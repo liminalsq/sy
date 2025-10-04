@@ -92,13 +92,6 @@ local rsTime = 3
 local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
 
---[[if not CurrentGame then
-	error("Unsupported game. Supported games are:")
-	for name, id in pairs(SupportedGames) do
-		warn(name .. ": " .. id)
-	end
-end]]
-
 --if CurrentGame == "SFOTH_Original" then
 	middle = CFrame.new(0,255,0)
 --[[elseif CurrentGame == "SF_Tycoon" then
