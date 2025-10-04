@@ -593,6 +593,62 @@ cmds.reset = function(_)
 	Son.Character:FindFirstChildOfClass("Humanoid").Health = 0	
 end
 
+cmds.logBlacklist = function(_)
+	local list = {}
+	for _, id in ipairs(blacklist) do
+		local plr = Players:GetPlayerByUserId(id)
+		if plr then
+			table.insert(list, plr.Name.." Id: "..id.." Display: "..plr.DisplayName)
+		else
+			table.insert(list, tostring(id))
+		end
+	end
+	webhook_sendMsg({overall_LOGGER, webhook}, "Current blacklist:\n"..table.concat(list, "\n"))
+end
+
+cmds.logLooplist = function(_)
+	local list = {}
+	for id, _ in pairs(looplist) do
+		local plr = Players:GetPlayerByUserId(id)
+		if plr then
+			table.insert(list, plr.Name.." Id: "..id.." Display: "..plr.DisplayName)
+		else
+			table.insert(list, tostring(id))
+		end
+	end
+	webhook_sendMsg({overall_LOGGER, webhook}, "Current looplist:\n"..table.concat(list, "\n"))
+end
+
+cmds.placeId = function(_)
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current placeId is %d"):format(game.PlaceId))
+	ChatSafeFunc(("placeId is %d"):format(game.PlaceId))
+end
+
+cmds.region = function(_)
+	local region = game:GetService("LocalizationService").CountryRegion
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current region is %s"):format(region))
+	ChatSafeFunc(("region is %s"):format(region))
+end
+
+cmds.gameId = function(_)
+	webhook_sendMsg({overall_LOGGER, webhook}, ("Current gameId is %d"):format(game.GameId))
+	ChatSafeFunc(("gameId is %d"):format(game.GameId))
+end
+
+cmds.getPos = function(_, plr)
+	plr = getPlayersByName(plr)
+	if #plr == 0 then return end
+	plr = plr[1]
+
+	local char = plr.Character
+	local root = char and char:FindFirstChild("HumanoidRootPart")
+	if char and root then
+		local pos = root.Position
+		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's position is (%.2f, %.2f, %.2f)"):format(plr.Name.."("..plr.DisplayName..")", pos.X, pos.Y, pos.Z))
+		ChatSafeFunc(("%s is at %.2f, %.2f, %.2f"):format(plr.Name, pos.X, pos.Y, pos.Z))
+	end
+end
+
 local function executecommand(p, cmd)
 	if whitelist[p.Name] or p == "default" then
 		local out = parseCommand(cmd)
@@ -847,7 +903,11 @@ TextChatService.MessageReceived:Connect(function(message)
 		local hrp = sender.Character and sender.Character:FindFirstChild("HumanoidRootPart")
 		if lowerMsg:find("hi") and (lowerMsg:find("spawnyellow") or lowerMsg:find("son")) then
 			task.wait(2 + math.random())
-			ChatSafeFunc("hi dad!!")
+			if sender.DisplayName ~= "Hosterina" then
+			   ChatSafeFunc("hi dad!!")
+			else
+               ChatSafeFunc("hi mom!!")
+			end
 		elseif lowerMsg:find("my boy") then
 			task.wait(2 + math.random())
 			ChatSafeFunc(">v<")
@@ -991,8 +1051,12 @@ end
 
 local function player_added(plr)
 	if plr.Name == "s71pl" then
-		ChatSafeFunc("OMG!!! HI DAD!!!")
-	elseif plr.Name == "TheTerminalClone" then
+		if plr.DisplayName ~= "Hosterina" then
+		   ChatSafeFunc("OMG!!! HI DAD!!!")
+		else
+           ChatSafeFunc("HI MAMA!!")
+		end
+	elseif plr.Name == "TheTerminalClone" or plr.Name == "STEVETheReal916" then
 		ChatSafeFunc("hi terminal!1!")
 	elseif plr.Name == "ColonThreeSpam" then
 		ChatSafeFunc("hi fluffy boi!!!")
