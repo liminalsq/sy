@@ -92,18 +92,18 @@ local rsTime = 3
 local ROOT_HIDE = Vector3.new(0, -65536, -65536)
 local middle = CFrame.new(0, 255, 0)
 
-if not CurrentGame then
+--[[if not CurrentGame then
 	error("Unsupported game. Supported games are:")
 	for name, id in pairs(SupportedGames) do
 		warn(name .. ": " .. id)
 	end
-end
+end]]
 
-if CurrentGame == "SFOTH_Original" then
+--if CurrentGame == "SFOTH_Original" then
 	middle = CFrame.new(0,255,0)
-elseif CurrentGame == "SF_Tycoon" then
+--[[elseif CurrentGame == "SF_Tycoon" then
 	middle = CFrame.new(-4, 62, 27)
-end
+end]]
 
 workspace.FallenPartsDestroyHeight = 0/0
 
@@ -1311,11 +1311,11 @@ local function LoadAnimation(animName)
 	CharacterAnimationTime = 0
 end
 
-if CurrentGame == "SFOTH_Original" then
+--if CurrentGame == "SFOTH_Original" then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.87, -0.02) * CFrame.Angles(0,math.rad(90),0)
-elseif CurrentGame == "SF_Tycoon" then
+--[[elseif CurrentGame == "SF_Tycoon" then
 	Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(-4, 62, 27)
-end
+end]]
 
 local last_Direction_Facing = Son.Character:FindFirstChild("HumanoidRootPart").CFrame.LookVector
 
