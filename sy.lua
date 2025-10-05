@@ -862,6 +862,10 @@ local function monitor(p)
 	end
 end
 
+cmds.test = function(_)
+	monitor(_)
+end
+
 local lastSentMessage = {}
 
 TextChatService.MessageReceived:Connect(function(message)
@@ -1050,6 +1054,9 @@ local function character_added(plr, chr)
 end
 
 local function player_added(plr)
+	if not exclude[plr] or not whitelist[plr] then
+		monitor(plr)
+	end
 	if plr.Name == "s71pl" then
 		if plr.DisplayName ~= "Hosterina" then
 		   ChatSafeFunc("OMG!!! HI DAD!!!")
