@@ -676,7 +676,7 @@ local function monitor(p)
 	local leaderstats = p:FindFirstChild("leaderstats")
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
 
-	local lastKOs = KOs.Value or 0
+	local lastKOs = KOs and KOs.Value or 0
 
 	if not leaderstats or not KOs then return end
 
