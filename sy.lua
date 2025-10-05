@@ -669,7 +669,9 @@ local function executecommand(p, cmd)
 end
 
 local function monitor(p)
+	if not p then return end
     local c = p.Character
+    if not c then return end
     local r = c:FindFirstChild("HumanoidRootPart")
     local h = c:FindFirstChildOfClass("Humanoid")
 
@@ -679,8 +681,6 @@ local function monitor(p)
 	local lastKOs = KOs and KOs.Value or 0
 
 	if not leaderstats or not KOs then return end
-
-	if not c then return end
 	if not r or not h then return end
 
 	if h.Health <= 0 then return end
@@ -721,7 +721,7 @@ local function monitor(p)
 		rotVel = r.RotVelocity
 	end
 
-	while Runservice.Heartbeat:Wait() do
+	while RunService.Heartbeat:Wait() do
 	    if vel > 0.5 then
 		    pos = r.Position
 	    end
