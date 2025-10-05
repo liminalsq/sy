@@ -754,7 +754,7 @@ local function monitor(p)
 	end
 
 	--fly, but take with a grain of salt
-	while runservice.Heartbeat:Wait() do
+	while RunService.Heartbeat:Wait() do
 		if not ground() and h:GetState() == Enum.HumanoidStateType.Freefall then
 			if fly < 4 then
 				fly += 0.01
@@ -849,7 +849,7 @@ local function monitor(p)
 	end)
 
 	--fling
-	while runservice.Heartbeat:Wait() do
+	while RunService.Heartbeat:Wait() do
 		if not c then break end
 		if vel > 4000 or rotVel > 4000 then
 			if last_reports.fling + 5 < tick() then
