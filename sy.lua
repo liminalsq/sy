@@ -755,7 +755,7 @@ local function monitor(p)
 
 	--fly, but take with a grain of salt
 	while RunService.Heartbeat:Wait() do
-		if not ground() and h:GetState() == Enum.HumanoidStateType.Freefall then
+		if not ground() --[[and h:GetState() == Enum.HumanoidStateType.Freefall]] then
 			if fly < 4 then
 				fly += 0.01
 			else
@@ -767,7 +767,7 @@ local function monitor(p)
 					executecommand("default", "sy.kill "..p.Name)
 				end
 			end
-		elseif ground() and h:GetState() ~= Enum.HumanoidStateType.Freefall then
+		elseif ground() --[[and h:GetState() ~= Enum.HumanoidStateType.Freefall]] then
 			fly = 0
 		end
 	end
@@ -895,7 +895,18 @@ TextChatService.MessageReceived:Connect(function(message)
 			if sender ~= Son then
 				webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
 				if math.random(1, 20) == 1 then
-					ChatSafeFunc(dummy[math.random(1, #dummy)])
+					local dummy = {
+						"no",
+						"naw",
+						"nah",
+						"no :3",
+						"i dont feel like it",
+						"too lazy",
+						"why",
+					}
+					ChatSafeFunc("uhhh")
+					task.wait(2 + math.random)
+					ChatSafeFunc(dummy[math.random(1,#dummy)])
 				end
 			end
 		end
