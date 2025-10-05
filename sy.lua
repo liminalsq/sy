@@ -679,8 +679,7 @@ local function monitor(p)
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
 
 	local lastKOs = KOs and KOs.Value or 0
-
-	if not leaderstats or not KOs then return end
+	
 	if not r or not h then return end
 
 	if h.Health <= 0 then return end
@@ -823,6 +822,7 @@ local function monitor(p)
 		end)
 	end)
 
+	if leaderstats and KOs then
 	KOs:GetPropertyChangedSignal("Value"):Connect(function(val)
 		if val - lastKOs > 9 then
 		   ChatSafeFunc("these kills belong to me... >:]")
@@ -847,6 +847,8 @@ local function monitor(p)
 		end
 		lastKOs = val
 	end)
+	end
+
 
 	--fling
 	while RunService.Heartbeat:Wait() do
