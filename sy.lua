@@ -713,7 +713,7 @@ local function monitor(p)
 		return ray and ray ~= nil and ray.Instance ~= nil
 	end
 
-	while h.Health > 0 and runservice.Heartbeat:Wait() do
+	while h.Health > 0 and RunService.Heartbeat:Wait() do
 		if not c then break end
 		if not r or not h then break end
 		vel = r.Velocity.Magnitude
