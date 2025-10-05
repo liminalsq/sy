@@ -1246,7 +1246,7 @@ local _hide = false
 local last = CFrame.identity
 while true do
 	local dt = RunService.PostSimulation:Wait()
-	LoadAnimation("CaliforniaGirls")
+	LoadAnimation(anim)
 	CharacterAnimationTime = (CharacterAnimationTime + dt) % math.max(1e-6, CharacterAnimation.Time)
 	local ckf = {}
 	for i=1, #CharacterAnimation.Keyframes do
