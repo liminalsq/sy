@@ -99,10 +99,13 @@ local whitelist = {
 	['BorrowGoal'] = true,
 	['JeremysCherryl'] = true,
 	['STEVETheReal916'] = true,
-	['0bj687Alt'] = true
+	['0bj687Alt'] = true,
+	['HollowGol'] = true,
 }
 
-local exclude = {}
+local exclude = {
+	['HallowGol'] = true,
+}
 
 local looplist = {}
 local blacklist = {}
