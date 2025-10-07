@@ -720,7 +720,7 @@ local function monitor(p)
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
 	local lastKOs = KOs and KOs.Value or 0
 
-	local last_reports = { speed = 0, teleport = 0, fly = 0, reach = 0, fling = 0 }
+	local last_reports = { speed = 0, teleport = 0, fly = 0, reach = 0, fling = 0, recentSpeeds = {} }
 	local flyTimer = 0
 	local lastPos = (hrp and hrp.Position) or Vector3.new(0,0,0)
 	local lastUpdate = tick()
@@ -866,7 +866,7 @@ local function monitor(p)
 		if #last_reports.recentSpeeds > 5 then table.remove(last_reports.recentSpeeds, 1) end
 		local total = 0 for _, v in ipairs(last_reports.recentSpeeds) do total += v end
 		local averageSpeed = total / #last_reports.recentSpeeds
-		if averageSpeed > 30 and last_reports.speed + 5 < now then
+		if averageSpeed > 20 and last_reports.speed + 5 < now and moved > 17 then
 			last_reports.speed = now
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f avg) at %s"):format(p.Name.."("..p.DisplayName..")", averageSpeed, tostring(hrp.Position)))
 			ChatSafeFunc(("%s... this game doesn't have a sprint option? (%.2f avg)"):format(p.Name.."("..p.DisplayName..")", averageSpeed))
