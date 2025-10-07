@@ -671,6 +671,37 @@ local function executecommand(p, cmd)
 	end
 end
 
+local function WaitForChildOfClass(parent, className, timeout)
+	local timer = 0
+	local step = 0.05
+	timeout = timeout or 10
+
+	for _, child in ipairs(parent:GetChildren()) do
+		if child:IsA(className) then
+			return child
+		end
+	end
+
+	local foundChild
+	local connection
+	connection = parent.ChildAdded:Connect(function(child)
+		if child:IsA(className) then
+			foundChild = child
+		end
+	end)
+
+	while not foundChild and timer < timeout do
+		wait(step)
+		timer += step
+	end
+
+	if connection then
+		connection:Disconnect()
+	end
+
+	return foundChild
+end
+
 local function monitor(p)
 	if not p then return end
 
@@ -708,7 +739,7 @@ local function monitor(p)
 	-- reach handler factory
 	local function makeDeathHandler(vplayer)
 		return function(vhum)
-			local creator = vhum:FindFirstChild("creator")
+			local creator = (vhum or WaitForChildOfClass(vplayer, "Humanoid")) and vhum:FindFirstChild("creator")
 			if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
 				local killer = creator.Value
 				local kchar = killer.Character
@@ -1092,7 +1123,7 @@ end
 local function player_added(plr)
 	local isExcluded = exclude[plr.Name]
 	local isWhitelisted = whitelist[plr.Name]
-	local isSon = plr == Son
+	local isSon = (plr == Son or plr.UserId == Son.UserId or plr.Name == Son.Name)
 
 	if (not isExcluded and not isWhitelisted) or isSon then
 		debug("this player is not whitelisted or excluded, starting monitor:", plr)
