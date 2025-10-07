@@ -820,10 +820,28 @@ local function monitor(p)
 		local moved = (hrp.Position - lastPos).Magnitude
 
 		-- speed hack
-		if speedHorizontal > 38 and last_reports.speed + 5 < now then
+		if not last_reports.recentSpeeds then
+			last_reports.recentSpeeds = {}
+		end
+
+		table.insert(last_reports.recentSpeeds, speedHorizontal)
+
+		if #last_reports.recentSpeeds > 5 then
+			table.remove(last_reports.recentSpeeds, 1)
+		end
+
+		local total = 0
+		for _, v in ipairs(last_reports.recentSpeeds) do
+			total += v
+		end
+		local averageSpeed = total / #last_reports.recentSpeeds
+
+		local speedLimit = 25
+
+		if averageSpeed > speedLimit and last_reports.speed + 5 < now then
 			last_reports.speed = now
-			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", speedHorizontal, tostring(hrp.Position)))
-			ChatSafeFunc(("%s... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", speedHorizontal))
+			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f avg) at %s"):format(p.Name.."("..p.DisplayName..")", averageSpeed, tostring(hrp.Position)))
+			ChatSafeFunc(("%s... this game doesn't have a sprint option? (%.2f avg)"):format(p.Name.."("..p.DisplayName..")", averageSpeed))
 			executecommand("default", "sy.kill "..p.Name)
 		end
 
