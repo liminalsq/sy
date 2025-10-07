@@ -820,7 +820,7 @@ local function monitor(p)
 		local moved = (hrp.Position - lastPos).Magnitude
 
 		-- speed hack
-		if speedHorizontal > 25 and last_reports.speed + 5 < now then
+		if speedHorizontal > 38 and last_reports.speed + 5 < now then
 			last_reports.speed = now
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", speedHorizontal, tostring(hrp.Position)))
 			ChatSafeFunc(("%s... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", speedHorizontal))
@@ -835,7 +835,7 @@ local function monitor(p)
 			executecommand("default", "sy.kill "..p.Name)
 		end
 
-		-- fly detection (simple grounded timer)
+		-- fly detection
 		if not isGrounded() then
 			flyTimer = flyTimer + dt
 			if flyTimer > 4 and last_reports.fly + 5 < now then
@@ -1072,7 +1072,7 @@ local function character_added(plr, chr)
 end
 
 local function player_added(plr)
-	if not exclude[plr] or not whitelist[plr] then
+	if not exclude[plr.Name] or not whitelist[plr.Name] then
 		monitor(plr)
 	end
 	if plr.Name == "s71pl" then
