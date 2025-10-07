@@ -713,18 +713,16 @@ local function monitor(p)
 	end
 
 	local ch, hrp, hum = getCharParts(p)
-	if not ch or not hrp or not hum then return end
+	if not ch or not hum then return end
 	if hum.Health <= 0 then return end
 
 	local leaderstats = p:FindFirstChild("leaderstats")
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
 	local lastKOs = KOs and KOs.Value or 0
 
-	local already_Looped = {}
-
 	local last_reports = { speed = 0, teleport = 0, fly = 0, reach = 0, fling = 0 }
 	local flyTimer = 0
-	local lastPos = hrp.Position
+	local lastPos = (hrp and hrp.Position) or Vector3.new(0,0,0)
 	local lastUpdate = tick()
 
 	local raycastParams = RaycastParams.new()
@@ -732,25 +730,37 @@ local function monitor(p)
 	raycastParams.FilterDescendantsInstances = { ch }
 
 	local function isGrounded()
-		local ray = workspace:Raycast(hrp.Position, Vector3.new(0, -5, 0), raycastParams)
-		return ray and ray.Instance ~= nil
+		-- guard hrp nil and protect raycast with pcall
+		if not hrp then return false end
+		local ok, ray = pcall(function()
+			return workspace:Raycast(hrp.Position, Vector3.new(0, -5, 0), raycastParams)
+		end)
+		if not ok or not ray then return false end
+		return ray.Instance ~= nil
 	end
-
 	-- reach handler factory
 	local function makeDeathHandler(vplayer)
 		return function(vhum)
-			local creator = (vhum or WaitForChildOfClass(vplayer, "Humanoid")) and vhum:FindFirstChild("creator")
+			local humObj = vhum
+			if not humObj or not humObj.Parent then
+				local vchar = vplayer.Character
+				humObj = vchar and vchar:FindFirstChildOfClass("Humanoid")
+			end
+			if not humObj then
+				return
+			end
+
+			local creator = humObj:FindFirstChild("creator")
 			if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
-				local killer = creator.Value
-				local kchar = killer.Character
-				local kroot = kchar and kchar:FindFirstChild("HumanoidRootPart")
+				local cplayer = creator.Value
+				local cchar = cplayer.Character
+				local croot = cchar and cchar:FindFirstChild("HumanoidRootPart")
 				local vchar = vplayer.Character
 				local vroot = vchar and vchar:FindFirstChild("HumanoidRootPart")
-				if kroot and vroot then
-					local distance = (vroot.Position - kroot.Position).Magnitude
-					webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed %s (%.2f)"):format(killer.Name.."("..killer.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
-					if killer == p and distance > 14 and last_reports.reach + 5 < tick() then
-						last_reports.reach = tick()
+				if croot and vroot then
+					local distance = (vroot.Position - croot.Position).Magnitude
+					webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed %s (%.2f)"):format(cplayer.Name.."("..cplayer.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
+					if cplayer == p and distance > 14 then
 						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
 						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
 						executecommand("default", "sy.kill "..p.Name)
@@ -772,7 +782,6 @@ local function monitor(p)
 	end
 	local playerAddedConn = Players.PlayerAdded:Connect(function(newP)
 		if newP ~= p then
-			-- wait for character/humanoid quickly (non-blocking)
 			task.spawn(function()
 				local attemptChar = newP.Character or newP.CharacterAdded:Wait()
 				local vhum = attemptChar and attemptChar:FindFirstChildOfClass("Humanoid")
@@ -820,14 +829,15 @@ local function monitor(p)
 			lastKOs = val
 		end)
 	end
-	-- main heartbeat monitor
+
+	-- main heartbeat monitor (non-blocking)
 	local hbConn
 	hbConn = RunService.Heartbeat:Connect(function()
-		-- validate still present
+		-- validate presence
 		if not p or not p.Parent then
 			hbConn:Disconnect()
 			if playerAddedConn then playerAddedConn:Disconnect() end
-			for _, c in pairs(reachConnections) do if c and c.Disconnect then c:Disconnect() end end
+			for _, c in pairs(reachConnections) do if c then c:Disconnect() end end
 			if KOsConn then KOsConn:Disconnect() end
 			return
 		end
@@ -837,7 +847,7 @@ local function monitor(p)
 			-- stop monitoring when character dies or leaves
 			hbConn:Disconnect()
 			if playerAddedConn then playerAddedConn:Disconnect() end
-			for _, c in pairs(reachConnections) do if c and c.Disconnect then c:Disconnect() end end
+			for _, c in pairs(reachConnections) do if c then c:Disconnect() end end
 			if KOsConn then KOsConn:Disconnect() end
 			return
 		end
@@ -850,26 +860,13 @@ local function monitor(p)
 		local speedHorizontal = Vector3.new(rawvel.X, 0, rawvel.Z).Magnitude
 		local moved = (hrp.Position - lastPos).Magnitude
 
-		-- speed hack
-		if not last_reports.recentSpeeds then
-			last_reports.recentSpeeds = {}
-		end
-
+		-- speed hack (simple moving average)
+		last_reports.recentSpeeds = last_reports.recentSpeeds or {}
 		table.insert(last_reports.recentSpeeds, speedHorizontal)
-
-		if #last_reports.recentSpeeds > 5 then
-			table.remove(last_reports.recentSpeeds, 1)
-		end
-
-		local total = 0
-		for _, v in ipairs(last_reports.recentSpeeds) do
-			total += v
-		end
+		if #last_reports.recentSpeeds > 5 then table.remove(last_reports.recentSpeeds, 1) end
+		local total = 0 for _, v in ipairs(last_reports.recentSpeeds) do total += v end
 		local averageSpeed = total / #last_reports.recentSpeeds
-
-		local speedLimit = 25
-
-		if averageSpeed > speedLimit and last_reports.speed + 5 < now then
+		if averageSpeed > 30 and last_reports.speed + 5 < now then
 			last_reports.speed = now
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f avg) at %s"):format(p.Name.."("..p.DisplayName..")", averageSpeed, tostring(hrp.Position)))
 			ChatSafeFunc(("%s... this game doesn't have a sprint option? (%.2f avg)"):format(p.Name.."("..p.DisplayName..")", averageSpeed))
@@ -897,7 +894,7 @@ local function monitor(p)
 			flyTimer = 0
 		end
 
-		-- fling detection (use magnitudes)
+		-- fling detection
 		if rawvel.Magnitude > 4000 or hrp.RotVelocity.Magnitude > 4000 then
 			if last_reports.fling + 5 < now then
 				last_reports.fling = now
