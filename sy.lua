@@ -1072,7 +1072,7 @@ local function character_added(plr, chr)
 end
 
 local function player_added(plr)
-	if not exclude[plr.Name] or not whitelist[plr.Name] then
+	if not exclude[plr.Name] or not whitelist[plr.Name] or plr == Son then
 		monitor(plr)
 	end
 	if plr.Name == "s71pl" then
