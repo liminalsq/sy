@@ -1090,9 +1090,15 @@ local function character_added(plr, chr)
 end
 
 local function player_added(plr)
-	if (not exclude[plr.Name] and not whitelist[plr.Name]) or plr == Son then
+	local isExcluded = exclude[plr.Name]
+	local isWhitelisted = whitelist[plr.Name]
+	local isSon = plr == Son
+
+	if (not isExcluded and not isWhitelisted) or isSon then
+		debug("this player is not whitelisted or excluded, starting monitor:", plr)
 		monitor(plr)
 	end
+
 	if plr.Name == "s71pl" then
 		if plr.DisplayName ~= "Hosterina" then
 		   ChatSafeFunc("OMG!!! HI DAD!!!")
