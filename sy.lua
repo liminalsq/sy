@@ -673,198 +673,193 @@ end
 
 local function monitor(p)
 	if not p then return end
-    local c = p.Character
-    if not c then return end
-    local r = c:FindFirstChild("HumanoidRootPart")
-    local h = c:FindFirstChildOfClass("Humanoid")
+
+	local function getCharParts(player)
+		local ch = player and player.Character
+		local hrp = ch and ch:FindFirstChild("HumanoidRootPart")
+		local hum = ch and ch:FindFirstChildOfClass("Humanoid")
+		return ch, hrp, hum
+	end
+
+	local ch, hrp, hum = getCharParts(p)
+	if not ch or not hrp or not hum then return end
+	if hum.Health <= 0 then return end
 
 	local leaderstats = p:FindFirstChild("leaderstats")
 	local KOs = leaderstats and leaderstats:FindFirstChild("KOs")
-
 	local lastKOs = KOs and KOs.Value or 0
-	
-	if not r or not h then return end
 
-	if h.Health <= 0 then return end
+	local already_Looped = {}
 
-	local pos = r.Position
-	local vel = r.Velocity.Magnitude
-	local rawvel = r.Velocity
-	local rotVel = r.RotVelocity
-
-	local last_reports = {
-		speed = 0,
-		teleport = 0,
-		fly = 0,
-		reach = 0,
-		fling = 0
-	}
-
-	local looped = {}
-
-	local fly = 0
+	local last_reports = { speed = 0, teleport = 0, fly = 0, reach = 0, fling = 0 }
+	local flyTimer = 0
+	local lastPos = hrp.Position
+	local lastUpdate = tick()
 
 	local raycastParams = RaycastParams.new()
 	raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-	raycastParams.FilterDescendantsInstances = {c}
+	raycastParams.FilterDescendantsInstances = { ch }
 
-	-- i love the roblox engine for literally have so much noise!
-
-	local function ground()
-		local ray = workspace:Raycast(r, Vector3.new(0,-5,0), raycastParams)
-		return ray and ray ~= nil and ray.Instance ~= nil
+	local function isGrounded()
+		local ray = workspace:Raycast(hrp.Position, Vector3.new(0, -5, 0), raycastParams)
+		return ray and ray.Instance ~= nil
 	end
 
-	while h.Health > 0 and RunService.Heartbeat:Wait() do
-		if not c then break end
-		if not r or not h then break end
-		vel = r.Velocity.Magnitude
-		rawvel = r.Velocity
-		rotVel = r.RotVelocity
-	end
-
-	while RunService.Heartbeat:Wait() do
-	    if vel > 0.5 then
-		    pos = r.Position
-	    end
-	end
-		
-	--atp ima just take notes cus i cant remember shit
-
-	--speed hack
-	while task.wait(0.2) do
-	    if Vector3.new(vel.X, 0, vel.Z) > 25 then
-		    if last_reports.speed + 5 < tick() then --idk i learned this today xd
-			    last_reports.speed = tick()
-			    webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", vel, tostring(pos)))
-			    ChatSafeFunc(("%s hey... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", vel))
-			    executecommand("default", "sy.kill "..p.Name)
-		    end
-	    end
-    end
-
-	--teleport
-	while task.wait(0.2) do
-    	if (pos - r.Position).Magnitude > 35 and vel < 5 then 
-			if last_reports.teleport + 5 < tick() then
-			    last_reports.teleport = tick()
-	        	webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-	     		ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(r.Position), tostring(pos)))
-		    	executecommand("default", "sy.kill "..p.Name)
-	    	end
-    	end
-	end
-
-	--fly, but take with a grain of salt
-	while RunService.Heartbeat:Wait() do
-		if not ground() --[[and h:GetState() == Enum.HumanoidStateType.Freefall]] then
-			if fly < 4 then
-				fly += 0.01
-			else
-				fly = 0
-				if last_reports.fly + 5 < tick() then
-					last_reports.fly = tick()
-					webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flying"):format(p.Name.."("..p.DisplayName..")"))
-					ChatSafeFunc(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
-					executecommand("default", "sy.kill "..p.Name)
-				end
-			end
-		elseif ground() --[[and h:GetState() ~= Enum.HumanoidStateType.Freefall]] then
-			fly = 0
-		end
-	end
-
-	--reach
-	for i, plr in pairs(players:GetPlayers()) do
-		if plr then continue end
-		local vchar = plr.Character
-		if not vchar then return end
-		local vroot = vchar:FindFirstChild("HumanoidRootPart")
-		local vhum = vchar:FindFirstChildOfClass("Humanoid")
-		if not vroot or not vhum then return end
-		vhum.Died:Connect(function()
+	-- reach handler factory
+	local function makeDeathHandler(vplayer)
+		return function(vhum)
 			local creator = vhum:FindFirstChild("creator")
-			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
-				local cchar = creator.Value.Character
-				local croot = cchar:FindFirstChild("HumanoidRootPart")
-				local distance = (vroot.Position - croot.Position).Magnitude
-				webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed %s (%.2f)"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-				if creator.Value == p then
-					if distance > 14 then
-						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
+			if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
+				local killer = creator.Value
+				local kchar = killer.Character
+				local kroot = kchar and kchar:FindFirstChild("HumanoidRootPart")
+				local vchar = vplayer.Character
+				local vroot = vchar and vchar:FindFirstChild("HumanoidRootPart")
+				if kroot and vroot then
+					local distance = (vroot.Position - kroot.Position).Magnitude
+					webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed %s (%.2f)"):format(killer.Name.."("..killer.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
+					if killer == p and distance > 14 and last_reports.reach + 5 < tick() then
+						last_reports.reach = tick()
+						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
+						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", vplayer.Name.."("..vplayer.DisplayName..")", distance))
 						executecommand("default", "sy.kill "..p.Name)
 					end
 				end
 			end
-		end)
+		end
 	end
 
-	players.PlayerAdded:Connect(function(plr)
-		if not plr then return end
-		local vchar = plr.Character
-		if not vchar then return end
-		local vroot = vchar:FindFirstChild("HumanoidRootPart")
-		local vhum = vchar:FindFirstChildOfClass("Humanoid")
-		if not vroot or not vhum then return end
-		vhum.Died:Connect(function()
-			local creator = vhum:FindFirstChild("creator")
-			if creator and creator:IsA("ObjectValue") and creator.Value:IsA("Player") then
-				local cchar = creator.Value.Character
-				local croot = cchar:FindFirstChild("HumanoidRootPart")
-				local distance = (vroot.Position - croot.Position).Magnitude
-				webhook_sendMsg({overall_LOGGER, webhook}, ("%s killed %s (%.2f)"):format(creator.Value.Name.."("..creator.Value.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-				if creator.Value == p then
-					if distance > 14 then
-						webhook_sendMsg({overall_LOGGER, webhook}, ("%s reached %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						ChatSafeFunc(("%s used long arms ability on %s (%.2f)"):format(p.Name.."("..p.DisplayName..")", plr.Name.."("..plr.DisplayName..")", distance))
-						executecomand("default", "sy.kill "..p.Name)
+	-- attach reach listeners for existing players and future players
+	local reachConnections = {}
+	for _, other in ipairs(Players:GetPlayers()) do
+		if other ~= p then
+			local vhum = other.Character and other.Character:FindFirstChildOfClass("Humanoid")
+			if vhum then
+				reachConnections[other] = vhum.Died:Connect(makeDeathHandler(other))
+			end
+		end
+	end
+	local playerAddedConn = Players.PlayerAdded:Connect(function(newP)
+		if newP ~= p then
+			-- wait for character/humanoid quickly (non-blocking)
+			task.spawn(function()
+				local attemptChar = newP.Character or newP.CharacterAdded:Wait()
+				local vhum = attemptChar and attemptChar:FindFirstChildOfClass("Humanoid")
+				if vhum then
+					reachConnections[newP] = vhum.Died:Connect(makeDeathHandler(newP))
+				end
+			end)
+		end
+	end)
+
+	-- KOs monitor
+	local KOsConn
+	if KOs then
+		KOsConn = KOs:GetPropertyChangedSignal("Value"):Connect(function()
+			local val = KOs.Value
+			local was_Autoreset = reset
+			if val - lastKOs > 9 then
+				ChatSafeFunc("these kills belong to me... >:]")
+				-- set loopkill for all players
+				for _, v in ipairs(Players:GetPlayers()) do
+					if v ~= Son then
+						for i, v in pairs(looplist) do
+							if v == true then
+								already_Looped[i] = true
+							end
+						end
+						executecommand("default", "sy.loopkill "..v.Name)
+						executecommand("default", "sy.autors")
 					end
 				end
+				Players.PlayerRemoving:Connect(function(plr)
+					if plr == p then
+						for i, v in pairs(Players:GetPlayers()) do
+							if not already_Looped[v.UserId] then
+								executecommand("default", "sy.unloopkill "..v.Name)
+							end
+							if not was_Autoreset then
+								executecommand("default", "sy.unautors")
+							end
+							already_Looped = {}
+						end
+					end
+				end)
 			end
+			lastKOs = val
 		end)
-	end)
-
-	if leaderstats and KOs then
-	KOs:GetPropertyChangedSignal("Value"):Connect(function(val)
-		if val - lastKOs > 9 then
-		   ChatSafeFunc("these kills belong to me... >:]")
-		   while runservice.Heartbeat:Wait() do
-		      if p then
-				 for i, v in pairs(players:GetPlayers()) do
-					if looplist[v.Name] then
-					    looped[v.Name] = true
-					end
-					executecommand("default", "sy.loopkill "..v.Name)
-				 end
-			  else
-				 for i, v in pairs(players:GetPlayers()) do
-                    if not looped[v.Name] then
-                       executecommand("default", "sy.unloopkill"..v.Name)
-					end
-					looped = {}
-					break
-				 end
-			  end
-		   end
-		end
-		lastKOs = val
-	end)
 	end
+	-- main heartbeat monitor
+	local hbConn
+	hbConn = RunService.Heartbeat:Connect(function()
+		-- validate still present
+		if not p or not p.Parent then
+			hbConn:Disconnect()
+			if playerAddedConn then playerAddedConn:Disconnect() end
+			for _, c in pairs(reachConnections) do if c and c.Disconnect then c:Disconnect() end end
+			if KOsConn then KOsConn:Disconnect() end
+			return
+		end
 
+		ch, hrp, hum = getCharParts(p)
+		if not ch or not hrp or not hum or hum.Health <= 0 then
+			-- stop monitoring when character dies or leaves
+			hbConn:Disconnect()
+			if playerAddedConn then playerAddedConn:Disconnect() end
+			for _, c in pairs(reachConnections) do if c and c.Disconnect then c:Disconnect() end end
+			if KOsConn then KOsConn:Disconnect() end
+			return
+		end
 
-	--fling
-	while RunService.Heartbeat:Wait() do
-		if not c then break end
-		if vel > 4000 or rotVel > 4000 then
-			if last_reports.fling + 5 < tick() then
-				last_reports.fling = tick()
-				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
-				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", vel, rotVel))
+		local now = tick()
+		local dt = math.max(1/60, now - lastUpdate)
+		lastUpdate = now
+
+		local rawvel = hrp.Velocity
+		local speedHorizontal = Vector3.new(rawvel.X, 0, rawvel.Z).Magnitude
+		local moved = (hrp.Position - lastPos).Magnitude
+
+		-- speed hack
+		if speedHorizontal > 25 and last_reports.speed + 5 < now then
+			last_reports.speed = now
+			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f) at %s"):format(p.Name.."("..p.DisplayName..")", speedHorizontal, tostring(hrp.Position)))
+			ChatSafeFunc(("%s... this game doesnt have a sprint option? (%.2f)"):format(p.Name.."("..p.DisplayName..")", speedHorizontal))
+			executecommand("default", "sy.kill "..p.Name)
+		end
+
+		-- teleport detection
+		if moved > 35 and speedHorizontal < 5 and last_reports.teleport + 5 < now then
+			last_reports.teleport = now
+			webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(lastPos), tostring(hrp.Position)))
+			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(lastPos), tostring(hrp.Position)))
+			executecommand("default", "sy.kill "..p.Name)
+		end
+
+		-- fly detection (simple grounded timer)
+		if not isGrounded() then
+			flyTimer = flyTimer + dt
+			if flyTimer > 4 and last_reports.fly + 5 < now then
+				last_reports.fly = now
+				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flying"):format(p.Name.."("..p.DisplayName..")"))
+				ChatSafeFunc(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
+				executecommand("default", "sy.kill "..p.Name)
+			end
+		else
+			flyTimer = 0
+		end
+
+		-- fling detection (use magnitudes)
+		if rawvel.Magnitude > 4000 or hrp.RotVelocity.Magnitude > 4000 then
+			if last_reports.fling + 5 < now then
+				last_reports.fling = now
+				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", rawvel.Magnitude, hrp.RotVelocity.Magnitude))
+				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", rawvel.Magnitude, hrp.RotVelocity.Magnitude))
 				executecommand("default", "sy.kill "..p.Name)
 			end
 		end
-	end
+
+		lastPos = hrp.Position
+	end)
 end
 
 cmds.test = function(_)
@@ -899,7 +894,7 @@ TextChatService.MessageReceived:Connect(function(message)
 		if hasPrefix then
 			if sender ~= Son then
 				webhook_sendMsg({overall_LOGGER, webhook}, sender.Name.." ("..sender.DisplayName..") non-whitelist player tried to use a command.")
-				if math.random(1, 20) == 1 then
+				if math.random(1, 2) == 1 then
 					local dummy = {
 						"no",
 						"naw",
@@ -908,6 +903,13 @@ TextChatService.MessageReceived:Connect(function(message)
 						"i dont feel like it",
 						"too lazy",
 						"why",
+						"ask again later",
+						"not today",
+						"maybe later",
+						"im busy",
+						"nope",
+						"dont wanna",
+						"meow"
 					}
 					ChatSafeFunc("uhhh")
 					task.wait(2 + math.random)
