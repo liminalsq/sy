@@ -702,8 +702,11 @@ local function WaitForChildOfClass(parent, className, timeout)
 	return foundChild
 end
 
+local monitor_List = {}
+
 local function monitor(p)
 	if not p then return end
+	if not monitor_List[p.UserId] then return end
 
 	local function getCharParts(player)
 		local ch = player and player.Character
@@ -833,6 +836,7 @@ local function monitor(p)
 	-- main heartbeat monitor (non-blocking)
 	local hbConn
 	hbConn = RunService.Heartbeat:Connect(function()
+		if not monitor_List[p.UserId] then hbConn:Disconnect() return end
 		-- validate presence
 		if not p or not p.Parent then
 			hbConn:Disconnect()
@@ -865,8 +869,8 @@ local function monitor(p)
 		table.insert(last_reports.recentSpeeds, speedHorizontal)
 		if #last_reports.recentSpeeds > 5 then table.remove(last_reports.recentSpeeds, 1) end
 		local total = 0 for _, v in ipairs(last_reports.recentSpeeds) do total += v end
-		local averageSpeed = total / #last_reports.recentSpeeds
-		if averageSpeed > 20 and last_reports.speed + 5 < now and moved > 17 then
+		local averageSpeed = math.floor(total / #last_reports.recentSpeeds)
+		if averageSpeed > 18 and last_reports.speed + 5 < now and moved > 16.9 then
 			last_reports.speed = now
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s is moving suspiciously fast (%.2f avg) at %s"):format(p.Name.."("..p.DisplayName..")", averageSpeed, tostring(hrp.Position)))
 			ChatSafeFunc(("%s... this game doesn't have a sprint option? (%.2f avg)"):format(p.Name.."("..p.DisplayName..")", averageSpeed))
@@ -877,7 +881,7 @@ local function monitor(p)
 		if moved > 35 and speedHorizontal < 5 and last_reports.teleport + 5 < now then
 			last_reports.teleport = now
 			webhook_sendMsg({overall_LOGGER, webhook}, ("%s teleported from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(lastPos), tostring(hrp.Position)))
-			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.Name.."("..p.DisplayName..")", tostring(lastPos), tostring(hrp.Position)))
+			ChatSafeFunc(("%s used an imaginary ender pearl!!! from %s to %s"):format(p.DisplayName, tostring(lastPos), tostring(hrp.Position)))
 			executecommand("default", "sy.kill "..p.Name)
 		end
 
@@ -887,7 +891,7 @@ local function monitor(p)
 			if flyTimer > 4 and last_reports.fly + 5 < now then
 				last_reports.fly = now
 				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flying"):format(p.Name.."("..p.DisplayName..")"))
-				ChatSafeFunc(("%s u cant fly without wings..."):format(p.Name.."("..p.DisplayName..")"))
+				ChatSafeFunc(("%s u cant fly without wings..."):format(p.DisplayName))
 				executecommand("default", "sy.kill "..p.Name)
 			end
 		else
@@ -899,7 +903,7 @@ local function monitor(p)
 			if last_reports.fling + 5 < now then
 				last_reports.fling = now
 				webhook_sendMsg({overall_LOGGER, webhook}, ("%s is flinging (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", rawvel.Magnitude, hrp.RotVelocity.Magnitude))
-				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.Name.."("..p.DisplayName..")", rawvel.Magnitude, hrp.RotVelocity.Magnitude))
+				ChatSafeFunc(("%s what r u doing? (vel: %.2f, rotVel: %.2f)"):format(p.DisplayName, rawvel.Magnitude, hrp.RotVelocity.Magnitude))
 				executecommand("default", "sy.kill "..p.Name)
 			end
 		end
@@ -909,7 +913,20 @@ local function monitor(p)
 end
 
 cmds.test = function(_)
-	monitor(_)
+	if _  and _:IsA("Player") then
+		table.insert(monitor_List, _.UserId)
+		if _.Character and _.Character:FindFirstChildOfClass("Humanoid") then
+			_.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				local creator = _.Character:FindFirstChildOfClass("Humanoid"):FindFirstChild("creator")
+				if creator and creator:IsA("ObjectValue") and creator.Value and creator.Value:IsA("Player") then
+					local cplayer = creator.Value
+					if cplayer == Son then
+						table.remove(monitor_List, _.UserId)
+					end
+				end
+			end)
+		end
+	end
 end
 
 local lastSentMessage = {}
