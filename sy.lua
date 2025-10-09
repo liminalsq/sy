@@ -478,8 +478,6 @@ cmds.bring = function(_, target, x, y, z)
 	if #target == 0 then return end
 	target = target[1]
 
-	local other = getPlayersByName(x)
-
 	local towards
 	if x == "platform1" then
 		towards = Vector3.new(-119, 250, -133)
@@ -487,12 +485,16 @@ cmds.bring = function(_, target, x, y, z)
 		towards = Vector3.new(x, y, z)
 	elseif typeof(x) == "Vector3" then
 		towards = x
-	elseif x == other and other then
-		if other.Character:FindFirstChild("HumanoidRootPart") then
-			towards = other.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+	elseif type(x) == "string" then
+		local otherPlayers = getPlayersByName(x)
+		if #otherPlayers > 0 then
+			local otherPlayer = otherPlayers[1]
+			if otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				towards = otherPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+			end
 		end
 	elseif x == "you" then
-		if Son.Character and Son.Character:FindFirstChild("HumanoidRootPart") then
+		if Son and Son.Character and Son.Character:FindFirstChild("HumanoidRootPart") then
 			towards = Son.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
 		else
 			towards = middle.Position
@@ -516,6 +518,14 @@ cmds.tp = function(_, target, x, y, z)
 		towards = Vector3.new(x, y, z)
 	elseif typeof(x) == "Vector3" then
 		towards = x
+	elseif typeof(x) == "string" then
+		local otherPlayers = getPlayersByName(x)
+		if #otherPlayers > 0 then
+			local otherPlayer = otherPlayers[1]
+			if otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				towards = otherPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+			end
+		end
 	else
 		towards = middle.Position
 	end
