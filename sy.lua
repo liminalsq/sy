@@ -473,10 +473,12 @@ cmds.ping = function(_)
 	end
 end
 
-cmds.bring = function(_, target, x, y, z)
+cmds.bring = function(_, target, otherTarget, x, y, z)
 	target = getPlayersByName(target)
-	if #target == 0 then return end
+	otherTarget = getPlayersByName(otherTarget)
+	if #target == 0 or #otherTarget == 0 then return end
 	target = target[1]
+	otherTarget = otherTarget[1]
 
 	local towards
 	if x == "platform1" then
@@ -485,6 +487,14 @@ cmds.bring = function(_, target, x, y, z)
 		towards = Vector3.new(x, y, z)
 	elseif typeof(x) == "Vector3" then
 		towards = x
+	elseif otherTarget and x == otherTarget and otherTarget.Character and otherTarget.Character:FindFirstChild("HumanoidRootPart") then
+		towards = otherTarget.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+	elseif x == "you" then
+		if Son.Character and Son.Character:FindFirstChild("HumanoidRootPart") then
+			towards = Son.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0)
+		else
+			towards = middle.Position
+		end
 	else
 		towards = middle.Position
 	end
