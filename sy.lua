@@ -728,7 +728,9 @@ local monitor_List = {}
 
 local function monitor(p)
 	if not p then return end
-	if not monitor_List[p.UserId] then return end
+	if not monitor_List[p.UserId] then debug("player not in monitoring list") return end
+
+	debug("started monitoring "..p)
 
 	local function getCharParts(player)
 		local ch = player and player.Character
@@ -820,6 +822,7 @@ local function monitor(p)
 	-- KOs monitor
 	local KOsConn
 	if KOs then
+		if not monitor_List[p.UserId] then return end
 		KOsConn = KOs:GetPropertyChangedSignal("Value"):Connect(function()
 			local val = KOs.Value
 			local was_Autoreset = reset
@@ -937,6 +940,7 @@ end
 cmds.test = function(_)
 	if _  and _:IsA("Player") then
 		table.insert(monitor_List, _.UserId)
+		monitor(_)
 		if _.Character and _.Character:FindFirstChildOfClass("Humanoid") then
 			_.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 				local creator = _.Character:FindFirstChildOfClass("Humanoid"):FindFirstChild("creator")
@@ -944,6 +948,9 @@ cmds.test = function(_)
 					local cplayer = creator.Value
 					if cplayer == Son then
 						table.remove(monitor_List, _.UserId)
+						if monitor_List[_.UserId] then
+						    monitor_List[_.UserId] = nil		
+						end
 					end
 				end
 			end)
@@ -1163,6 +1170,9 @@ local function player_added(plr)
 
 	if (not isExcluded and not isWhitelisted) or not isSon then
 		debug("this player is not whitelisted or excluded, starting monitor:", plr)
+        if not monitor_List[plr.UserId] then 
+			monitor_List[plr.UserId] = true
+		end
 		monitor(plr)
 	end
 
