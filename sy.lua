@@ -69,6 +69,7 @@ local function ChatSafeFunc(msg)
 end
 
 local bringing = false
+local flinging = false
 local bringparams = nil
 local hide = true
 local reset = false
@@ -689,6 +690,83 @@ local function executecommand(p, cmd)
 			end
 		else
 			debug("not a command: ", out.cmd)
+		end
+	end
+end
+
+local function flingPlayer(plr, strength, duration)
+	strength = strength or 200
+	duration = duration or 0.5
+	if not plr or not plr.Character then return end
+	local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
+
+	local ok, err = pcall(function()
+		local dir = Vector3.new(0, 1, 0)
+		local myRoot = Son and Son.Character and Son.Character:FindFirstChild("HumanoidRootPart")
+		if myRoot and myRoot.Position ~= hrp.Position then
+			local delta = hrp.Position - myRoot.Position
+			if delta.Magnitude > 0 then
+				dir = delta.Unit
+			end
+		else
+			dir = Vector3.new((math.random() - 0.5), 0.5, (math.random() - 0.5)).Unit
+		end
+
+		local vel = dir * strength + Vector3.new(0, math.abs(strength) * 0.5, 0)
+
+		local applied = false
+		local ok2 = pcall(function()
+			hrp.AssemblyLinearVelocity = vel
+			applied = true
+		end)
+
+		pcall(function() hrp.Velocity = vel end)
+
+		if not applied then
+			local bv = Instance.new("BodyVelocity")
+			bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
+			bv.Velocity = vel
+			bv.P = 1e4
+			bv.Name = "_sy_fling"
+			bv.Parent = hrp
+			task.delay(duration, function()
+				pcall(function() bv:Destroy() end)
+			end)
+		end
+
+		flinging = true
+
+		task.delay(duration, function()
+			pcall(function()
+				if hrp and hrp.Parent then
+					flinging = false
+					hrp.Velocity = Vector3.zero
+				end
+			end)
+		end)
+	end)
+	if not ok then
+		debug("[flingPlayer] error", err)
+	end
+end
+
+cmds.bau = function(_, ...)
+	local targets = {...}
+	if #targets == 0 then return end
+
+	for _, name in ipairs(targets) do
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			debug("[looplist]", "loop", plr)
+			looplist[plr.UserId] = true
+			pcall(function()
+				while RunService.PostSimulation:Wait() do
+					if plr.Parent == nil or plr.Character == nil or plr.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then break end
+					if not IsLooplisted(plr) then break end
+					flingPlayer(plr, 1000000, 5)
+				end
+			end)
 		end
 	end
 end
