@@ -730,7 +730,7 @@ local function monitor(p)
 	if not p then return end
 	if not monitor_List[p.UserId] then debug("player not in monitoring list") return end
 
-	debug("started monitoring "..p)
+	debug("started monitoring "..p.Name)
 
 	local function getCharParts(player)
 		local ch = player and player.Character
