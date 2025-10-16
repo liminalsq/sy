@@ -1548,3 +1548,12 @@ while true do
 		end
 	end
 end
+
+function missing(t, f, fallback)
+    if type(f) == t then return f end
+    return fallback
+end
+
+local queue_ontp = missing("function", queue_on_teleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport))
+
+queue_ontp("loadstring(game:HttpGet('https://raw.githubusercontent.com/liminalsq/sy/refs/heads/main/sy.lua'))()")
