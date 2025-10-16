@@ -27,23 +27,38 @@ local chat_LOGGER = "https://discord.com/api/webhooks/1405676439008837753/Q9Ev9e
 
 local requestFunction = http_request or request
 
+local function getDirectHeadshotURL(userId)
+    local apiUrl = ("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=%s&size=420x420&format=Png&isCircular=false"):format(userId)
+    local response = requestFunction({
+        Url = apiUrl,
+        Method = "GET"
+    })
+    if response and response.Body then
+        local data = HttpService:JSONDecode(response.Body)
+        if data and data.data and data.data[1] and data.data[1].imageUrl then
+            return data.data[1].imageUrl
+        end
+    end
+    return nil
+end
+
 local function webhook_logChat(player, message)
-	local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
-	local displayName = player.DisplayName
-	local username = player.Name
+    local avatarUrl = getDirectHeadshotURL(player.UserId) or "https://i.imgur.com/default.png"
+    local displayName = player.DisplayName
+    local username = player.Name
 
-	local payload = {
-		username = displayName.." ("..username..")",
-		avatar_url = avatarUrl,
-		content = message
-	}
+    local payload = {
+        username = displayName.." ("..username..")",
+        avatar_url = avatarUrl,
+        content = message
+    }
 
-	requestFunction({
-		Url = chat_LOGGER,
-		Method = "POST",
-		Headers = {["Content-Type"] = "application/json"},
-		Body = HttpService:JSONEncode(payload)
-	})
+    requestFunction({
+        Url = chat_LOGGER,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = HttpService:JSONEncode(payload)
+    })
 end
 
 local function webhook_sendMsg(webhooks, msg)
@@ -1448,13 +1463,17 @@ Son.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(40.15, 250.
 
 local anim = "CaliforniaGirls"
 
+local dances = {
+	"CaliforniaGirls",
+	"Smug",
+	"PP_Music",
+	"HelloWorld",
+}
+
 task.spawn(function() 
 	while task.wait(120) do
-       if anim == "CaliforniaGirls" then
-			anim = "Smug"
-		else
-		    anim = "CaliforniaGirls"
-       end
+       anim = dances[math.random(1,#dances)]
+	   debug("switched dance to", anim)
 	end
 end)
 
