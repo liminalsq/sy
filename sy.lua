@@ -411,7 +411,7 @@ end
 local cmds = {}
 
 cmds.hi = function(plr)
-	if plr == player or plr.Name == player.Name then return end
+	if plr == Son or plr.Name == Son.Name then return end
 	ChatSafeFunc("hi " .. plr.Name)
 end
 
@@ -564,7 +564,7 @@ cmds.rejoin = function(_)
 end
 
 cmds.servertime = function(_)
-	local serverTime = stats:GetServerTimeInSeconds()
+	local serverTime = StatsService:GetServerTimeInSeconds()
 	if serverTime then
 		webhook_sendMsg({overall_LOGGER, webhook}, ("%s's current server time is %.2f seconds"):format("SpawnYellow", serverTime))
 		ChatSafeFunc(("server time is %.2f seconds"):format("me", serverTime))
@@ -755,6 +755,8 @@ cmds.bau = function(_, ...)
 	local targets = {...}
 	if #targets == 0 then return end
 
+	local wasHiding = hide
+	hide = false
 	for _, name in ipairs(targets) do
 		local plrs = getPlayersByName(name)
 		for _, plr in ipairs(plrs) do
@@ -763,10 +765,26 @@ cmds.bau = function(_, ...)
 			pcall(function()
 				while RunService.PostSimulation:Wait() do
 					if plr.Parent == nil or plr.Character == nil or plr.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then break end
-					if not IsLooplisted(plr) then break end
+					if not IsLooplisted(plr) then 
+						hide = wasHiding
+						break 
+					end
 					flingPlayer(plr, 1000000, 5)
 				end
 			end)
+		end
+	end
+end
+
+cmds.unsbau = function(_, ...)
+	local targets = {...}
+	if #targets == 0 then return end
+
+	for _, name in ipairs(targets) do
+		local plrs = getPlayersByName(name)
+		for _, plr in ipairs(plrs) do
+			debug("[looplist]", "unloop", plr)
+			looplist[plr.UserId] = nil
 		end
 	end
 end
