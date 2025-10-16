@@ -830,6 +830,8 @@ local function monitor(p)
 	local lastPos = (hrp and hrp.Position) or Vector3.new(0,0,0)
 	local lastUpdate = tick()
 
+	local already_Looped = {}
+
 	local raycastParams = RaycastParams.new()
 	raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
 	raycastParams.FilterDescendantsInstances = { ch }
