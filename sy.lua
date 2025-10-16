@@ -695,59 +695,51 @@ local function executecommand(p, cmd)
 end
 
 local function flingPlayer(plr, strength, duration)
-	strength = strength or 200
-	duration = duration or 0.5
+	strength = strength or 1000 -- very high
+	duration = duration or 0.3
 	if not plr or not plr.Character then return end
 	local hrp = plr.Character:FindFirstChild("HumanoidRootPart")
-	if not hrp then return end
+	local myHRP = Son and Son.Character and Son.Character:FindFirstChild("HumanoidRootPart")
+	if not hrp or not myHRP then return end
 
 	local ok, err = pcall(function()
-		local dir = Vector3.new(0, 1, 0)
-		local myRoot = Son and Son.Character and Son.Character:FindFirstChild("HumanoidRootPart")
-		if myRoot and myRoot.Position ~= hrp.Position then
-			local delta = hrp.Position - myRoot.Position
-			if delta.Magnitude > 0 then
-				dir = delta.Unit
-			end
-		else
-			dir = Vector3.new((math.random() - 0.5), 0.5, (math.random() - 0.5)).Unit
-		end
+		local p = hrp.Position + hrp.Velocity * 0.5
 
-		local vel = dir * strength + Vector3.new(0, math.abs(strength) * 0.5, 0)
+		local dir = (p - myHRP.Position).Unit
+
+		local targetVel = dir * strength + Vector3.new(0, math.abs(strength)*0.5, 0)
 
 		local applied = false
-		local ok2 = pcall(function()
-			hrp.AssemblyLinearVelocity = vel
+		pcall(function()
+			hrp.AssemblyLinearVelocity = targetVel
 			applied = true
 		end)
 
-		pcall(function() hrp.Velocity = vel end)
+		pcall(function() hrp.Velocity = targetVel end)
 
 		if not applied then
 			local bv = Instance.new("BodyVelocity")
-			bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
-			bv.Velocity = vel
+			bv.MaxForce = Vector3.new(1e6,1e6,1e6)
+			bv.Velocity = targetVel
 			bv.P = 1e4
 			bv.Name = "_sy_fling"
 			bv.Parent = hrp
-			task.delay(duration, function()
-				pcall(function() bv:Destroy() end)
-			end)
+			task.delay(duration, function() pcall(function() bv:Destroy() end) end)
 		end
 
 		flinging = true
-
 		task.delay(duration, function()
 			pcall(function()
 				if hrp and hrp.Parent then
 					flinging = false
-					hrp.Velocity = Vector3.zero
+					hrp.Velocity = Vector3.new(0,0,0)
 				end
 			end)
 		end)
 	end)
+
 	if not ok then
-		debug("[flingPlayer] error", err)
+		warn("[flingPlayer] error:", err)
 	end
 end
 
