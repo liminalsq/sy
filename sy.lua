@@ -100,6 +100,7 @@ workspace.FallenPartsDestroyHeight = 0/0
 local Son = Players.LocalPlayer
 
 local whitelist = {
+	[Son.Name] = true,
 	['ColonThreeSpam'] = true,
 	['TheTerminalClone'] = true,
 	['SpawnYellow1'] = true,
