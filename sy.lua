@@ -9,6 +9,8 @@ local function debug(...)
 	if DEBUG_MODE then warn("[sy]", ...) end
 end
 
+debug("VERSION 4")
+
 local Workspace = workspace --joke variable, ofc im still gonna use workspace
 
 local Players = game:GetService("Players")
@@ -1471,7 +1473,7 @@ local dances = {
 }
 
 task.spawn(function() 
-	while task.wait(120) do
+	while task.wait(60) do
        anim = dances[math.random(1,#dances)]
 	   debug("switched dance to", anim)
 	end
