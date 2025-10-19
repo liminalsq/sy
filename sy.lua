@@ -120,6 +120,7 @@ local whitelist = {
 	['STEVETheReal916'] = true,
 	['0bj687Alt'] = true,
 	['HollowGol'] = true,
+	['SpawnBlack1'] = true,
 }
 
 local exclude = {
