@@ -1272,6 +1272,7 @@ local function character_added(plr, chr)
 end
 
 local function player_added(plr)
+	task.wait(2)
 	local isExcluded = exclude[plr.Name]
 	local isWhitelisted = whitelist[plr.Name]
 	local isSon = (plr == Son or plr.UserId == Son.UserId or plr.Name == Son.Name)
