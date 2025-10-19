@@ -1113,7 +1113,7 @@ TextChatService.MessageReceived:Connect(function(message)
 						"meow"
 					}
 					ChatSafeFunc("uhhh")
-					task.wait(2 + math.random)
+					task.wait(2 + math.random())
 					ChatSafeFunc(dummy[math.random(1,#dummy)])
 				end
 			end
@@ -1477,6 +1477,14 @@ local dances = {
 	"PP_Music",
 	"HelloWorld",
 }
+
+cmds.emote = function(_, emote)
+	if table.find(dances, emote) then
+		anim = emote
+	else
+        ChatSafeFunc("i dunno how to do thatt")
+	end
+end
 
 task.spawn(function() 
 	while task.wait(60) do
