@@ -1273,12 +1273,15 @@ end
 
 local function player_added(plr)
 	task.wait(2)
-	local isExcluded = exclude[plr.Name]
-	local isWhitelisted = whitelist[plr.Name]
-	local isSon = (plr == Son or plr.UserId == Son.UserId or plr.Name == Son.Name)
+	local isExcluded = (exclude[plr.Name] == true)
+    local isWhitelisted = (whitelist[plr.Name] == true)
+    local isSon = false
+    if Son then
+        isSon = (plr == Son or plr.UserId == Son.UserId or plr.Name == Son.Name)
+    end
 
     if (not isExcluded and not isWhitelisted and not isSon) then
-	    debug("this player is not whitelisted or excluded, starting monitor:", plr)
+	    debug("this player is not whitelisted or excluded, starting monitor:", plr, isExcluded, isWhitelisted, isSon)
 	    if not monitor_List[plr.UserId] then 
 		    monitor_List[plr.UserId] = true
 	    end
