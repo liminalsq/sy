@@ -1277,7 +1277,7 @@ local function player_added(plr)
 	local isWhitelisted = whitelist[plr.Name]
 	local isSon = (plr == Son or plr.UserId == Son.UserId or plr.Name == Son.Name)
 
-	if not isExcluded or not isWhitelisted or not isSon then
+	if (not isExcluded or not isWhitelisted or not isSon) then
 		debug("this player is not whitelisted or excluded, starting monitor:", plr)
         if not monitor_List[plr.UserId] then 
 			monitor_List[plr.UserId] = true
