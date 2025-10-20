@@ -1218,6 +1218,9 @@ TextChatService.MessageReceived:Connect(function(message)
 		}
 		task.wait(2 + math.random())
 		ChatSafeFunc(maskid[math.random(1,#maskid)])
+	elseif lowerMsg:find("spawnyellow") and (lowerMsg:find("creator") or (lowerMsg:find("created") and lowerMsg:find("you"))) then
+		task.wait(2 + math.random())
+		ChatSafeFunc("hoster/spawnblack (dad!!) did, with stellas help to rewrite me!!")
 	end
 end)
 
